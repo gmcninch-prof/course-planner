@@ -1,0 +1,6 @@
+
+instructors: "George McNinch"
+
+course : "Math 245"
+
+description : "Graduate Algebra"

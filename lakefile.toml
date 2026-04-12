@@ -1,0 +1,10 @@
+name = "courseDesc"
+version = "0.1.0"
+defaultTargets = ["coursedesc"]
+
+[[lean_lib]]
+name = "CourseDesc"
+
+[[lean_exe]]
+name = "coursedesc"
+root = "Main"
