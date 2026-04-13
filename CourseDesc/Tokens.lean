@@ -2,6 +2,7 @@
 inductive Token
   | ident (s : String)   -- "courseAY", "EHoliday" etc
   | strLit (s : String)  -- "AY2025-2026"
+  | natLit (n : Nat)
   | lbrace | rbrace      -- { }
   | lbracket | rbracket  -- [ ]
   | comma | colon | equals
@@ -47,6 +48,10 @@ where
           if isIdentChar c then
             let (s,p'') := scanIdent n p' (String.singleton c)
             go n p'' (Token.ident s::acc)
+          else if c.isDigit then
+            let (s,p'') := scanDigits n p' (String.singleton c)
+            let r : Nat := s.toNat! -- or: Option.elim s.toNat? 0 id
+            go n p'' (Token.natLit r :: acc)
           else if c.isWhitespace then
             go n p' acc  -- skip
           else
@@ -82,6 +87,21 @@ where
           scanIdent n p' (acc.push c)        
         else
           (acc, p)  -- return p, not p' since we don't consume c
+
+  scanDigits (fuel : Nat) (p : input.Pos) (acc : String) : (String × input.Pos) :=
+    match fuel with
+    | 0 => (acc,p)
+    | n+1 => 
+      if h : p = input.endPos then
+        (acc, p)  
+      else
+        let c := p.get h
+        let p' := p.next h
+        if c.isDigit then
+          scanIdent n p' (acc.push c)        
+        else
+          (acc, p)  -- return p, not p' since we don't consume c
+
 
   skipToNewline (fuel : Nat) (p : input.Pos) : input.Pos :=
     match fuel with
