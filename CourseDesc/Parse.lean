@@ -1,5 +1,6 @@
 
-import CourseDesc.Types
+
+import CourseDesc.Course
 import CourseDesc.Tokens
 
 def Parser (α : Type) := List Token → Except String (α × List Token)

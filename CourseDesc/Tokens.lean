@@ -12,57 +12,52 @@ deriving Repr
 def isIdentChar (c : Char) : Bool := c.isAlpha || c == '_' 
 
 def tokenize (input : String) : List Token :=
-  go input.utf8ByteSize input.startPos []
+  go input.startPos []
 where
-  go (fuel : Nat) (p : String.Pos input) (acc : List Token) : List Token :=
-    match fuel with 
-    | 0 =>
-      acc.reverse
-    | n+1 =>
+  go (p : String.Pos input) (acc : List Token) : List Token :=
       if h : p = input.endPos then
         acc.reverse
       else
         let c  := p.get h
         let p' := p.next h
         match c with
-        | '{' => go n p' (Token.lbrace :: acc)
-        | '}' => go n p' (Token.rbrace :: acc)
-        | '[' => go n p' (Token.lbracket :: acc)
-        | ']' => go n p' (Token.rbracket :: acc)
-        | ',' => go n p' (Token.comma :: acc)
-        | ':' => go n p' (Token.colon :: acc)
-        | '=' => go n p' (Token.equals :: acc)
+        | '{' => go p' (Token.lbrace :: acc)
+        | '}' => go p' (Token.rbrace :: acc)
+        | '[' => go p' (Token.lbracket :: acc)
+        | ']' => go p' (Token.rbracket :: acc)
+        | ',' => go p' (Token.comma :: acc)
+        | ':' => go p' (Token.colon :: acc)
+        | '=' => go p' (Token.equals :: acc)
         | '-' =>
           if h' : p' = input.endPos then
-            go n p' acc  -- single dash at end of input, skip
+            go p' acc  -- single dash at end of input, skip
           else
             if p'.get h' == '-' then
-              let p'' := skipToNewline n p' 
-              go n p'' acc
+              let ⟨p'',h⟩ := skipToNewline p' 
+              have k : p < p'' := by 
+                simp                
+              go p'' acc
             else
-              go n p' acc  -- single dash, skip or error        
+              go p' acc  -- single dash, skip or error        
         | '\x22'  => -- double quote
-            let (s, p'') := scanString n p' ""
-            go n p'' (Token.strLit s :: acc)
+            let (s, p'') := scanString p' ""
+            go p'' (Token.strLit s :: acc)
         | c   =>
           if isIdentChar c then
-            let (s,p'') := scanIdent n p' (String.singleton c)
-            go n p'' (Token.ident s::acc)
+            let (s,p'') := scanIdent p' (String.singleton c)
+            go p'' (Token.ident s::acc)
           else if c.isDigit then
-            let (s,p'') := scanDigits n p' (String.singleton c)
+            let (s,p'') := scanDigits p' (String.singleton c)
             let r : Nat := s.toNat! -- or: Option.elim s.toNat? 0 id
-            go n p'' (Token.natLit r :: acc)
+            go p'' (Token.natLit r :: acc)
           else if c.isWhitespace then
-            go n p' acc  -- skip
+            go p' acc  -- skip
           else
-            go n p' acc  -- unknown, skip or error
-  termination_by fuel
+            go p' acc  -- unknown, skip or error
+  termination_by p
 
 
-  scanString (fuel : Nat) (p : input.Pos) (acc : String) : (String × input.Pos) :=
-    match fuel with
-    | 0 => (acc,p)
-    | n+1 => 
+  scanString (p : input.Pos) (acc : String) : (String × input.Pos) :=
       if h : p = input.endPos then
         (acc, p)  -- unterminated string literal, return what we have
       else
@@ -71,50 +66,62 @@ where
         if c == '\x22' then
           (acc, p')  -- closing quote, done
         else
-          scanString n p' (acc.push c  )
+          scanString p' (acc.push c  )
 
 
-  scanIdent (fuel : Nat) (p : input.Pos) (acc : String) : (String × input.Pos) :=
-    match fuel with
-    | 0 => (acc,p)
-    | n+1 => 
+  scanIdent (p : input.Pos) (acc : String) : (String × input.Pos) :=
       if h : p = input.endPos then
         (acc, p)  
       else
         let c := p.get h
         let p' := p.next h
         if isIdentChar c then
-          scanIdent n p' (acc.push c)        
+          scanIdent p' (acc.push c)        
         else
           (acc, p)  -- return p, not p' since we don't consume c
 
-  scanDigits (fuel : Nat) (p : input.Pos) (acc : String) : (String × input.Pos) :=
-    match fuel with
-    | 0 => (acc,p)
-    | n+1 => 
-      if h : p = input.endPos then
-        (acc, p)  
+  scanDigits (p : input.Pos) (acc : String) : (String × { q : input.Pos // p ≤ q } ) :=
+    if h : p = input.endPos then
+      (acc, ⟨p , by simp⟩)  
+    else
+      let c := p.get h
+      let p' := p.next h
+      have : p ≤ p' := by exact String.Pos.le_next
+      if c.isDigit then
+        let (s,⟨ p'', h'' ⟩) := scanDigits p' (acc.push c)        
+        (s, ⟨ p'', by exact String.Pos.le_trans this h'' ⟩)
       else
-        let c := p.get h
-        let p' := p.next h
-        if c.isDigit then
-          scanIdent n p' (acc.push c)        
-        else
-          (acc, p)  -- return p, not p' since we don't consume c
+        (acc, ⟨p,by simp⟩)  -- return p, not p' since we don't consume c
+  termination_by p
 
-
-  skipToNewline (fuel : Nat) (p : input.Pos) : input.Pos :=
-    match fuel with
-    | 0 => p
-    | n + 1 =>
-      if h : p = input.endPos then
-        p
+  skipToNewline (p : input.Pos) : { q : input.Pos // p ≤ q } :=
+    if h : p = input.endPos then
+      ⟨p, by simp ⟩
+    else
+      let c := p.get h
+      let p' := p.next h
+      have : p ≤ p' := by exact String.Pos.le_next
+      if c == '\n' then
+        ⟨p', this ⟩
       else
-        let c := p.get h
-        let p' := p.next h
-        if c == '\n' then
-          p'
-        else
-          skipToNewline n p'
+        let ⟨ p'', h'' ⟩ := skipToNewline p'
+        ⟨ p'', by exact String.Pos.le_trans this h'' ⟩
+  termination_by p
     
 #eval tokenize "{foo = \"hello\", bar = [1,2], \"baz\"} -- foo bar baz\nack = \"baz\""
+
+
+def countSpaces (input : String) : Nat :=
+  go input.startPos 0
+where
+  go (p : input.Pos) (acc : Nat) : Nat :=
+    if h : p = input.endPos then
+      acc
+    else
+      let c := p.get h
+      let p' := p.next h
+      go p' (if c == ' ' then acc + 1 else acc)
+  termination_by p
+
+
+#eval countSpaces "asdf  asdf"
