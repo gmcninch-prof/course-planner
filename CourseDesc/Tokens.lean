@@ -35,20 +35,26 @@ where
             if p'.get h' == '-' then
               let ⟨p'',h⟩ := skipToNewline p' 
               have k : p < p'' := by 
-                simp                
+                exact String.Pos.next_le_iff_lt.mp h                
               go p'' acc
             else
               go p' acc  -- single dash, skip or error        
         | '\x22'  => -- double quote
-            let (s, p'') := scanString p' ""
+            let (s, ⟨p'',h''⟩) := scanString p' ""
+            have : p < p'' := by
+              exact String.Pos.next_le_iff_lt.mp h''
             go p'' (Token.strLit s :: acc)
         | c   =>
           if isIdentChar c then
-            let (s,p'') := scanIdent p' (String.singleton c)
+            let (s,⟨p'',h''⟩) := scanIdent p' (String.singleton c)
+            have : p < p'' := by
+              exact String.Pos.next_le_iff_lt.mp h''
             go p'' (Token.ident s::acc)
           else if c.isDigit then
-            let (s,p'') := scanDigits p' (String.singleton c)
-            let r : Nat := s.toNat! -- or: Option.elim s.toNat? 0 id
+            let (s,⟨p'',h''⟩) := scanDigits p' (String.singleton c)
+            let r : Nat := s.toNat! 
+            have : p < p'' := by
+              exact String.Pos.next_le_iff_lt.mp h''            
             go p'' (Token.natLit r :: acc)
           else if c.isWhitespace then
             go p' acc  -- skip
@@ -57,28 +63,33 @@ where
   termination_by p
 
 
-  scanString (p : input.Pos) (acc : String) : (String × input.Pos) :=
+  scanString (p : input.Pos) (acc : String) : (String × { q: input.Pos // p ≤ q} ) :=
       if h : p = input.endPos then
-        (acc, p)  -- unterminated string literal, return what we have
+        (acc, ⟨p,by simp⟩)  -- unterminated string literal, return what we have
       else
         let c := p.get h
         let p' := p.next h
+        have : p ≤ p' := by exact String.Pos.le_next
         if c == '\x22' then
-          (acc, p')  -- closing quote, done
+          (acc, ⟨p',by exact String.Pos.le_next⟩)  -- closing quote, done
         else
-          scanString p' (acc.push c  )
+          let ⟨p'',h''⟩ := scanString p' (acc.push c  )
+          ⟨ p'', by exact ⟨p', this⟩⟩
+  termination_by p
 
-
-  scanIdent (p : input.Pos) (acc : String) : (String × input.Pos) :=
+  scanIdent (p : input.Pos) (acc : String) : (String × { q: input.Pos // p ≤ q } ) :=
       if h : p = input.endPos then
-        (acc, p)  
+        (acc, ⟨p, by simp⟩)  
       else
         let c := p.get h
         let p' := p.next h
+        have : p ≤ p' := by exact String.Pos.le_next
         if isIdentChar c then
-          scanIdent p' (acc.push c)        
+          let (s,⟨p'',h''⟩) := scanIdent p' (acc.push c)        
+          (acc, ⟨p'', by exact String.Pos.le_trans this h'' ⟩)
         else
-          (acc, p)  -- return p, not p' since we don't consume c
+          (acc, ⟨p,by exact String.Pos.le_refl p⟩)  -- return p, not p' since we don't consume c
+  termination_by p
 
   scanDigits (p : input.Pos) (acc : String) : (String × { q : input.Pos // p ≤ q } ) :=
     if h : p = input.endPos then
@@ -91,7 +102,7 @@ where
         let (s,⟨ p'', h'' ⟩) := scanDigits p' (acc.push c)        
         (s, ⟨ p'', by exact String.Pos.le_trans this h'' ⟩)
       else
-        (acc, ⟨p,by simp⟩)  -- return p, not p' since we don't consume c
+        (acc, ⟨p,by exact String.Pos.le_refl p⟩)  -- return p, not p' since we don't consume c
   termination_by p
 
   skipToNewline (p : input.Pos) : { q : input.Pos // p ≤ q } :=
