@@ -86,6 +86,7 @@ mutual
     | [] => Except.error "nothing to parse"
     | tok :: rest => match tok with
       | Token.strLit s => Except.ok (s,rest)
+      | Token.ident s => Except.ok (s,rest)
       | _ => Except.error s!"wrong type: {reprStr tok} is not an string."
 
   def parseNat : Parser Nat :=
