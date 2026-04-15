@@ -36,7 +36,8 @@ mutual
     | Constructor : String -> List Field → Expression
 end
 
-def Parser (α : Type) := List Token → Except String (α × List Token)
+def Parser (α : Type) := (toks:List Token) 
+  → Except String (α × { rest:List Token // rest.length < toks.length })
 
 instance : Monad Parser where
   pure a := fun toks => Except.ok (a, toks)
