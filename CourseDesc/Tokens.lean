@@ -1,138 +1,92 @@
 
 inductive Token
-  | ident (s : String)   -- "courseAY", "EHoliday" etc
-  | strLit (s : String)  -- "AY2025-2026"
+  | ident (s : String)   
+  | strLit (s : String)  
   | natLit (n : Nat)
-  | lbrace | rbrace      -- { }
-  | lbracket | rbracket  -- [ ]
+  | lbrace | rbrace      
+  | lbracket | rbracket  
   | comma | colon | equals
   | eof
-deriving Repr
+  | comment (s : String)
+deriving Repr, BEq
 
-def isIdentChar (c : Char) : Bool := c.isAlpha || c == '_' 
+def Char.isIdentChar (c : Char) := c.isAlpha || c == '_'
+
+inductive CharAccum
+  | none
+  | string (cs : List Char)
+  | digits (cs : List Char)
+  | ident (cs : List Char)
+  | comment (cs : List Char)
+  
+structure Accum where
+  chars : CharAccum
+  tokens : List Token
+
+def start : Accum := { chars := CharAccum.none, tokens := [] }
 
 def tokenize (input : String) : List Token :=
-  go input.startPos []
+  let res := input.foldl go start
+  (flush res).reverse
 where
-  go (p : String.Pos input) (acc : List Token) : List Token :=
-      if h : p = input.endPos then
-        acc.reverse
+  processChar (c:Char) (tokens : List Token) : Accum := 
+    match c with
+    | '{' => Accum.mk CharAccum.none (Token.lbrace :: tokens)
+    | '}' => Accum.mk CharAccum.none (Token.rbrace :: tokens) 
+    | '[' => Accum.mk CharAccum.none (Token.lbracket :: tokens) 
+    | ']' => Accum.mk CharAccum.none (Token.rbracket :: tokens) 
+    | ',' => Accum.mk CharAccum.none (Token.comma :: tokens)  
+    | ':' => Accum.mk CharAccum.none (Token.colon :: tokens) 
+    | '=' => Accum.mk CharAccum.none (Token.equals :: tokens)
+    | ';' => Accum.mk (CharAccum.comment []) tokens -- start a comment
+    | '\x22' =>
+      Accum.mk (CharAccum.string []) tokens  -- start a string
+    | c => 
+      if c.isIdentChar then
+        Accum.mk (CharAccum.ident [c]) tokens  -- start an identifier
+      else if c.isDigit then
+        Accum.mk (CharAccum.digits [c]) tokens  -- start a digit sequence       
+      else if c.isWhitespace then
+        Accum.mk CharAccum.none tokens       -- skip
       else
-        let c  := p.get h
-        let p' := p.next h
-        match c with
-        | '{' => go p' (Token.lbrace :: acc)
-        | '}' => go p' (Token.rbrace :: acc)
-        | '[' => go p' (Token.lbracket :: acc)
-        | ']' => go p' (Token.rbracket :: acc)
-        | ',' => go p' (Token.comma :: acc)
-        | ':' => go p' (Token.colon :: acc)
-        | '=' => go p' (Token.equals :: acc)
-        | '-' =>
-          if h' : p' = input.endPos then
-            go p' acc  -- single dash at end of input, skip
-          else
-            if p'.get h' == '-' then
-              let ⟨p'',h⟩ := skipToNewline p' 
-              have k : p < p'' := by 
-                exact String.Pos.next_le_iff_lt.mp h                
-              go p'' acc
-            else
-              go p' acc  -- single dash, skip or error        
-        | '\x22'  => -- double quote
-            let (s, ⟨p'',h''⟩) := scanString p' ""
-            have : p < p'' := by
-              exact String.Pos.next_le_iff_lt.mp h''
-            go p'' (Token.strLit s :: acc)
-        | c   =>
-          if isIdentChar c then
-            let (s,⟨p'',h''⟩) := scanIdent p' (String.singleton c)
-            have : p < p'' := by
-              exact String.Pos.next_le_iff_lt.mp h''
-            go p'' (Token.ident s::acc)
-          else if c.isDigit then
-            let (s,⟨p'',h''⟩) := scanDigits p' (String.singleton c)
-            let r : Nat := s.toNat! 
-            have : p < p'' := by
-              exact String.Pos.next_le_iff_lt.mp h''            
-            go p'' (Token.natLit r :: acc)
-          else if c.isWhitespace then
-            go p' acc  -- skip
-          else
-            go p' acc  -- unknown, skip or error
-  termination_by p
-
-
-  scanString (p : input.Pos) (acc : String) : (String × { q: input.Pos // p ≤ q} ) :=
-      if h : p = input.endPos then
-        (acc, ⟨p,by simp⟩)  -- unterminated string literal, return what we have
+        Accum.mk CharAccum.none tokens      -- unknown; skip or error
+          
+  go (a : Accum) (c:Char) :=
+    match a.chars with
+    | CharAccum.string cs => 
+      match c with
+      | '\x22' =>
+        let s := String.ofList cs.reverse
+        Accum.mk CharAccum.none (Token.strLit s::a.tokens)
+      | c =>
+        Accum.mk (CharAccum.string (c :: cs)) a.tokens  -- continue getting string literal
+    | CharAccum.ident cs =>
+      if c.isIdentChar then
+        Accum.mk (CharAccum.ident (c :: cs)) a.tokens -- continue getting identifier
       else
-        let c := p.get h
-        let p' := p.next h
-        have : p ≤ p' := by exact String.Pos.le_next
-        if c == '\x22' then
-          (acc, ⟨p',by exact String.Pos.le_next⟩)  -- closing quote, done
-        else
-          let ⟨p'',h''⟩ := scanString p' (acc.push c  )
-          ⟨ p'', by exact ⟨p', this⟩⟩
-  termination_by p
-
-  scanIdent (p : input.Pos) (acc : String) : (String × { q: input.Pos // p ≤ q } ) :=
-      if h : p = input.endPos then
-        (acc, ⟨p, by simp⟩)  
-      else
-        let c := p.get h
-        let p' := p.next h
-        have : p ≤ p' := by exact String.Pos.le_next
-        if isIdentChar c then
-          let (s,⟨p'',h''⟩) := scanIdent p' (acc.push c)        
-          (acc, ⟨p'', by exact String.Pos.le_trans this h'' ⟩)
-        else
-          (acc, ⟨p,by exact String.Pos.le_refl p⟩)  -- return p, not p' since we don't consume c
-  termination_by p
-
-  scanDigits (p : input.Pos) (acc : String) : (String × { q : input.Pos // p ≤ q } ) :=
-    if h : p = input.endPos then
-      (acc, ⟨p , by simp⟩)  
-    else
-      let c := p.get h
-      let p' := p.next h
-      have : p ≤ p' := by exact String.Pos.le_next
+        let s := String.ofList cs.reverse
+        processChar c <| Token.ident s :: a.tokens
+    | CharAccum.digits cs =>
       if c.isDigit then
-        let (s,⟨ p'', h'' ⟩) := scanDigits p' (acc.push c)        
-        (s, ⟨ p'', by exact String.Pos.le_trans this h'' ⟩)
+        Accum.mk (CharAccum.digits (c :: cs)) a.tokens -- continue getting digits
       else
-        (acc, ⟨p,by exact String.Pos.le_refl p⟩)  -- return p, not p' since we don't consume c
-  termination_by p
+        let n := (String.ofList cs.reverse).toNat!
+        processChar c <| Token.natLit n :: a.tokens
+    | CharAccum.comment cs =>
+      match c with
+      | '\n' => 
+        let s := (String.ofList cs.reverse).trimAscii.toString
+        Accum.mk CharAccum.none (Token.comment s :: a.tokens)
+      | _ =>
+        Accum.mk (CharAccum.comment (c:: cs)) a.tokens  -- continue getting comment
+    | CharAccum.none => 
+      processChar c a.tokens
 
-  skipToNewline (p : input.Pos) : { q : input.Pos // p ≤ q } :=
-    if h : p = input.endPos then
-      ⟨p, by simp ⟩
-    else
-      let c := p.get h
-      let p' := p.next h
-      have : p ≤ p' := by exact String.Pos.le_next
-      if c == '\n' then
-        ⟨p', this ⟩
-      else
-        let ⟨ p'', h'' ⟩ := skipToNewline p'
-        ⟨ p'', by exact String.Pos.le_trans this h'' ⟩
-  termination_by p
-    
-#eval tokenize "{foo = \"hello\", bar = [1,2], \"baz\"} -- foo bar baz\nack = \"baz\""
+  flush (a : Accum) : List Token :=
+    match a.chars with 
+    | CharAccum.ident cs => (Token.ident (String.ofList cs.reverse)) :: a.tokens
+    | CharAccum.digits cs => (Token.natLit (String.ofList cs.reverse).toNat!) :: a.tokens
+    | _ => a.tokens
 
+#eval tokenize "{foo = \"hello\", bar = [113,12356], \"baz\"} ; no dice \nack = \"baz\" 123"
 
-def countSpaces (input : String) : Nat :=
-  go input.startPos 0
-where
-  go (p : input.Pos) (acc : Nat) : Nat :=
-    if h : p = input.endPos then
-      acc
-    else
-      let c := p.get h
-      let p' := p.next h
-      go p' (if c == ' ' then acc + 1 else acc)
-  termination_by p
-
-
-#eval countSpaces "asdf  asdf"

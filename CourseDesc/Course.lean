@@ -1,6 +1,23 @@
 
 namespace Semester
 
+inductive Term where
+  | Fall | Spring
+  deriving Repr 
+  
+structure Semester where
+  term : Term
+  ay : Nat
+
+instance : Repr Semester where
+  reprPrec s _ := 
+  let term := match s.term with
+    | Term.Fall => "Fall"
+    | Term.Spring => "Spring"
+  s!"AY{reprStr s.ay}-{reprStr (s.ay + 1)}--{term}"
+
+#eval (Semester.mk Term.Fall 2025)
+
 -- Basic types
 inductive DOW where
   | Mon | Tue | Wed | Thu | Fri | Sat | Sun
@@ -105,8 +122,8 @@ structure TargetSpec where
   deriving Repr
 
 structure Course where
-  courseAY : String
-  courseSem : String
+  ay : String
+  semester : String
   title : String
   sections : List String
   chair : String

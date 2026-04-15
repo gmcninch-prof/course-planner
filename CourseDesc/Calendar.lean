@@ -2,39 +2,41 @@ import CourseDesc.Course
 
 open Semester
 
+
+
 inductive SemStatus where
   | InTerm | InFinals
   deriving Repr, BEq
 
 inductive DayProperty where
-  | PEvent    : (time : EventTime) 
-              → (loc : String) 
-              → (eventType : String)
-              → (description : String) 
-              → (details : List String)
-              → (sequence : Option Nat) 
-              → (courseName : Option String)
-              → DayProperty
-  | PDeadline : (deadline : String) 
-              → (dlType : String) 
-              → (description : String)
-              → (details : List String) 
-              → (sequence : Option Nat)
-              → DayProperty
-  | PNoClass  : (description : String) 
-              → DayProperty
-  | PAdmin    : (adminType : String) 
-              → (description : String)
-              → DayProperty
-  | PMeeting  : (description : String) 
-              → (time : EventTime)
-              → (location : String) 
-              → (courseName : Option String)
-              → DayProperty
-  | PTask     : (taskDescription : String) 
-              → (taskStaff : String)
-              → (courseName : Option String)
-              → DayProperty
+  | Event    : (time : EventTime) 
+             → (loc : String) 
+             → (eventType : String)
+             → (description : String) 
+             → (details : List String)
+             → (sequence : Option Nat) 
+             → (courseName : Option String)
+             → DayProperty
+  | Deadline : (deadline : String) 
+             → (dlType : String) 
+             → (description : String)
+             → (details : List String) 
+             → (sequence : Option Nat)
+             → DayProperty
+  | NoClass  : (description : String) 
+             → DayProperty
+  | Admin    : (adminType : String) 
+             → (description : String)
+             → DayProperty
+  | Meeting  : (description : String) 
+             → (time : EventTime)
+             → (location : String) 
+             → (courseName : Option String)
+             → DayProperty
+  | Task     : (taskDescription : String) 
+             → (taskStaff : String)
+             → (courseName : Option String)
+             → DayProperty
   deriving Repr
 
 structure CalDay where
