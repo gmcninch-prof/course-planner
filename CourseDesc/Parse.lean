@@ -13,7 +13,6 @@ list      ::= '[' (expr (',' expr)*)? ']'
 constructor ::= ident record
 -/
 
-
 inductive Symbol where
   | LBracket | RBracket | LBrace | RBrace | Comma |Eq
 
@@ -29,16 +28,12 @@ mutual
   inductive Field where 
     | Field : String → Expression → Field
   
-  inductive Record  where
-    | Rec : List Field → Record
-  
   inductive Expression where
-    | ERecord : Record  → Expression
-    | EList : (exps : List Expression) -> Expression
-    | EStrLit : (a:String) -> Expression
-    | ENatLit : (n:Nat) -> Expression
-    | EId : (id:String) -> Expression
-    | EConstructor : (id:String) -> (rec:Record) → Expression
+    | List : List Expression -> Expression
+    | StrLit : String -> Expression
+    | NatLit : Nat -> Expression
+    | Id : String -> Expression
+    | Constructor : String -> List Field → Expression
 end
 
 def Parser (α : Type) := List Token → Except String (α × List Token)
@@ -58,7 +53,7 @@ instance : MonadExcept String Parser where
 
 -- class Alternative (f : Type → Type) extends Applicative f where
 --   failure : f α
---   orElse : f α → f α → f α
+--   orElse : f α → (Unit → f α) → f α
 
 instance : Alternative Parser where
   failure := fun _ => Except.error "failure"
@@ -103,31 +98,49 @@ mutual
     let expr ← parseExpression
     pure (Field.Field id expr)
   
-  def parseRecord : Parser Record := sorry
-
-  def parseList : Parser (List Expression) :=
-    fun toks => parseListItems toks []
+  def parseFields : Parser (List Field) :=
+    fun toks => pfields toks []
   where
-    parseListItems (toks : List Token) (acc : List Expression) 
+    pfields (toks :List Token) (acc : List Field) 
+      : Except String (List Field × List Token) :=
+    match toks with
+    | Token.rbrace :: rest => Except.ok (acc.reverse, rest)
+    | Token.comma :: rest => pfields rest acc
+    | _ => do
+      let (expr,toks') ← parseField toks
+      pfields toks' (expr :: acc)
+    
+  def parseExpressions : Parser (List Expression) :=
+    fun toks => pexprs toks []
+  where
+    pexprs (toks : List Token) (acc : List Expression) 
         : Except String (List Expression × List Token) :=
       match toks with
       | Token.rbracket :: rest => Except.ok (acc.reverse, rest)
-      | Token.comma :: rest => parseListItems rest acc
+      | Token.comma :: rest => pexprs rest acc
       | _ => do
         let (expr, toks') ← parseExpression toks
-        parseListItems toks' (expr :: acc)
-    termination_by toks.length
-  
+        pexprs toks' (expr :: acc)  
 
   def parseExpression : Parser Expression 
   | [] => Except.error "nothing to parse"
-  | tok :: rest => match tok with
-    | Token.lbrace => do
-      let (rec,toks') ← parseRecord rest 
-      pure (Expression.ERecord rec,toks')
-    | Token.lbracket => do
-      let (ll,toks') ← parseList rest
-      pure (Expression.EList ll, toks')
+  | tok :: rest  => match tok with
+      | Token.strLit s => Except.ok (Expression.StrLit s, rest)
+      | Token.natLit n => Except.ok (Expression.NatLit n, rest)
+      | Token.lbracket => do
+        let (exprs,toks') ← parseExpressions rest
+        pure (Expression.List exprs,toks')
+      | Token.ident id => 
+        match rest with
+        | [] => Except.ok (Expression.Id id, [])
+        | tok' :: rest' => 
+          match tok' with
+          | Token.lbrace => do
+            let (fields,toks'') ← parseFields rest'
+            pure (Expression.Constructor id fields,toks'')
+          | _ => Except.ok (Expression.Id id, rest)
+      | _ => 
+        Except.error "mal-formed"
 
 
 end
