@@ -3,6 +3,8 @@
 import CourseDesc.Course
 import CourseDesc.Tokens
 
+import CourseDesc.Expression
+
 /- BNF
 file      ::= binding*
 binding   ::= ident '=' expr
@@ -25,49 +27,37 @@ def symbolToken : Symbol -> Token
   | .Comma => Token.comma
   | .Eq => Token.equals
 
-mutual
-  inductive Field where 
-    | Field : String → Expression → Field
-  
-  inductive Expression where
-    | List : List Expression -> Expression
-    | StrLit : String -> Expression
-    | NatLit : Nat -> Expression
-    | Id : String -> Expression
-    | Constructor : String -> List Field → Expression
-  deriving Repr
-end
 
+  
+  
 def Parser (α : Type) := 
-  (fuel : Nat) 
-  → (toks : List Token) 
-  → Except String (α × List Token)
+  (toks : List Token) → Except String (α × List Token)
 
 def noFuel : String := "parser error: input too deeply nested" 
 
 instance : Monad Parser where
-  pure a := fun _ toks => Except.ok (a, toks)
-  bind p f := fun fuel toks => do
-    let (a, toks') ← p fuel toks
-    f a fuel toks'
+  pure a := fun toks => Except.ok (a, toks)
+  bind p f := fun toks => do
+    let (a, toks') ← p toks
+    f a toks'
 
 instance : MonadExcept String Parser where
-  throw e := fun _ _ => Except.error e
-  tryCatch p f := fun n toks =>
-    match p n toks with
-    | Except.error e => f e n toks
+  throw e := fun _ => Except.error e
+  tryCatch p f := fun toks =>
+    match p toks with
+    | Except.error e => f e toks
     | ok => ok
 
 instance : Alternative Parser where
-  failure := fun _ _ => Except.error "failure"
-  orElse p q := fun fuel toks =>
-    match p fuel toks with
-    | Except.error _ => q () fuel toks
+  failure := fun _ => Except.error "failure"
+  orElse p q := fun toks =>
+    match p toks with
+    | Except.error _ => q () toks
     | ok => ok  
   
 def parseSymbol (sym:Symbol) : Parser Symbol :=
   let stok := symbolToken sym 
-  fun _ toks =>
+  fun toks =>
     match toks with
     | [] => Except.error "nothing to parse"
     | tok :: rest => 
@@ -77,7 +67,7 @@ def parseSymbol (sym:Symbol) : Parser Symbol :=
         Except.error s!"Expected {reprStr stok} but got {reprStr tok}"
 
 def parseString : Parser String :=
-  fun _ toks =>
+  fun toks =>
   match toks with
   | [] => Except.error "nothing to parse"
   | tok :: rest => match tok with
@@ -86,7 +76,7 @@ def parseString : Parser String :=
     | _ => Except.error s!"wrong type: {reprStr tok} is not an string."
 
 def parseNat : Parser Nat :=
-  fun _ toks =>
+  fun toks =>
   match toks with
   | [] => Except.error "nothing to parse"
   | tok :: rest => match tok with
@@ -94,45 +84,53 @@ def parseNat : Parser Nat :=
     | _ => Except.error s!"wrong type: {reprStr tok} is not a Nat."
 
 
+def parseBool : Parser Bool :=
+  fun toks =>
+  match toks with
+  | [] => Except.error "nothing to parse"
+  | tok :: rest => match tok with
+    | Token.boolLit b => Except.ok (b,rest)
+    | _ => Except.error s!"wrong type: {reprStr tok} is not a Bool."
+
 --------------------------------------------------------------------------------
 mutual
   
-def parseField : Parser Field := fun fuel toks =>
+def parseField (fuel : Nat): Parser Field := fun toks =>
   match fuel with
   | 0 => .error noFuel
   | n+1 => do
-    let (id, toks') ← parseString n toks
-    let (_, toks'') ← parseSymbol Symbol.Eq n toks'
+    let (id, toks') ← parseString toks
+    let (_, toks'') ← parseSymbol .Eq toks'
     let (expr, toks''') ← parseExpression n toks''
-    pure (Field.Field id expr, toks''')
+    pure (Field.mk id expr, toks''')
   
-def parseFields (acc : List Field) 
-    : Parser (List Field) := fun fuel toks =>
+def parseFields (fuel : Nat) (acc : List Field) 
+    : Parser (List Field) := fun toks =>
   match fuel with
   | 0 => .error noFuel
   | n+1 =>
     match toks with
     | [] => .ok (acc.reverse, [])
     | Token.rbrace :: rest => Except.ok (acc.reverse, rest)
-    | Token.comma :: rest => parseFields acc n rest
+    | Token.comma :: rest => parseFields n acc rest
     | _ => do
       let (f,toks') ← parseField n toks
-      parseFields (f :: acc) n  toks' 
+      parseFields n (f :: acc) toks' 
     
-def parseExpressionList (acc : List Expression) 
-    : Parser (List Expression) := fun fuel toks => 
+def parseExpressionList (fuel : Nat) (acc : List Expression) 
+    : Parser (List Expression) := fun toks => 
   match fuel with 
   | 0 => .error noFuel
   | n+1 => 
     match toks with
       | [] => .ok (acc.reverse, [])
       | Token.rbracket :: rest => Except.ok (acc.reverse, rest)
-      | Token.comma :: rest => parseExpressionList acc n rest
+      | Token.comma :: rest => parseExpressionList n acc rest
       | _ => do
         let (expr, toks') ← parseExpression n toks
-        parseExpressionList (expr :: acc) n toks'
+        parseExpressionList n (expr :: acc) toks'
 
-def parseExpression : Parser Expression := fun fuel toks =>
+def parseExpression (fuel : Nat) : Parser Expression := fun toks =>
   match fuel with
   | 0 => .error noFuel
   | n+1 => 
@@ -142,15 +140,15 @@ def parseExpression : Parser Expression := fun fuel toks =>
       | Token.strLit s => Except.ok (Expression.StrLit s, rest)
       | Token.natLit n => Except.ok (Expression.NatLit n, rest)
       | Token.lbracket => do
-        let (exprs,toks') ← parseExpressionList [] n rest
-        pure (Expression.List exprs,toks')
+        let (exprs,toks') ← parseExpressionList n [] rest
+        pure (Expression.EList exprs,toks')
       | Token.ident id => 
         match rest with
         | [] => Except.ok (Expression.Id id, [])
         | tok' :: rest' => 
           match tok' with
           | Token.lbrace => do
-            let (fields,toks'') ← parseFields [] n rest'
+            let (fields,toks'') ← parseFields n [] rest'
             pure (Expression.Constructor id fields,toks'')
           | _ => Except.ok (Expression.Id id, rest)
       | _ => 
@@ -177,6 +175,11 @@ def ex : List Token := [
 , .ident "GEorge"
 ]
 
-#eval parseExpressions [] ex.length ex
+def res := parseExpressionList ex.length [] ex 
 
-    
+def s := match res with
+ | .error s => s
+ | .ok s => String.intercalate "; " <| Expression.render <$> (s.fst) 
+
+#eval s
+ 

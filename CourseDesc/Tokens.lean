@@ -3,6 +3,7 @@ inductive Token
   | ident (s : String)   
   | strLit (s : String)  
   | natLit (n : Nat)
+  | boolLit (b : Bool)
   | lbrace | rbrace      
   | lbracket | rbracket  
   | comma | colon | equals
@@ -50,6 +51,12 @@ where
         Accum.mk CharAccum.none tokens       -- skip
       else
         Accum.mk CharAccum.none tokens      -- unknown; skip or error
+
+  flushIdent (cs : List Char) (tokens : List Token) : List Token :=
+    match String.ofList cs.reverse with
+    | "True" => Token.boolLit true :: tokens
+    | "False" => Token.boolLit false :: tokens
+    | s => Token.ident s :: tokens          
           
   go (a : Accum) (c:Char) :=
     match a.chars with
@@ -64,8 +71,7 @@ where
       if c.isIdentChar then
         Accum.mk (CharAccum.ident (c :: cs)) a.tokens -- continue getting identifier
       else
-        let s := String.ofList cs.reverse
-        processChar c <| Token.ident s :: a.tokens
+        processChar c <| flushIdent cs a.tokens
     | CharAccum.digits cs =>
       if c.isDigit then
         Accum.mk (CharAccum.digits (c :: cs)) a.tokens -- continue getting digits
@@ -84,9 +90,10 @@ where
 
   flush (a : Accum) : List Token :=
     match a.chars with 
-    | CharAccum.ident cs => (Token.ident (String.ofList cs.reverse)) :: a.tokens
+    | CharAccum.ident cs => flushIdent cs a.tokens 
     | CharAccum.digits cs => (Token.natLit (String.ofList cs.reverse).toNat!) :: a.tokens
     | _ => a.tokens
 
-#eval tokenize "{foo = \"hello\", bar = [113,12356], \"baz\"} ; no dice \nack = \"baz\" 123"
+
+#eval tokenize "{foo = \"hello\", bar = [113,12356], ack = False}"
 
