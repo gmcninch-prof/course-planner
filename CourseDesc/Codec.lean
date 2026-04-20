@@ -1,11 +1,21 @@
+--
+-- Time-stamp: <2026-04-20 Mon 15:11 EDT - george@valhalla>
+--
 
 import CourseDesc.Expression
+open Expression 
 
-
+--------------------------------------------------------------------------------
 namespace Codec
 
 class Decode (α : Type) where
   decode : Expression → Except String α
+
+instance : Alternative (Except String) where
+  failure := Except.error "no alternative matched"
+  orElse a b := match a with
+    | Except.ok x  => Except.ok x
+    | Except.error _ => b ()
 
 def decodeField [Decode α] (name : String) (fs : List Field) : Except String α :=
   lookupField name fs >>= Decode.decode
@@ -32,25 +42,5 @@ instance : Decode Bool where
     | e => .error s!"expected raw Nat, got {repr e}"
 
 
-
-
--- instance : Decode CalDay where
---   decode 
---     | .Constructor "CalDay" fs => do
---       let caldate    ← decodeField "caldate" fs
---       let tuftsDOW   ← decodeField "tuftsDOW" fs
---       let univOpen   ← decodeField "univOpen" fs
---       let status     ← decodeField "SemStatus" fs
---       let properties ← decodeField "properties" fs
---       let week       ← decodeField "week" fs
---       sorry
---       pure { caldate
---            , tuftsDOW
---            , univOpen
---            , status
---            , properties
---            , week
---            }
---     | e => .error s!"expected CalDay, got {repr e}"
-
 end Codec
+--------------------------------------------------------------------------------

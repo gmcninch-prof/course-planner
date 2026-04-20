@@ -1,3 +1,7 @@
+--
+-- Time-stamp: <2026-04-20 Mon 15:12 EDT - george@valhalla>
+--
+
 
 --------------------------------------------------------------------------------
 mutual
@@ -103,4 +107,5 @@ def lookupField (name : String) (fields : List Field) : Except String Expression
   match fields.find? (fun f => f.name == name) with
   | some (.mk _ expr) => .ok expr
   | none => .error s!"missing field: {name}"
+
 

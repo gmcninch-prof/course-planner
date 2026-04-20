@@ -1,8 +1,8 @@
-
-
+--
+-- Time-stamp: <2026-04-20 Mon 15:06 EDT - george@valhalla>
+--
 import CourseDesc.Course
 import CourseDesc.Tokens
-
 import CourseDesc.Expression
 
 /- BNF
@@ -156,27 +156,4 @@ end
 --------------------------------------------------------------------------------
 
 
-
-
-def ex : List Token := [
-  .ident "foo"
-, .lbrace 
-, .ident "a"
-, .equals
-, .natLit 1
-, .ident "b"
-, .equals
-, .natLit 2
-, .rbrace
-, .comma
-, .ident "GEorge"
-]
-
-def res := parseExpressionList ex.length [] ex 
-
-def s := match res with
- | .error s => s
- | .ok s => String.intercalate "; " <| Expression.render <$> (s.fst) 
-
-#eval s
  

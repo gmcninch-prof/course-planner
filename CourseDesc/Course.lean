@@ -1,96 +1,12 @@
+--
+-- Time-stamp: <2026-04-20 Mon 15:13 EDT - george@valhalla>
+--
+
 import CourseDesc.Codec
-
-namespace Semester
-
-inductive Term where
-  | Fall | Spring
-  deriving Repr 
-
-instance : Codec.Decode Term where
-  decode
-    | .Id "Fall"   => .ok .Fall
-    | .Id "Spring" => .ok .Spring
-    | e            => .error s!"Expected Term, got {repr e}"
-  
-structure Semester where
-  term : Term
-  ay : Nat
-
-instance : Codec.Decode Semester where
-  decode 
-    | .Constructor "semester" fs => do
-      let term     ← Codec.decodeField "semester" fs
-      let ay       ← Codec.decodeField "ay" fs
-      pure { term, ay }
-    | e => .error s!"Expected semester, got {repr e}"
-
-instance : Repr Semester where
-  reprPrec s _ := 
-  let term := match s.term with
-    | Term.Fall => "Fall"
-    | Term.Spring => "Spring"
-  s!"AY{reprStr s.ay}-{reprStr (s.ay + 1)}--{term}"
-
-#eval (Semester.mk Term.Fall 2025)
-
--- Basic types
-inductive DOW where
-  | Mon | Tue | Wed | Thu | Fri | Sat | Sun
-  deriving Repr
-
-instance : Codec.Decode Semester.DOW where
-  decode
-    | .Id "Mon" => .ok .Mon
-    | .Id "Tue" => .ok .Tue
-    | .Id "Wed" => .ok .Wed
-    | .Id "Thu" => .ok .Thu
-    | .Id "Fri" => .ok .Fri
-    | .Id "Sat" => .ok .Sat
-    | .Id "Sun" => .ok .Sun
-    | e => .error s!"expected DOW, got {repr e}"
-
-structure EventTime where
-  start : String
-  stop : String
-  deriving Repr
-
-instance : Codec.Decode EventTime where
-  decode
-    | .Constructor "EventTime" fs => do
-      let start   ← Codec.decodeField "start" fs
-      let stop    ← Codec.decodeField "stop" fs
-      pure {start, stop}
-    | e => .error s!"Expected EventTime, got {repr e}"
-
--- Semester types
-inductive ExceptDate where
-  | Date (d : String)
-  | Daterange (start : String) (stop : String)
-  deriving Repr
-
-inductive Exception where
-  | EHoliday (descr : String) (date : ExceptDate)
-  | EAdmin (adminType : String) (adminDescription : String) (date : ExceptDate)
-  | EAltDow (descr : String) (date : ExceptDate) (dow : DOW)
-  | ENoClass (descr : String) (date : ExceptDate)
-  deriving Repr
-
-structure SemSpec where
-  ay : String
-  semId : String
-  semesterDescr : String
-  semStart : String
-  semEnd : String
-  finalsStart : String
-  finalsEnd : String
-  readingPeriodStart : String
-  readingPeriodEnd : String
-  exceptions : List Exception
-  deriving Repr
-
-end Semester
+import CourseDesc.Semester
 
 namespace Course
+
 open Semester
 
 -- Course types

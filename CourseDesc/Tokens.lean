@@ -1,3 +1,6 @@
+-- 
+-- Time-stamp: <2026-04-20 Mon 16:05 EDT - george@valhalla>
+--
 
 inductive Token
   | ident (s : String)   
@@ -20,6 +23,10 @@ inductive CharAccum
   | ident (cs : List Char)
   | comment (cs : List Char)
   
+def notComment : Token → Bool
+  | .comment _ => False
+  | _ => True
+  
 structure Accum where
   chars : CharAccum
   tokens : List Token
@@ -28,7 +35,7 @@ def start : Accum := { chars := CharAccum.none, tokens := [] }
 
 def tokenize (input : String) : List Token :=
   let res := input.foldl go start
-  (flush res).reverse
+  List.filter notComment (flush res).reverse
 where
   processChar (c:Char) (tokens : List Token) : Accum := 
     match c with
@@ -94,6 +101,4 @@ where
     | CharAccum.digits cs => (Token.natLit (String.ofList cs.reverse).toNat!) :: a.tokens
     | _ => a.tokens
 
-
-#eval tokenize "{foo = \"hello\", bar = [113,12356], ack = False}"
 

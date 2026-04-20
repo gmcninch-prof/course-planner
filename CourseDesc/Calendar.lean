@@ -1,21 +1,14 @@
+--
+-- Time-stamp: <2026-04-20 Mon 15:12 EDT - george@valhalla>
+--
+
 import CourseDesc.Course
-import CourseDesc.Codec
 
 open Semester
 
-open Code
-
-
-inductive SemStatus where
+inductive DayStatus where
   | InTerm | InFinals
   deriving Repr, BEq
-
-instance : xDecode SemStatus where
-  decode
-    | .Id "InTerm" => .ok .InTerm
-    | .Id "InFinals" => .ok .InFinals
-    | e => .error s!"expected SemStatus, got {repr e}"
-
 
 inductive DayProperty where
   | Event    : (time : EventTime) 
@@ -52,7 +45,7 @@ structure CalDay where
   caldate : String   -- or a proper Date type if you have one
   tuftsDOW : DOW
   univOpen : Bool
-  status : SemStatus
+  status : DayStatus
   properties : List DayProperty
   week : Nat
   deriving Repr
