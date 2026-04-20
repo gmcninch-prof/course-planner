@@ -1,12 +1,21 @@
 import CourseDesc.Course
+import CourseDesc.Codec
 
 open Semester
 
+open Code
 
 
 inductive SemStatus where
   | InTerm | InFinals
   deriving Repr, BEq
+
+instance : xDecode SemStatus where
+  decode
+    | .Id "InTerm" => .ok .InTerm
+    | .Id "InFinals" => .ok .InFinals
+    | e => .error s!"expected SemStatus, got {repr e}"
+
 
 inductive DayProperty where
   | Event    : (time : EventTime) 
@@ -47,3 +56,4 @@ structure CalDay where
   properties : List DayProperty
   week : Nat
   deriving Repr
+

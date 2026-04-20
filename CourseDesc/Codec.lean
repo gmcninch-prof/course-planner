@@ -1,7 +1,8 @@
-import CourseDesc.Course
-import CourseDesc.Calendar
 
 import CourseDesc.Expression
+
+
+namespace Codec
 
 class Decode (α : Type) where
   decode : Expression → Except String α
@@ -30,42 +31,26 @@ instance : Decode Bool where
     | .BoolLit b => .ok b
     | e => .error s!"expected raw Nat, got {repr e}"
 
-instance : Decode Semester.DOW where
-  decode
-    | .Id "Mon" => .ok .Mon
-    | .Id "Tue" => .ok .Tue
-    | .Id "Wed" => .ok .Wed
-    | .Id "Thu" => .ok .Thu
-    | .Id "Fri" => .ok .Fri
-    | .Id "Sat" => .ok .Sat
-    | .Id "Sun" => .ok .Sun
-    | e => .error s!"expected DOW, got {repr e}"
 
-instance : Decode SemStatus where
-  decode
-    | .Id "InTerm" => .ok .InTerm
-    | .Id "InFinals" => .ok .InFinals
-    | e => .error s!"expected SemStatus, got {repr e}"
 
-instance : Decode DayProperty where
-  decode :=
-    sorry
 
-instance : Decode CalDay where
-  decode 
-    | .Constructor "CalDay" fs => do
-      let caldate    ← decodeField "caldate" fs
-      let tuftsDOW   ← decodeField "tuftsDOW" fs
-      let univOpen   ← decodeField "univOpen" fs
-      let status     ← decodeField "SemStatus" fs
-      let properties ← decodeField "properties" fs
-      let week       ← decodeField "week" fs
-      sorry
-      pure { caldate
-           , tuftsDOW
-           , univOpen
-           , status
-           , properties
-           , week
-           }
-    | e => .error s!"expected CalDay, got {repr e}"
+-- instance : Decode CalDay where
+--   decode 
+--     | .Constructor "CalDay" fs => do
+--       let caldate    ← decodeField "caldate" fs
+--       let tuftsDOW   ← decodeField "tuftsDOW" fs
+--       let univOpen   ← decodeField "univOpen" fs
+--       let status     ← decodeField "SemStatus" fs
+--       let properties ← decodeField "properties" fs
+--       let week       ← decodeField "week" fs
+--       sorry
+--       pure { caldate
+--            , tuftsDOW
+--            , univOpen
+--            , status
+--            , properties
+--            , week
+--            }
+--     | e => .error s!"expected CalDay, got {repr e}"
+
+end Codec

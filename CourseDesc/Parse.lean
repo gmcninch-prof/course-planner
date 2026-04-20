@@ -26,9 +26,6 @@ def symbolToken : Symbol -> Token
   | .RBrace => Token.rbrace
   | .Comma => Token.comma
   | .Eq => Token.equals
-
-
-  
   
 def Parser (α : Type) := 
   (toks : List Token) → Except String (α × List Token)
