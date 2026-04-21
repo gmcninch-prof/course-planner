@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-20 Mon 15:13 EDT - george@valhalla>
+-- Time-stamp: <2026-04-20 Mon 22:39 EDT - george@valhalla>
 --
 
 import CourseDesc.Codec
@@ -10,6 +10,7 @@ namespace Course
 open Semester
 
 -- Course types
+
 inductive ScheduleDetails where
   | DowTufts (dow : DOW) (time : EventTime) (location : String)
   | DowActual (dow : DOW) (time : EventTime) (location : String)
@@ -17,6 +18,34 @@ inductive ScheduleDetails where
   | Date (date : String) (time : EventTime) (location : String)
   | DateDue (date : String) (deadline : String)
   deriving Repr
+
+instance : Codec.Decode ScheduleDetails where
+  decode 
+    | .Constructor "DowTufts" fs => do
+        let dow ← Codec.decodeField "dow" fs 
+        let time ← Codec.decodeField "time" fs
+        let location ← Codec.decodeField "location" fs
+        pure <| .DowTufts dow time location
+    | .Constructor "DowActual" fs => do
+        let dow ← Codec.decodeField "dow" fs 
+        let time ← Codec.decodeField "time" fs
+        let location ← Codec.decodeField "location" fs
+        pure <| .DowActual dow time location
+    | .Constructor "DowDue" fs => do
+        let dow ← Codec.decodeField "dow" fs 
+        let deadline ← Codec.decodeField "deadline" fs
+        pure <| .DowDue dow deadline
+    | .Constructor "Date" fs => do
+        let date ← Codec.decodeField "date" fs 
+        let time ← Codec.decodeField "time" fs
+        let deadline ← Codec.decodeField "deadline" fs
+        pure <| .Date date time deadline
+    | .Constructor "DateDue" fs => do
+        let date ← Codec.decodeField "date" fs 
+        let deadline ← Codec.decodeField "deadline" fs
+        pure <| .DateDue date deadline        
+    | e => .error s!"Expected SchedulesDetails; got {e}"
+           
 
 inductive CourseComponent where
   | Lecture    : (sched : List ScheduleDetails) 
@@ -37,11 +66,37 @@ inductive CourseComponent where
                → CourseComponent
   deriving Repr
 
+instance : Codec.Decode CourseComponent where
+  decode
+    | .Constructor "Lecture" fs => do
+       let sched ← Codec.decodeField "sched" fs
+       let description ← Codec.decodeField "description" fs
+       let topics ← Codec.decodeField "topics" fs
+       pure <| .Lecture sched description topics
+    | .Constructor "Recitation" fs => do
+       let sched ← Codec.decodeField "sched" fs
+       let description ← Codec.decodeField "description" fs
+       let instructor ← Codec.decodeField "instructor" fs
+       let topics ← Codec.decodeField "topics" fs
+       pure <| .Recitation sched description instructor topics
+    | .Constructor "Assignment" fs => do
+       let sched ← Codec.decodeField "sched" fs
+       let description ← Codec.decodeField "description" fs
+       let assignments ← Codec.decodeField "assignments" fs
+       pure <| .Lecture sched description assignments
+    | .Constructor "Exam" fs => do
+       let sched ← Codec.decodeField "sched" fs
+       let description ← Codec.decodeField "description" fs
+       pure <| .Exam sched description 
+    | e => .error s!"Expected CourseComponent; got {e}"
+
+
 def CourseComponent.sched : CourseComponent → List ScheduleDetails
   | .Lecture sched _ _ => sched
   | .Recitation sched _ _ _ => sched
   | .Assignment sched _ _ => sched
   | .Exam sched _ => sched
+
 
 def CourseComponent.description : CourseComponent → String
   | .Lecture _ description _ => description
@@ -54,6 +109,26 @@ inductive Task where
   | Single (description : String) (deadline : String) (taskStaff : String)
   | Meeting (description : String) (time : EventTime) (location : String) (dow : DOW)
   deriving Repr
+
+instance : Codec.Decode Task where
+  decode
+    | .Constructor "Repeating" fs => do
+       let description ← Codec.decodeField "description" fs
+       let dow ← Codec.decodeField "dow" fs
+       let taskStaffList ← Codec.decodeField "taskStaffList" fs
+       pure <| .Repeating description dow taskStaffList
+    | .Constructor "Single" fs => do
+       let description ← Codec.decodeField "description" fs
+       let deadline ← Codec.decodeField "deadline" fs
+       let taskStaff ← Codec.decodeField "taskStaff" fs
+       pure <| .Repeating description deadline taskStaff
+    | .Constructor "Meeting" fs => do
+       let description ← Codec.decodeField "description" fs
+       let time ← Codec.decodeField "time" fs
+       let location ← Codec.decodeField "location" fs
+       let dow ← Codec.decodeField "dow" fs       
+       pure <| .Meeting description time location dow
+    | e => .error s!"Expected Task; received {e}"
 
 def Task.description : Task → String
   | .Repeating desc _ _ => desc
@@ -71,18 +146,49 @@ structure TargetSpec where
   org : String
   deriving Repr
 
+instance : Codec.Decode TargetSpec where
+  decode
+    | .Constructor "Target" fs => do
+      let dir ← Codec.decodeField "dir" fs
+      let base ← Codec.decodeField "base" fs
+      let org ← Codec.decodeField "org" fs
+      pure <| { dir, base , org }
+    | e => .error s!"Expected TargetSpec; received {e}"
+
 structure Course where
-  ay : String
-  semester : String
+  courseSem : Semester
   title : String
   sections : List String
-  chair : String
   instructors : List String
-  tas : List String
+  teachingAssts : List String
   target : TargetSpec
-  courseDescription : String
-  courseComponents : List CourseComponent
-  courseTasks : List Task
+  description : String
+  components : List CourseComponent
+  tasks : List Task
   deriving Repr
+
+instance : Codec.Decode Course where
+  decode
+    | .Constructor "Course" fs => do
+       let courseSem ← Codec.decodeField "courseSem" fs
+       let title ← Codec.decodeField "title" fs
+       let sections ← Codec.decodeField "sections" fs
+       let instructors ← Codec.decodeField "instructors" fs
+       let teachingAssts ← Codec.decodeField "teachingAssts" fs
+       let target ← Codec.decodeField "instructors" fs       
+       let description ← Codec.decodeField "description" fs       
+       let components ← Codec.decodeField "components" fs       
+       let tasks ← Codec.decodeField "tasks" fs              
+       pure <| { courseSem
+               , title
+               , sections
+               , instructors
+               , teachingAssts
+               , target
+               , description
+               , components
+               , tasks
+               }
+    | e => .error s!"Expected Course; received {e}"
 
 end Course

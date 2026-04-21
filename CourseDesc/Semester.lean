@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-20 Mon 16:36 EDT - george@valhalla>
+-- Time-stamp: <2026-04-20 Mon 20:52 EDT - george@valhalla>
 --
 
 import CourseDesc.Codec
@@ -36,8 +36,6 @@ instance : Repr Semester where
     | Term.Fall => "Fall"
     | Term.Spring => "Spring"
   s!"AY{reprStr s.ay}-{reprStr (s.ay + 1)}--{term}"
-
-
 
 inductive DOW where
   | Mon | Tue | Wed | Thu | Fri | Sat | Sun
