@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-20 Mon 20:52 EDT - george@valhalla>
+-- Time-stamp: <2026-04-21 Tue 16:40 EDT - george@valhalla>
 --
 
 import CourseDesc.Codec
@@ -24,8 +24,8 @@ structure Semester where
 
 instance : Codec.Decode Semester where
   decode 
-    | .Constructor "semester" fs => do
-      let term     ← Codec.decodeField "semester" fs
+    | .Constructor "Semester" fs => do
+      let term     ← Codec.decodeField "term" fs
       let ay       ← Codec.decodeField "ay" fs
       pure { term, ay }
     | e => .error s!"Expected semester, got {repr e}"
@@ -61,7 +61,7 @@ instance : Codec.Decode EventTime where
   decode
     | .Constructor "EventTime" fs => do
       let start   ← Codec.decodeField "start" fs
-      let stop    ← Codec.decodeField "stop" fs
+      let stop    ← Codec.decodeField "end" fs
       pure {start, stop}
     | e => .error s!"Expected EventTime, got {repr e}"
 

@@ -62,7 +62,7 @@ Course {
         collectionMethod = "gradescope"
 	
         sched = [ 
-	  DowDue { dow = Dow.Fri, deadline = "23:59" }
+	  DowDue { dow = Fri  deadline = "23:59" }
 	]
 
         assignments = [
@@ -76,7 +76,7 @@ Course {
        
        sched = [
          Date { date = "2026-02-18"
-                time = { start = "10:30", end = "11:45" }
+                time = { start = "10:30" end = "11:45" }
                location = "JCC 140"
               }
        ]
@@ -87,7 +87,7 @@ Course {
        
         sched = [
           Date { date = "2026-03-30"
-                 time = { start = "10:30", end = "11:45" }
+                 time = { start = "10:30"  end = "11:45" }
                  location = "JCC 140"
                }
         ]
@@ -99,7 +99,7 @@ Course {
 
        sched = [
          Date { date = "2026-05-01"
-                time = { start = "12:00", end = "14:00" }
+                time = { start = "12:00" end = "14:00" }
                 location = "JCC 140"
                }
        ]
@@ -111,13 +111,13 @@ Course {
      Meeting
           { description = "Office Hours"
             dow = Thu
-            time = EventTime { start = "15:00", end = "16:00" }
+            time = EventTime { start = "15:00" end = "16:00" }
             location = "JCC 587"
           }
      Meeting
           { description = "Office Hours"
             dow = Wed
-            time = EventTime { start = "15:00", end = "16:00" }
+            time = EventTime { start = "15:00" end = "16:00" }
             location = "JCC 587"
           }
   ]

@@ -1,0 +1,161 @@
+;; Time-stamp: <2026-04-21 Tue 17:22 EDT - george@valhalla>
+
+[
+  Semester {
+    ay = "AY2025-2026"
+    semId = Fall
+    semesterDescr = "Fall 2025"
+    semesterDates = Range {
+      start = "2025-09-02"
+      end = "2025-12-08"
+    }
+    finalsDates = Range {
+      start = "2025-12-11"
+      end = "2025-12-18"
+    }
+    rpDates = Range {
+      start = "2025-12-09"
+      end = "2025-12-09"
+    }
+    exceptions = [
+      Admin {
+        type = "Academic Date"
+        descr = "Last day to add"
+        date = "2025-09-09"
+      }
+      Holiday {
+        descr = "Indigenous Peoples' Day"
+        date = "2025-10-13"
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Last day to drop without record"
+        date = "2025-10-07"
+      }
+      Holiday {
+        descr = "Veterans' Day"
+        date = "2025-11-11"
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Last day to withdraw with W"
+        date = "2025-11-12"
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Last day to select PASS/FAIL option"
+        date = "2025-11-12"
+      }
+      Holiday {
+        descr = "Thanksgiving Holiday"
+        date = Range {
+          start = "2025-11-26"
+          end = "2025-11-28"
+        }
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Reading Period"
+        date = Range {
+          start = "2025-12-09"
+          end = "2025-12-09"
+        }
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Final Exams"
+        date = Range {
+          start = "2025-12-11"
+          end = "2025-12-18"
+        }
+      }
+    ]
+  }
+
+;;--------------------------------------------------------------------------------
+
+  Semester {
+    ay = "AY2025-2026"
+    semId = Spring
+    semesterDescr = "Spring 2026"
+    semesterDates = Range {
+      start = "2026-01-14"
+      end = "2026-04-27"
+    }
+    finalsDates = Range {
+      start = "2026-05-01"
+      end = "2026-05-08"
+    }
+    rpDates = Range {
+      start = "2026-04-28"
+      end = "2026-04-30"
+    }
+    exceptions = [
+      Holiday {
+        descr = "MLK Day"
+        date = "2026-01-19"
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Last day to add a course"
+        date = "2026-01-21"
+      }
+      Holiday {
+        descr = "Presidents' Day"
+        date = "2026-02-16"
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Last day to drop a course without record"
+        date = "2026-02-18"
+      }
+      AltDow {
+        descr = "Monday schedule"
+        date = "2026-01-21"
+        dow = Mon
+      }
+      AltDow {
+        descr = "Monday schedule"
+        date = "2026-02-19"
+        dow = Mon
+      }
+      Holiday {
+        descr = "Spring Break"
+        date = Range {
+          start = "2026-03-14"
+          end = "2026-03-22"
+        }
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Last day to withdraw from a course with W"
+        date = "2026-04-01"
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Last day to select Pass/Fail Option"
+        date = "2026-04-01"
+      }
+      Holiday {
+        descr = "Patriots' Day"
+        date = "2026-04-20"
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Reading Period"
+        date = Range {
+          start = "2026-04-28"
+          end = "2026-04-30"
+        }
+      }
+      Admin {
+        type = "Academic Date"
+        descr = "Final Exam Period"
+        date = Range {
+          start = "2026-05-01"
+          end = "2026-05-08"
+        }
+      }
+    ]
+  }
+]

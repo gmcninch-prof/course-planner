@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-20 Mon 15:06 EDT - george@valhalla>
+-- Time-stamp: <2026-04-21 Tue 15:56 EDT - george@valhalla>
 --
 import CourseDesc.Course
 import CourseDesc.Tokens
@@ -98,7 +98,7 @@ def parseField (fuel : Nat): Parser Field := fun toks =>
   | n+1 => do
     let (id, toks') ← parseString toks
     let (_, toks'') ← parseSymbol .Eq toks'
-    let (expr, toks''') ← parseExpression n toks''
+    let (expr, toks''') ← parseExpression' n toks''
     pure (Field.mk id expr, toks''')
   
 def parseFields (fuel : Nat) (acc : List Field) 
@@ -114,7 +114,7 @@ def parseFields (fuel : Nat) (acc : List Field)
       let (f,toks') ← parseField n toks
       parseFields n (f :: acc) toks' 
     
-def parseExpressionList (fuel : Nat) (acc : List Expression) 
+def parseExpressionList' (fuel : Nat) (acc : List Expression) 
     : Parser (List Expression) := fun toks => 
   match fuel with 
   | 0 => .error noFuel
@@ -122,12 +122,16 @@ def parseExpressionList (fuel : Nat) (acc : List Expression)
     match toks with
       | [] => .ok (acc.reverse, [])
       | Token.rbracket :: rest => Except.ok (acc.reverse, rest)
-      | Token.comma :: rest => parseExpressionList n acc rest
+      | Token.comma :: rest => parseExpressionList' n acc rest
       | _ => do
-        let (expr, toks') ← parseExpression n toks
-        parseExpressionList n (expr :: acc) toks'
+        let (expr, toks') ← parseExpression' n toks
+        parseExpressionList' n (expr :: acc) toks'
 
-def parseExpression (fuel : Nat) : Parser Expression := fun toks =>
+def parseExpressionList (acc : List Expression) :
+    Parser (List Expression) := fun toks =>
+  parseExpressionList' toks.length acc toks
+
+def parseExpression' (fuel : Nat) : Parser Expression := fun toks =>
   match fuel with
   | 0 => .error noFuel
   | n+1 => 
@@ -137,7 +141,7 @@ def parseExpression (fuel : Nat) : Parser Expression := fun toks =>
       | Token.strLit s => Except.ok (Expression.StrLit s, rest)
       | Token.natLit n => Except.ok (Expression.NatLit n, rest)
       | Token.lbracket => do
-        let (exprs,toks') ← parseExpressionList n [] rest
+        let (exprs,toks') ← parseExpressionList' n [] rest
         pure (Expression.EList exprs,toks')
       | Token.ident id => 
         match rest with
@@ -150,6 +154,9 @@ def parseExpression (fuel : Nat) : Parser Expression := fun toks =>
           | _ => Except.ok (Expression.Id id, rest)
       | _ => 
         Except.error "mal-formed"
+
+def parseExpression : Parser Expression := fun toks =>
+  parseExpression' toks.length toks
 
 
 end

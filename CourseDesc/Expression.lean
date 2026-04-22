@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-20 Mon 15:12 EDT - george@valhalla>
+-- Time-stamp: <2026-04-21 Tue 17:13 EDT - george@valhalla>
 --
 
 
@@ -69,24 +69,28 @@ theorem Expression.size_lt_constructor (a : Field) (id : String) (fs : List Fiel
       omega
 
 mutual 
-  def Field.render : Field -> String := fun field =>
+  def Field.render (n : Nat) : Field -> String := fun field =>
+    let indent := String.ofList (List.replicate (2 * n) ' ')
     match field with
-    | .mk id val => id ++ " = " ++ val.render 
+    | .mk id val => indent ++ id ++ " = " ++ Expression.render n val
   termination_by f => f.size
   decreasing_by
     simp [Field.size]
 
-  def Expression.render : Expression -> String := fun expr =>
+  def Expression.render (n : Nat) : Expression -> String := fun expr =>
+    let indent := String.ofList (List.replicate (2 * n) ' ')
     match expr with
-    | .EList xs => 
-           String.intercalate ", " (xs.attach.map (fun ⟨a, _⟩ => Expression.render a))    
-    | .StrLit s => s
+    | .EList xs =>
+        let inner := String.ofList (List.replicate (2 * (n + 1)) ' ')
+        let items := xs.attach.map (fun ⟨a, _⟩ => inner ++ Expression.render (n + 1) a)
+        "[\n" ++ String.intercalate "\n" items ++ "\n" ++ indent ++ "]"        
+    | .StrLit s => "\"" ++ s ++ "\""
     | .NatLit n => toString n
     | .BoolLit b => toString b
     | .Id id => id
-    | .Constructor id lst => 
-        let fstring := String.intercalate ", " (lst.attach.map (fun ⟨a, _⟩ => Field.render a))
-        s!"{id} [ {fstring} ] "
+    | .Constructor id lst =>
+        let fields := lst.attach.map (fun ⟨a, _⟩ => Field.render (n + 1) a)
+        id ++ " {\n" ++ String.intercalate "\n" fields ++ "\n" ++ indent ++ "}"
   termination_by e => e.size              
   decreasing_by
     · rename_i h
@@ -96,11 +100,12 @@ mutual
 end
 
 
+
 instance : ToString Expression where
-  toString := Expression.render
+  toString := Expression.render 0
 
 instance : ToString Field where
-  toString := Field.render
+  toString := Field.render 0
 
 
 def lookupField (name : String) (fields : List Field) : Except String Expression :=

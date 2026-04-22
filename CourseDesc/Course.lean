@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-20 Mon 22:39 EDT - george@valhalla>
+-- Time-stamp: <2026-04-21 Tue 16:35 EDT - george@valhalla>
 --
 
 import CourseDesc.Codec
@@ -38,8 +38,8 @@ instance : Codec.Decode ScheduleDetails where
     | .Constructor "Date" fs => do
         let date ← Codec.decodeField "date" fs 
         let time ← Codec.decodeField "time" fs
-        let deadline ← Codec.decodeField "deadline" fs
-        pure <| .Date date time deadline
+        let location ← Codec.decodeField "location" fs
+        pure <| .Date date time location
     | .Constructor "DateDue" fs => do
         let date ← Codec.decodeField "date" fs 
         let deadline ← Codec.decodeField "deadline" fs
@@ -83,7 +83,7 @@ instance : Codec.Decode CourseComponent where
        let sched ← Codec.decodeField "sched" fs
        let description ← Codec.decodeField "description" fs
        let assignments ← Codec.decodeField "assignments" fs
-       pure <| .Lecture sched description assignments
+       pure <| .Assignment sched description assignments
     | .Constructor "Exam" fs => do
        let sched ← Codec.decodeField "sched" fs
        let description ← Codec.decodeField "description" fs
@@ -121,7 +121,7 @@ instance : Codec.Decode Task where
        let description ← Codec.decodeField "description" fs
        let deadline ← Codec.decodeField "deadline" fs
        let taskStaff ← Codec.decodeField "taskStaff" fs
-       pure <| .Repeating description deadline taskStaff
+       pure <| .Single description deadline taskStaff
     | .Constructor "Meeting" fs => do
        let description ← Codec.decodeField "description" fs
        let time ← Codec.decodeField "time" fs
@@ -156,7 +156,7 @@ instance : Codec.Decode TargetSpec where
     | e => .error s!"Expected TargetSpec; received {e}"
 
 structure Course where
-  courseSem : Semester
+  semester : Semester
   title : String
   sections : List String
   instructors : List String
@@ -170,16 +170,16 @@ structure Course where
 instance : Codec.Decode Course where
   decode
     | .Constructor "Course" fs => do
-       let courseSem ← Codec.decodeField "courseSem" fs
+       let semester ← Codec.decodeField "semester" fs
        let title ← Codec.decodeField "title" fs
        let sections ← Codec.decodeField "sections" fs
        let instructors ← Codec.decodeField "instructors" fs
        let teachingAssts ← Codec.decodeField "teachingAssts" fs
-       let target ← Codec.decodeField "instructors" fs       
+       let target ← Codec.decodeField "target" fs       
        let description ← Codec.decodeField "description" fs       
        let components ← Codec.decodeField "components" fs       
        let tasks ← Codec.decodeField "tasks" fs              
-       pure <| { courseSem
+       pure <| { semester
                , title
                , sections
                , instructors
