@@ -1,9 +1,9 @@
 --
--- Time-stamp: <2026-04-21 Tue 16:35 EDT - george@valhalla>
+-- Time-stamp: <2026-04-23 Thu 09:40 EDT - george@valhalla>
 --
 
-import CourseDesc.Codec
-import CourseDesc.Semester
+import MLML.Codec
+import CoursePlanner.Semester
 
 namespace Course
 

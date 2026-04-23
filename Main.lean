@@ -1,11 +1,11 @@
 import Init.System.IO
 
-import CourseDesc.Tokens
+import MLML.Tokens
 
-import CourseDesc.Parse
+import MLML.Parse
 
-import CourseDesc.Calendar
-import CourseDesc.Codec
+import CoursePlanner.Calendar
+import MLML.Codec
 
 def getTokens (file : String) : IO (List Token) := do
   let (s : String)  ← IO.FS.readFile file
@@ -44,8 +44,12 @@ def getCourse (file : String) : IO (Except String Course.Course) := do
     IO.println "erroring here..."
     .error e
 
-def math136 : String := "data/math136-spring26.conf" 
-def ay2025 : String := "data/AY2025-2026.conf"
+def math136 : String := "data/math136-spring26.mlml" 
+def ay2025 : String := "data/AY2025-2026.mlml"
+
+def main : IO Unit := do
+  let result ← getCourse math136
+  IO.println <| reprStr result
 
 #eval getTokens math136
     

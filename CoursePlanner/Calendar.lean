@@ -1,8 +1,8 @@
 --
--- Time-stamp: <2026-04-20 Mon 15:12 EDT - george@valhalla>
+-- Time-stamp: <2026-04-23 Thu 09:20 EDT - george@valhalla>
 --
 
-import CourseDesc.Course
+import CoursePlanner.Course
 
 open Semester
 

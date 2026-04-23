@@ -1,9 +1,9 @@
 --
--- Time-stamp: <2026-04-21 Tue 16:40 EDT - george@valhalla>
+-- Time-stamp: <2026-04-23 Thu 09:40 EDT - george@valhalla>
 --
 
-import CourseDesc.Codec
-import CourseDesc.Expression
+import MLML.Codec
+import MLML.Expression
 
 
 namespace Semester

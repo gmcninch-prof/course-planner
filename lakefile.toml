@@ -1,10 +1,20 @@
-name = "courseDesc"
+name = "course-planner"
 version = "0.1.0"
-defaultTargets = ["coursedesc"]
+defaultTargets = ["course_planner"]
+
+[[require]]
+name = "mlml"
+git = "git@github.com:gmcninch-prof/mlml"
+rev = "main"
+
+[[require]]
+name = "markdown"
+git = "https://github.com/gmcninch-prof/lean4-markdown"
+rev = "main"
 
 [[lean_lib]]
-name = "CourseDesc"
+name = "CoursePlanner"
 
 [[lean_exe]]
-name = "coursedesc"
+name = "course_planner"
 root = "Main"
