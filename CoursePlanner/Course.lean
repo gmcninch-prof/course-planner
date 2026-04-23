@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-23 Thu 09:40 EDT - george@valhalla>
+-- Time-stamp: <2026-04-23 Thu 17:30 EDT - george@sortilege>
 --
 
 import MLML.Codec
@@ -99,7 +99,7 @@ def CourseComponent.sched : CourseComponent → List ScheduleDetails
 
 
 def CourseComponent.description : CourseComponent → String
-  | .Lecture _ description _ => description
+o  | .Lecture _ description _ => description
   | .Recitation _ description _ _ => description
   | .Assignment _ description _ => description
   | .Exam _ description => description
