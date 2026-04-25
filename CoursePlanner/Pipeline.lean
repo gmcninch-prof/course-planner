@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-24 Fri 16:57 EDT - george@sortilege>
+-- Time-stamp: <2026-04-25 Sat 09:24 EDT - george@valhalla>
 --
 
 import Std.Time
@@ -17,7 +17,7 @@ open Std.Time
 namespace Pipeline
 
 /-- Convert a parsed DateRange to a list of PlainDates -/
-def expandDateRange (dr : Semester.DateRange) : Except String (List PlainDate) := do
+def expandDateRange (dr : Calendar.DateRange) : Except String (List PlainDate) := do
   let a ← PlainDate.parse dr.start
   let b ← PlainDate.parse dr.stop
   return dateRange a b
@@ -106,22 +106,44 @@ def makeEntry (sd : ScheduleDetails)
 
   
 def applyComponent (comp : CourseComponent) (days : List AcademicDay) : List AcademicDay :=
-  let courseName := none  -- we'll come back to this
+  let courseName := none
   let scheds := comp.sched
   let desc := comp.description
   let (_, days') := days.foldl (fun (acc : Nat × List AcademicDay) day =>
     let (seq, processed) := acc
-    let fired := scheds.any (matchesSchedule · day)
-    if fired then
-      let seqOpt := if comp.needsSequence then some seq else none
-      let entry := scheds.findSome? (fun sd =>
-        if matchesSchedule sd day then some (makeEntry sd desc seqOpt courseName)
-        else none)
-      match entry with
-      | some e => (seq + 1, processed ++ [addEntry e day])
-      | none   => (seq, processed ++ [day])
-    else (seq, processed ++ [day])) (1, [])
+    if !day.univOpen then
+      (seq, processed ++ [day])  -- skip closed days, don't increment sequence
+    else
+      let fired := scheds.any (matchesSchedule · day)
+      if fired then
+        let seqOpt := if comp.needsSequence then some seq else none
+        let entry := scheds.findSome? (fun sd =>
+          if matchesSchedule sd day then some (makeEntry sd desc seqOpt courseName)
+          else none)
+        match entry with
+        | some e => (seq + 1, processed ++ [addEntry e day])
+        | none   => (seq, processed ++ [day])
+      else (seq, processed ++ [day])) (1, [])
   days'  
+  
+-- def applyComponent (comp : CourseComponent) (days : List AcademicDay) : List AcademicDay :=
+--   let courseName := none  -- we'll come back to this
+--   let scheds := comp.sched
+--   let desc := comp.description
+--   let (_, days') := days.foldl (fun (acc : Nat × List AcademicDay) day =>
+--     let (seq, processed) := acc
+--     let fired := scheds.any (matchesSchedule · day)
+--     if fired then
+--       let seqOpt := if comp.needsSequence then some seq else none
+--       let entry := scheds.findSome? (fun sd =>
+--         if matchesSchedule sd day then some (makeEntry sd desc seqOpt courseName)
+--         else none)
+--       match entry with
+--       | some e => (seq + 1, processed ++ [addEntry e day])
+--       | none   => (seq, processed ++ [day])
+--     else (seq, processed ++ [day])) (1, [])
+--   days'
+  
 
 
 def addCourseEntries (course : Course) (days : List AcademicDay) : List AcademicDay :=

@@ -1,1 +1,1 @@
-# courseDesc
+# Course Planner

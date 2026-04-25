@@ -5,15 +5,9 @@ Course {
   }
   title = "Math136"
   description = "Real Analysis II"
-  sections = [
-    "01"
-  ]
-  instructors = [
-    "George McNinch"
-  ]
-  teachingAssts = [
-
-  ]
+  sections = ["01"]
+  instructors = ["George McNinch"]
+  teachingAssts = []
   target = Target {
     dir = "course-pages"
     base = "Math136"
@@ -25,17 +19,17 @@ Course {
       sched = [
         DowTufts {
           dow = Mon
-          time = EventTime {
+          time = TimeRange {
             start = "10:30"
-            end = "11:45"
+            stop = "11:45"
           }
           location = "JCC 140"
         }
         DowTufts {
           dow = Wed
-          time = EventTime {
+          time = TimeRange {
             start = "10:30"
-            end = "11:45"
+            stop = "11:45"
           }
           location = "JCC 140"
         }
@@ -71,11 +65,11 @@ Course {
     }
     Assignment {
       description = "Weekly homework"
-      collectionMethod = "gradescope"
+      ;;  collectionMethod = "gradescope"
       sched = [
         DowDue {
           dow = Fri
-          deadline = "23:59"
+          deadline = PointInTime { time = "23:59" }
         }
       ]
       assignments = [
@@ -87,9 +81,9 @@ Course {
       sched = [
         Date {
           date = "2026-02-18"
-          time = EventTime {
+          time = TimeRange {
             start = "10:30"
-            end = "11:45"
+            stop = "11:45"
           }
           location = "JCC 140"
         }
@@ -100,9 +94,9 @@ Course {
       sched = [
         Date {
           date = "2026-03-30"
-          time = EventTime {
+          time = TimeRange {
             start = "10:30"
-            end = "11:45"
+            stop = "11:45"
           }
           location = "JCC 140"
         }
@@ -113,34 +107,34 @@ Course {
       sched = [
         Date {
           date = "2026-05-01"
-          time = EventTime {
+          time = TimeRange {
             start = "12:00"
-            end = "14:00"
+            stop = "14:00"
           }
           location = "JCC 140"
         }
       ]
     }
-  ]
-  tasks = [
+
     Meeting {
       description = "Office Hours"
       dow = Thu
-      time = EventTime {
+      time = TimeRange {
         start = "15:00"
-        end = "16:00"
+        stop = "16:00"
       }
       location = "JCC 587"
     }
     Meeting {
       description = "Office Hours"
       dow = Wed
-      time = EventTime {
+      time = TimeRange {
         start = "15:00"
-        end = "16:00"
+        stop = "16:00"
       }
       location = "JCC 587"
     }
+
   ]
 }
 

@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-24 Fri 15:55 EDT - george@sortilege>
+-- Time-stamp: <2026-04-25 Sat 09:12 EDT - george@valhalla>
 --
 
 import MLML.Codec
@@ -9,19 +9,6 @@ import CoursePlanner.Calendar
 open Calendar
 
 namespace Semester
-
-structure DateRange where
-  start : String
-  stop  : String
-  deriving Repr
-
-instance : Codec.Decode DateRange where
-  decode
-    | .Constructor "Range" fs => do
-        let start ← Codec.decodeField "start" fs
-        let stop  ← Codec.decodeField "end" fs
-        pure { start, stop }
-    | e => .error s!"Expected DateRange; got {repr e}"
 
 /-- A date or date range for an exception -/
 inductive ExceptDate where
@@ -70,7 +57,6 @@ instance : Codec.Decode Exception where
 /-- Full specification of a semester, as parsed from a conf file -/
 structure SemSpec where
   semester      : Semester
-  semesterDescr : String
   semDates      : DateRange
   finalsDates   : DateRange
   rpDates       : DateRange
@@ -81,12 +67,11 @@ instance : Codec.Decode SemSpec where
   decode
     | .Constructor "Semester" fs => do
         let semester      ← Codec.decodeField "semester" fs
-        let semesterDescr ← Codec.decodeField "semesterDescr" fs
         let semDates      ← Codec.decodeField "semesterDates" fs
         let finalsDates   ← Codec.decodeField "finalsDates" fs
         let rpDates       ← Codec.decodeField "rpDates" fs
         let exceptions    ← Codec.decodeField "exceptions" fs
-        pure { semester, semesterDescr, semDates, finalsDates, rpDates, exceptions }
+        pure { semester, semDates, finalsDates, rpDates, exceptions }
     | e => .error s!"Expected Semester; got {repr e}"
 
 end Semester

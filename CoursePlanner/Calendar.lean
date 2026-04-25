@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-24 Fri 16:41 EDT - george@sortilege>
+-- Time-stamp: <2026-04-25 Sat 09:14 EDT - george@valhalla>
 --
 
 import Std.Time
@@ -52,6 +52,22 @@ instance : Codec.Decode Term where
     | .Id "Fall"   => .ok .fall
     | .Id "Spring" => .ok .spring
     | e            => .error s!"Expected Term; got {repr e}"
+
+
+/-- Date Range -/
+
+structure DateRange where
+  start : String
+  stop  : String
+  deriving Repr
+
+instance : Codec.Decode DateRange where
+  decode
+    | .Constructor "Range" fs => do
+        let start ← Codec.decodeField "start" fs
+        let stop  ← Codec.decodeField "stop" fs
+        pure { start, stop }
+    | e => .error s!"Expected DateRange; got {repr e}"
 
 /-- Academic year and term, e.g. Fall 2025 -/
 structure Semester where
