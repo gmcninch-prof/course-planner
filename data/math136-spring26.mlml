@@ -1,8 +1,7 @@
+
+
 Course {
-  semester = Semester {
-    ay = 2025
-    term = Spring
-  }
+  semester = Semester { ay = 2025 term = Spring }
   title = "Math136"
   description = "Real Analysis II"
   sections = ["01"]
@@ -11,30 +10,144 @@ Course {
   target = Target {
     dir = "course-pages"
     base = "Math136"
-    org = "/home/george/org/"
+    org = orgDirectory
   }
   components = [
-    Lecture {
-      description = "course lecture"
-      sched = [
-        DowTufts {
-          dow = Mon
-          time = TimeRange {
-            start = "10:30"
-            stop = "11:45"
-          }
-          location = "JCC 140"
-        }
-        DowTufts {
-          dow = Wed
-          time = TimeRange {
-            start = "10:30"
-            stop = "11:45"
-          }
-          location = "JCC 140"
-        }
-      ]
-      topics = [
+    lecture
+    assignments
+    midterm1
+    midterm2
+    finalExam
+    officeHours1
+    officeHours2
+  ]
+}
+
+
+;; info
+
+
+let orgDirectory    = "/home/george/org"
+
+let lectureLocation = "JCC 140"
+let myOffice        = "JCC 587"
+
+let lectureStartTime = "10:30"
+let lectureStopTime  = "11:45"
+
+let midnight         = "11:59 PM"
+
+;; course components
+
+;;--------------------------------------------------------------------------------
+;; lecture
+
+let lecture = Lecture {
+  description = "course lecture"
+  sched = [
+    DowTufts {
+      dow = Mon
+      time = TimeRange {
+        start = lectureStartTime
+        stop = lectureStopTime
+      }
+      location = lectureLocation
+    }
+    DowTufts {
+      dow = Wed
+      time = TimeRange {
+        start = lectureStartTime
+        stop = lectureStopTime
+      }
+      location = lectureLocation
+    }
+  ]
+  topics = topics
+}
+
+
+;;--------------------------------------------------------------------------------
+;; assignments
+
+let assignment = Assignment {
+  description = "Weekly homework"
+  ;;  collectionMethod = "gradescope"
+  sched = [
+    DowDue {
+      dow = Fri
+      deadline = PointInTime { time = midnight }
+    }
+  ]
+  assignments = []
+}
+
+;;--------------------------------------------------------------------------------
+;; midterm 1
+
+let midterm1 = Exam {
+  description = "midterm 1"
+  sched = [
+    Date {
+      date = "2026-02-18"
+      time = TimeRange {
+        start = lectureStartTime
+        stop = lectureStopTime
+      }
+      location = lectureLocation
+    }
+  ]
+}
+
+let midterm2 = Exam {
+  description = "midterm 2"
+  sched = [
+    Date {
+      date = "2026-03-30"
+      time = TimeRange {
+        start = lectureStartTime
+        stop = lectureStopTime
+      }
+      location = lectureLocation
+    }
+  ]
+}
+
+let finalExam = Exam {
+  description = "final exam"
+  sched = [
+    Date {
+      date = "2026-05-01"
+      time = TimeRange {
+        start = "12:00"
+        stop = "14:00"
+      }
+      location = lectureLocation
+    }
+  ]
+}
+
+let officehours1 = Meeting {
+  description = "Office Hours"
+  dow = Thu
+  time = TimeRange {
+    start = "15:00"
+    stop = "16:00"
+  }
+  location = myOffice
+}
+
+let officehours2 = Meeting {
+  description = "Office Hours"
+  dow = Wed
+  time = TimeRange {
+    start = "15:00"
+    stop = "16:00"
+  }
+  location = myOffice
+}
+
+
+let topics = [
         "13.1: Limits; 13.2: partial derivatives"
         "10.1: Measurement in R^n; 13.3: The Mean Value Theorem and directional derivatives"
         "snow"
@@ -62,80 +175,4 @@ Course {
         "19.2: Change of variables: statements and examples"
         "19.3: Change of variables: proofs"
       ]
-    }
-    Assignment {
-      description = "Weekly homework"
-      ;;  collectionMethod = "gradescope"
-      sched = [
-        DowDue {
-          dow = Fri
-          deadline = PointInTime { time = "23:59" }
-        }
-      ]
-      assignments = [
-
-      ]
-    }
-    Exam {
-      description = "midterm 1"
-      sched = [
-        Date {
-          date = "2026-02-18"
-          time = TimeRange {
-            start = "10:30"
-            stop = "11:45"
-          }
-          location = "JCC 140"
-        }
-      ]
-    }
-    Exam {
-      description = "midterm 2"
-      sched = [
-        Date {
-          date = "2026-03-30"
-          time = TimeRange {
-            start = "10:30"
-            stop = "11:45"
-          }
-          location = "JCC 140"
-        }
-      ]
-    }
-    Exam {
-      description = "final exam"
-      sched = [
-        Date {
-          date = "2026-05-01"
-          time = TimeRange {
-            start = "12:00"
-            stop = "14:00"
-          }
-          location = "JCC 140"
-        }
-      ]
-    }
-
-    Meeting {
-      description = "Office Hours"
-      dow = Thu
-      time = TimeRange {
-        start = "15:00"
-        stop = "16:00"
-      }
-      location = "JCC 587"
-    }
-    Meeting {
-      description = "Office Hours"
-      dow = Wed
-      time = TimeRange {
-        start = "15:00"
-        stop = "16:00"
-      }
-      location = "JCC 587"
-    }
-
-  ]
-}
-
 

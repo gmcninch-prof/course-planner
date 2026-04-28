@@ -15,7 +15,7 @@
    "type": "git",
    "subDir": null,
    "scope": "",
-   "rev": "722357584eeac65bab71cdab53a9503471bd47a2",
+   "rev": "359f9e08974534c2890f384c63606d69c05af96f",
    "name": "mlml",
    "manifestFile": "lake-manifest.json",
    "inputRev": "main",
