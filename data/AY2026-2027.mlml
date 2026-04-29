@@ -1,0 +1,136 @@
+;; Time-stamp: <2026-04-29 Wed 17:07 EDT - george@sortilege>
+
+[
+  Semester {
+    semester = Semester { ay = 2025, term = Fall } ;; Fall 2025-2026
+    
+    semesterDates = Range {
+      start = "2026-09-08"
+      stop = "2026-12-14"
+    }
+    finalsDates = Range {
+      start = "2026-12-16"
+      stop = "2026-12-23"
+    }
+    rpDates = Range {
+      start = "2026-12-15"
+      stop = "2026-12-15"
+    }
+    exceptions = [
+      Admin {
+        type = academicDate
+        descr = addDeadline
+        date = "2026-09-15"
+      }
+      Holiday {
+        descr = indigenousDay
+        date = "2026-10-12"
+      }
+      Admin {
+        type = academicDate
+        descr = dropWithoutRecordDate
+        date = "2026-10-13"
+      }
+      AltDow {
+        descr = wednesdaySchedule
+        date = "2026-11-10"
+        dow = Wed
+      }      
+      Holiday {
+        descr = veteransDay
+        date = "2026-11-11"
+      }
+      Admin {
+        type = academicDate
+        descr = withdrawDate
+        date = "2026-11-17"
+      }
+      Holiday {
+        descr = thanksgiving
+        date = Range {
+          start = "2026-11-25"
+          stop = "2026-11-27"
+        }
+      }
+    ]
+  }
+
+;;--------------------------------------------------------------------------------
+
+  Semester {
+
+    semester = Semester { ay = 2026, term = Spring } ;; Spring 2026-2027
+
+    semesterDates = Range {
+      start = "2027-01-20"
+      stop = "2027-05-03"
+    }
+    finalsDates = Range {
+      start = "2027-05-07"
+      stop = "2027-05-14"
+    }
+    rpDates = Range {
+      start = "2027-05-04"
+      stop = "2027-05-06"
+    }
+    exceptions = [
+      Holiday {
+        descr = mlkDay
+        date = "2027-01-18"
+      }
+      Admin {
+        type = academicDate
+        descr = addDeadline
+        date = "2027-01-27"
+      }
+      Holiday {
+        descr = presidentsDay
+        date = "2027-02-15"
+      }
+      Admin {
+        type = academicDate
+        descr = dropWithoutRecordDate
+        date = "2027-02-24"
+      }
+      AltDow {
+        descr = mondaySchedule
+        date = "2027-02-18"
+        dow = Mon
+      }
+      Holiday {
+        descr = springBreak
+        date = Range {
+          start = "2027-03-20"
+          stop = "2027-03-29"
+        }
+      }
+      Admin {
+        type = academicDate
+        descr = withdrawDate
+        date = "2027-04-07"
+      }
+      Holiday {
+        descr = patriotsDay
+        date = "2027-04-19"
+      }
+    ]
+  }
+]
+
+
+let academicDate       = "Academic Date"
+let mondaySchedule     = "Monday Schedule"
+let wednesdaySchedule  = "Wednesday Schedule"
+let indigenousDay      = "Indigenous People's Day"
+let veteransDay        = "Veterans Day"
+let thanksgiving       = "Thanksgiving Holiday"
+let mlkDay             = "MLK Holiday"
+let patriotsDay        = "Patriots' Day"
+let presidentsDay      = "Presidents' Day"
+let springBreak        = "Spring Break"
+
+let addDeadline           = "Last day to add a course"
+let dropWithoutRecordDate = "Last day to drop without record"
+let withdrawDate          = "Last day to withdraw with a 'W' or select Pass/Fail"
+let finals                = "Final Exam Period"
+let readingPeriod         = "Reading Period"

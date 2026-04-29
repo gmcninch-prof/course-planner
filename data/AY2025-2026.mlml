@@ -1,29 +1,24 @@
-;; Time-stamp: <2026-04-29 Wed 16:17 EDT - george@sortilege>
+;; Time-stamp: <2026-04-29 Wed 17:07 EDT - george@sortilege>
 
 [
   Semester {
-    semester = Semester { ay = 2025, term = Fall } ;; Fall 2025-2026
+    semester      = Semester { ay = 2025, term = Fall } ;; Fall 2025-2026
     
-    semesterDates = Range {
-      start = "2025-09-02"
-      stop = "2025-12-08"
-    }
-    finalsDates = Range {
-      start = "2025-12-11"
-      stop = "2025-12-18"
-    }
-    rpDates = Range {
-      start = "2025-12-09"
-      stop = "2025-12-09"
-    }
-    exceptions = [
+    semesterDates = Range { start = "2025-09-02" stop = "2025-12-08" }
+
+    finalsDates   = Range { start = "2025-12-11" stop = "2025-12-18" }
+
+    rpDates       = Range { start = "2025-12-09" stop = "2025-12-09" }
+    
+    exceptions    = [
+    
       Admin {
         type = academicDate
         descr = addDeadline
         date = "2025-09-09"
       }
       Holiday {
-        descr = indigeneousDay
+        descr = indigenousDay
         date = "2025-10-13"
       }
       Admin {
@@ -75,21 +70,15 @@
 
   Semester {
 
-    semester = Semester { ay = 2025, term = Spring } ;; Spring 2025-2026
+    semester      = Semester { ay = 2025, term = Spring } ;; Spring 2025-2026
 
-    semesterDates = Range {
-      start = "2026-01-14"
-      stop = "2026-04-27"
-    }
-    finalsDates = Range {
-      start = "2026-05-01"
-      stop = "2026-05-08"
-    }
-    rpDates = Range {
-      start = "2026-04-28"
-      stop = "2026-04-30"
-    }
-    exceptions = [
+    semesterDates = Range { start = "2026-01-14" stop = "2026-04-27" }
+    
+    finalsDates   = Range {start = "2026-05-01"  stop = "2026-05-08" }
+    
+    rpDates       = Range { start = "2026-04-28" stop = "2026-04-30" }
+
+    exceptions    = [
       Holiday {
         descr = mlkDay
         date = "2026-01-19"
@@ -141,7 +130,7 @@
       }
       Admin {
         type = academicDate
-        descr = "Reading Period"
+        descr = readingPeriod
         date = Range {
           start = "2026-04-28"
           stop = "2026-04-30"
@@ -149,7 +138,7 @@
       }
       Admin {
         type = academicDate
-        descr = "Final Exam Period"
+        descr = finals
         date = Range {
           start = "2026-05-01"
           stop = "2026-05-08"
@@ -162,7 +151,7 @@
 
 let academicDate       = "Academic Date"
 let mondaySchedule     = "Monday Schedule"
-let indigeneousDay     = "Indigenous People's Day"
+let indigenousDay     = "Indigenous People's Day"
 let veteransDay        = "Veterans Day"
 let thanksgiving       = "Thanksgiving Holiday"
 let mlkDay             = "MLK Holiday"

@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-29 Wed 16:05 EDT - george@sortilege>
+-- Time-stamp: <2026-04-29 Wed 16:58 EDT - george@sortilege>
 --
 
 import MLML.Codec
@@ -27,7 +27,7 @@ instance : Codec.Decode ExceptDate where
 /-- A semester calendar exception -- holiday, admin note, alternate DOW, or no-class day -/
 inductive Exception where
   | holiday  (descr : String) (date : ExceptDate)
-  | admin    (adminType : String) (adminDescription : String) (date : ExceptDate)
+  | admin    (descr : String) (date : ExceptDate)
   | altDow   (descr : String) (date : ExceptDate) (dow : DOW)
   | noClass  (descr : String) (date : ExceptDate)
   deriving Repr
@@ -39,10 +39,9 @@ instance : Codec.Decode Exception where
         let date  ← Codec.decodeField "date" fs
         pure <| .holiday descr date
     | .Constructor "Admin" fs => do
-        let adminType ← Codec.decodeField "type" fs
         let descr     ← Codec.decodeField "descr" fs
         let date      ← Codec.decodeField "date" fs
-        pure <| .admin adminType descr date
+        pure <| .admin descr date
     | .Constructor "AltDow" fs => do
         let descr ← Codec.decodeField "descr" fs
         let date  ← Codec.decodeField "date" fs

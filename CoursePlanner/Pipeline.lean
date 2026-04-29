@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-29 Wed 16:08 EDT - george@sortilege>
+-- Time-stamp: <2026-04-29 Wed 17:06 EDT - george@sortilege>
 --
 
 import Std.Time
@@ -67,9 +67,9 @@ def applyException (exc : Semester.Exception) (day : AcademicDay) : AcademicDay 
       if matchDate date day then
         { addEntry (.noClass descr) day with univOpen := false }
       else day
-  | .admin adminType descr date =>
+  | .admin descr date =>
       if matchDate date day then
-        addEntry (.admin adminType descr) day
+        addEntry (.admin "Admin" descr) day
       else day
   | .altDow descr date dow =>
       if matchDate date day then

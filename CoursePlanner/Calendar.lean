@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-28 Tue 22:31 EDT - george@valhalla>
+-- Time-stamp: <2026-04-29 Wed 17:05 EDT - george@sortilege>
 --
 
 import Std.Time
@@ -126,7 +126,7 @@ inductive CalEntry where
              (sequence : Option Nat)
              (courseName : Option String)
   | noClass  (description : String)
-  | admin    (adminType : String)
+  | admin    (origin : String)
              (description : String)
   | meeting  (description : String)
              (time : EventTime)
