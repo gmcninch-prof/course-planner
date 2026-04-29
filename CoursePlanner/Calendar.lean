@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-25 Sat 09:14 EDT - george@valhalla>
+-- Time-stamp: <2026-04-28 Tue 22:31 EDT - george@valhalla>
 --
 
 import Std.Time
@@ -28,13 +28,13 @@ def actualDow (d : PlainDate) : DOW :=
 
 instance : Codec.Decode DOW where
   decode
-    | .Id "Mon" => .ok .monday
-    | .Id "Tue" => .ok .tuesday
-    | .Id "Wed" => .ok .wednesday
-    | .Id "Thu" => .ok .thursday
-    | .Id "Fri" => .ok .friday
-    | .Id "Sat" => .ok .saturday
-    | .Id "Sun" => .ok .sunday
+    | .Constructor "Mon" [] => .ok .monday
+    | .Constructor "Tue" [] => .ok .tuesday
+    | .Constructor "Wed" [] => .ok .wednesday
+    | .Constructor "Thu" [] => .ok .thursday
+    | .Constructor "Fri" [] => .ok .friday
+    | .Constructor "Sat" [] => .ok .saturday
+    | .Constructor "Sun" [] => .ok .sunday
     | e => .error s!"Expected DOW; got {repr e}"
 
 /-- Phase of the academic semester -/
@@ -49,8 +49,8 @@ inductive Term where
 
 instance : Codec.Decode Term where
   decode
-    | .Id "Fall"   => .ok .fall
-    | .Id "Spring" => .ok .spring
+    | .Constructor "Fall" []  => .ok .fall
+    | .Constructor "Spring" [] => .ok .spring
     | e            => .error s!"Expected Term; got {repr e}"
 
 
@@ -100,7 +100,7 @@ inductive EventTime where
 open Codec in
 instance : Codec.Decode EventTime where
   decode
-    | .Id "AllDay" => .ok .allDay
+    | .Constructor "AllDay" [] => .ok .allDay
     | .Constructor "TimeRange" fields => do
         let start ← decodeField "start" fields
         let stop  ← decodeField "stop" fields

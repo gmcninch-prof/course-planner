@@ -42,6 +42,37 @@ let midnight         = "11:59 PM"
 ;;--------------------------------------------------------------------------------
 ;; lecture
 
+
+let topics = [
+        "13.1: Limits; 13.2: partial derivatives"
+        "10.1: Measurement in R^n; 13.3: The Mean Value Theorem and directional derivatives"
+        "snow"
+        "10.2, 10.3, 11.1: convergence; open and closed sets in R^n; continuity"
+        "11.2, 11.3: sequential compactness; pathwise connectedness"
+        "11.3, 11.4: pathwise connectedness; connectedness"
+        "14.1: First order approximation; "
+        "14.2: quadratics, Hessian and 2nd derivs"
+        "midterm 1"
+        "14.3: Second order approximation"
+        "15.1: Linear maps and matrices"
+        "15.2: derivative matrix, differential"
+        "15.3: The chain rule"
+        "16.1: Functions of a single variable and maps in the plane"
+        "16.2: Stability of non-linear maps"
+        "16.3: Minimization principle and the general inverse function theorem"
+        "17.1: Dini's Theorem"
+        "17.2: The general implicit function theorem"
+        "midterm 2"
+        "17.3: Equations of surfaces and paths in space"
+        "18.1: Integration of functions on generalized rectangles"
+        "18.2: Continuity and integrability"
+        "18.3: Integration on Jordan domains"
+        "19.1: Iterated integrals"
+        "19.2: Change of variables: statements and examples"
+        "19.3: Change of variables: proofs"
+      ]
+
+
 let lecture = Lecture {
   description = "course lecture"
   sched = [
@@ -146,33 +177,4 @@ let officehours2 = Meeting {
   location = myOffice
 }
 
-
-let topics = [
-        "13.1: Limits; 13.2: partial derivatives"
-        "10.1: Measurement in R^n; 13.3: The Mean Value Theorem and directional derivatives"
-        "snow"
-        "10.2, 10.3, 11.1: convergence; open and closed sets in R^n; continuity"
-        "11.2, 11.3: sequential compactness; pathwise connectedness"
-        "11.3, 11.4: pathwise connectedness; connectedness"
-        "14.1: First order approximation; "
-        "14.2: quadratics, Hessian and 2nd derivs"
-        "midterm 1"
-        "14.3: Second order approximation"
-        "15.1: Linear maps and matrices"
-        "15.2: derivative matrix, differential"
-        "15.3: The chain rule"
-        "16.1: Functions of a single variable and maps in the plane"
-        "16.2: Stability of non-linear maps"
-        "16.3: Minimization principle and the general inverse function theorem"
-        "17.1: Dini's Theorem"
-        "17.2: The general implicit function theorem"
-        "midterm 2"
-        "17.3: Equations of surfaces and paths in space"
-        "18.1: Integration of functions on generalized rectangles"
-        "18.2: Continuity and integrability"
-        "18.3: Integration on Jordan domains"
-        "19.1: Iterated integrals"
-        "19.2: Change of variables: statements and examples"
-        "19.3: Change of variables: proofs"
-      ]
 
