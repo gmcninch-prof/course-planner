@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-25 Sat 09:24 EDT - george@valhalla>
+-- Time-stamp: <2026-04-29 Wed 16:08 EDT - george@sortilege>
 --
 
 import Std.Time
@@ -143,21 +143,16 @@ def applyComponent (comp : CourseComponent) (days : List AcademicDay) : List Aca
 --       | none   => (seq, processed ++ [day])
 --     else (seq, processed ++ [day])) (1, [])
 --   days'
-  
 
 
 def addCourseEntries (course : Course) (days : List AcademicDay) : List AcademicDay :=
   course.components.foldl (fun days comp => applyComponent comp days) days
-  
    
 def courseCalendar (course : Course) (specs : List SemSpec) : Except String (List AcademicDay) := do
   let semId := course.semester
-  let spec ← match specs.find? (fun s => s.semester == semId) with
-    | some s => .ok s
-    | none   => .error s!"No semester spec found for {repr semId}"
+  let spec ← lookupSemester specs semId
   let days ← semesterDates spec
-  return addCourseEntries course (applyExceptions spec.exceptions days)
-   
+  return addCourseEntries course (applyExceptions spec.exceptions days)   
 
 end Pipeline
 

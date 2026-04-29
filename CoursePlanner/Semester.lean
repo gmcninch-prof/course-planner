@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-25 Sat 09:12 EDT - george@valhalla>
+-- Time-stamp: <2026-04-29 Wed 16:05 EDT - george@sortilege>
 --
 
 import MLML.Codec
@@ -72,6 +72,11 @@ instance : Codec.Decode SemSpec where
         let rpDates       ← Codec.decodeField "rpDates" fs
         let exceptions    ← Codec.decodeField "exceptions" fs
         pure { semester, semDates, finalsDates, rpDates, exceptions }
-    | e => .error s!"Expected Semester; got {repr e}"
+    | e => .error s!"Expected Semester; got {reprStr e}"
+
+def lookupSemester (sems : List SemSpec) (sem : Semester) : Except String SemSpec :=
+  match sems.find? (fun spec => spec.semester == sem) with
+  | none => .error s!"Failed to find semester {reprStr sem}."
+  | some spec => .ok spec
 
 end Semester

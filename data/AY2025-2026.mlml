@@ -1,4 +1,4 @@
-;; Time-stamp: <2026-04-28 Tue 10:55 EDT - george@valhalla>
+;; Time-stamp: <2026-04-29 Wed 16:17 EDT - george@sortilege>
 
 [
   Semester {
@@ -6,15 +6,15 @@
     
     semesterDates = Range {
       start = "2025-09-02"
-      end = "2025-12-08"
+      stop = "2025-12-08"
     }
     finalsDates = Range {
       start = "2025-12-11"
-      end = "2025-12-18"
+      stop = "2025-12-18"
     }
     rpDates = Range {
       start = "2025-12-09"
-      end = "2025-12-09"
+      stop = "2025-12-09"
     }
     exceptions = [
       Admin {
@@ -49,7 +49,7 @@
         descr = thanksgiving
         date = Range {
           start = "2025-11-26"
-          end = "2025-11-28"
+          stop = "2025-11-28"
         }
       }
       Admin {
@@ -57,7 +57,7 @@
         descr = readingPeriod
         date = Range {
           start = "2025-12-09"
-          end = "2025-12-09"
+          stop = "2025-12-09"
         }
       }
       Admin {
@@ -65,7 +65,7 @@
         descr = finals
         date = Range {
           start = "2025-12-11"
-          end = "2025-12-18"
+          stop = "2025-12-18"
         }
       }
     ]
@@ -79,15 +79,15 @@
 
     semesterDates = Range {
       start = "2026-01-14"
-      end = "2026-04-27"
+      stop = "2026-04-27"
     }
     finalsDates = Range {
       start = "2026-05-01"
-      end = "2026-05-08"
+      stop = "2026-05-08"
     }
     rpDates = Range {
       start = "2026-04-28"
-      end = "2026-04-30"
+      stop = "2026-04-30"
     }
     exceptions = [
       Holiday {

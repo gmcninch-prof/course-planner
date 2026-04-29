@@ -100,7 +100,7 @@ let lecture = Lecture {
 ;;--------------------------------------------------------------------------------
 ;; assignments
 
-let assignment = Assignment {
+let assignments = Assignment {
   description = "Weekly homework"
   ;;  collectionMethod = "gradescope"
   sched = [
@@ -157,7 +157,7 @@ let finalExam = Exam {
   ]
 }
 
-let officehours1 = Meeting {
+let officeHours1 = Meeting {
   description = "Office Hours"
   dow = Thu
   time = TimeRange {
@@ -167,7 +167,7 @@ let officehours1 = Meeting {
   location = myOffice
 }
 
-let officehours2 = Meeting {
+let officeHours2 = Meeting {
   description = "Office Hours"
   dow = Wed
   time = TimeRange {
