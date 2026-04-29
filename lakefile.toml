@@ -4,7 +4,7 @@ defaultTargets = ["course_planner"]
 
 [[require]]
 name = "mlml"
-git = "git@github.com:gmcninch-prof/mlml"
+git = "https://github.com/gmcninch-prof/mlml"
 rev = "main"
 
 [[require]]
