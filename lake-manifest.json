@@ -11,7 +11,7 @@
    "inputRev": "main",
    "inherited": false,
    "configFile": "lakefile.lean"},
-  {"url": "git@github.com:gmcninch-prof/mlml",
+  {"url": "https://github.com/gmcninch-prof/mlml",
    "type": "git",
    "subDir": null,
    "scope": "",
