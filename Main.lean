@@ -1,36 +1,49 @@
-import CoursePlanner.Pipeline
-import CoursePlanner.Calendar
-import CoursePlanner.Semester
-import CoursePlanner.Course
 import MLML.Pipeline
+import CoursePlanner
+import Markdown
 
 open Calendar
 open Semester
 open Course
 open Pipeline
+open Output
 
-def semester_file := "data/AY2025-2026.mlml"
-def course_file := "data/math136-spring26.mlml"
-
-def main : List String →  IO Unit 
-  | courseFile::semFile::_ => do  
-    let courseText ← IO.FS.readFile courseFile
-    let semText    ← IO.FS.readFile semFile
-    match parseAndDecode courseText, parseAndDecode semText with
-    | .ok course, .ok (specs : List SemSpec) =>
-        match courseCalendar course specs with
-        | .ok days =>
-          let withEntries := days.filter (fun d => !d.entries.isEmpty)
-          withEntries.take 5 |>.forM (fun d =>
-            IO.println s!"{repr d.date} ({repr d.tuftsDow}): {d.entries.length} entries")
-        --| .ok days => IO.println s!"Got {days.length} days"
-        -- | .ok days =>
-        --   let totalEntries := days.foldl (fun n d => n + d.entries.length) 0
-        --   IO.println s!"Got {days.length} days with {totalEntries} total entries"          
-        | .error e => IO.println s!"Pipeline error: {e}"
-    | .error e, _ => IO.println s!"Course parse error: {e}"
-    | _, .error e => IO.println s!"Semester parse error: {e}"
-  | _ => IO.println "Usage: course-planner <course-file> <semester-file>"
+def semesterDir := "/home/george/prof-teach-assets/semester-specs"
 
 
-#eval main [course_file, semester_file]
+def loadSemesters (dir : String) : IO (List SemSpec) := do
+  let entries ← System.FilePath.readDir dir
+  let mlmlFiles := entries.toList.filter (fun e => e.fileName.endsWith ".mlml")
+  let results ← mlmlFiles.mapM (fun e => do
+    let text ← IO.FS.readFile e.path
+    return (parseAndDecode text : Except String (List SemSpec)))
+  return results.filterMap (fun r => match r with | .ok s => some s | .error _ => none)
+    |>.flatten
+  
+def main (args : List String) : IO Unit :=
+  match args with
+  | [courseFile, outputDir] => do
+      let courseText ← IO.FS.readFile courseFile
+      let specs ← loadSemesters semesterDir
+      IO.println s!"Loaded {specs.length} semester specs"
+      specs.forM (fun s => IO.println s!"  {repr s.semester}")
+      
+      match parseAndDecode courseText with
+      | .error e => IO.println s!"Course parse error: {e}"
+      | .ok course =>
+          IO.println s!"Looking for: {repr course.semester}"
+          match courseCalendar course specs with
+          | .error e => IO.println s!"Pipeline error: {e}"
+          | .ok cc => do
+              IO.FS.writeFile s!"{outputDir}/calendar.md" (fullCalendarReport cc)
+              IO.FS.writeFile s!"{outputDir}/lectures.md" (lectureReport cc)
+              IO.FS.writeFile s!"{outputDir}/assignments.md" (assignmentReport cc)
+              IO.println s!"Written reports for {cc.course.title}"
+              
+              let orgPath := s!"{OrgOutput.orgDir}/{OrgOutput.orgFileName cc}"
+              IO.FS.writeFile orgPath (OrgOutput.courseCalendarToOrg cc)
+              IO.println s!"Written org file to {orgPath}"
+              
+  | _ => IO.println "Usage: course-planner <course-file> <output-dir>"
+  
+  

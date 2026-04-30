@@ -35,7 +35,7 @@ let myOffice        = "JCC 587"
 let lectureStartTime = "10:30"
 let lectureStopTime  = "11:45"
 
-let midnight         = "11:59 PM"
+let midnight         = "23:59"
 
 ;; course components
 
@@ -109,7 +109,7 @@ let assignments = Assignment {
       deadline = PointInTime { time = midnight }
     }
   ]
-  assignments = []
+  assignments = [ "partials" ]
 }
 
 ;;--------------------------------------------------------------------------------

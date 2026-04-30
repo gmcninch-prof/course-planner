@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-24 Fri 16:57 EDT - george@sortilege>
+-- Time-stamp: <2026-04-30 Thu 10:45 EDT - george@valhalla>
 --
 
 --
@@ -191,6 +191,13 @@ def CourseComponent.needsSequence : CourseComponent → Bool
   | .assignment _ _ _   => true
   | _                   => false
   
+
+def CourseComponent.topicForSeq (comp : CourseComponent) (seq : Nat) : Option String :=
+  match comp with
+  | .lecture _ _ topics         => topics[seq - 1]?
+  | .recitation _ _ _ topics    => topics[seq - 1]?
+  | .assignment _ _ assignments => assignments[seq - 1]?
+  | _ => none
 
 
 end Course

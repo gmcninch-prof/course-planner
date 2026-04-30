@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-24 Fri 16:34 EDT - george@sortilege>
+-- Time-stamp: <2026-04-30 Thu 08:56 EDT - george@valhalla>
 --
 
 import Std.Time
@@ -27,7 +27,7 @@ def weekSince (base day : PlainDate) : Nat :=
 open Std.Time in
 def dateRange (a b : PlainDate) : List PlainDate :=
   let n : Day.Offset := b.toDaysSinceUNIXEpoch - a.toDaysSinceUNIXEpoch
-  (List.range n.val.toNat).map (fun i => a.addDays <| .ofNat i)
+  (List.range (n.val.toNat + 1)).map (fun i => a.addDays <| .ofNat i)
 
 
 end CoursePlanner.Utils

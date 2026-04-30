@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-29 Wed 17:06 EDT - george@sortilege>
+-- Time-stamp: <2026-04-30 Thu 09:34 EDT - george@valhalla>
 --
 
 import Std.Time
@@ -7,6 +7,7 @@ import CoursePlanner.Calendar
 import CoursePlanner.Course
 import CoursePlanner.Semester
 import CoursePlanner.Utils.DateUtils
+import Markdown
 
 open Calendar
 open Course
@@ -93,66 +94,99 @@ def matchesSchedule (sd : ScheduleDetails) (day : AcademicDay) : Bool :=
       | .ok date => day.date == date
       | .error _ => false
 
-def makeEntry (sd : ScheduleDetails) 
-              (description : String) 
+
+def sdTime : ScheduleDetails → EventTime
+  | .dowTufts _ time _  => time
+  | .dowActual _ time _ => time
+  | .dowDue _ deadline  => deadline
+  | .date _ time _      => time
+  | .dateDue _ deadline => deadline
+
+def sdLoc : ScheduleDetails → String
+  | .dowTufts _ _ loc  => loc
+  | .dowActual _ _ loc => loc
+  | .dowDue _ _        => ""
+  | .date _ _ loc      => loc
+  | .dateDue _ _       => ""
+
+
+def makeEntry (comp : CourseComponent)
+              (sd : ScheduleDetails)
+              (desc : String)
               (seq : Option Nat)
               (courseName : Option String) : CalEntry :=
-  match sd with
-  | .dowTufts _ time loc  => .event time loc "lecture" description [] seq courseName
-  | .dowActual _ time loc => .event time loc "lecture" description [] seq courseName
-  | .date _ time loc      => .event time loc "lecture" description [] seq courseName
-  | .dowDue _ deadline    => .deadline deadline "" description [] seq courseName
-  | .dateDue _ deadline   => .deadline deadline "" description [] seq courseName
-
+  match comp with
+  | .lecture _ _ _       => .event (sdTime sd) (sdLoc sd) "Lecture" desc [] seq courseName
+  | .recitation _ _ _ _  => .event (sdTime sd) (sdLoc sd) "Recitation" desc [] seq courseName
+  | .assignment _ _ _    => .deadline (sdTime sd) "" desc [] seq courseName
+  | .exam _ _            => .event (sdTime sd) (sdLoc sd) "Exam" desc [] seq courseName
+  | .repeating d _ _     => .task d "" courseName
+  | .single d _ _        => .deadline (sdTime sd) "" d [] seq courseName
+  | .meeting d time loc _ => .meeting d time loc courseName
   
-def applyComponent (comp : CourseComponent) (days : List AcademicDay) : List AcademicDay :=
-  let courseName := none
+  
+inductive ComponentAction where
+  | skip     -- don't fire, don't increment sequence
+  | suppress -- increment sequence but don't add entry
+  | fire     -- add entry and increment
+  
+def applyComponent (comp : CourseComponent) (courseName : Option String) (days : List AcademicDay) : List AcademicDay :=
   let scheds := comp.sched
-  let desc := comp.description
-  let (_, days') := days.foldl (fun (acc : Nat × List AcademicDay) day =>
-    let (seq, processed) := acc
-    if !day.univOpen then
-      (seq, processed ++ [day])  -- skip closed days, don't increment sequence
-    else
-      let fired := scheds.any (matchesSchedule · day)
-      if fired then
-        let seqOpt := if comp.needsSequence then some seq else none
-        let entry := scheds.findSome? (fun sd =>
-          if matchesSchedule sd day then some (makeEntry sd desc seqOpt courseName)
-          else none)
-        match entry with
-        | some e => (seq + 1, processed ++ [addEntry e day])
-        | none   => (seq, processed ++ [day])
-      else (seq, processed ++ [day])) (1, [])
-  days'  
+  let (_, days') := days.foldl
+    (fun (acc : Nat × List AcademicDay) day =>
+      let (seq, processed) := acc
+      match action comp day with
+      | .skip     => (seq, processed ++ [day])
+      | .suppress => (seq + 1, processed ++ [day])
+      | .fire     =>
+          let fired := scheds.any (matchesSchedule · day)
+          if fired then
+            let seqOpt := if comp.needsSequence then some seq else none
+            let desc := match comp.topicForSeq seq with
+              | some topic => topic
+              | none       => comp.description
+            let entry := scheds.findSome? (fun sd =>
+              if matchesSchedule sd day then some (makeEntry comp sd desc seqOpt courseName)
+              else none)
+            match entry with
+            | some e => (seq + 1, processed ++ [addEntry e day])
+            | none   => (seq, processed ++ [day])
+          else (seq, processed ++ [day]))
+    (1, [])
+  days'
+where
+  action : CourseComponent → AcademicDay → ComponentAction
+    | .lecture _ _ _ => fun day =>
+      let hasExam := day.entries.any (fun e => match e with | .event _ _ "Exam" _ _ _ _ => true | _ => false)
+      if !day.univOpen || day.status != .inTerm then .skip
+      else if hasExam then .suppress
+      else .fire
+    | .assignment _ _ _ | .meeting _ _ _ _ => fun day =>
+      if !day.univOpen || day.status != .inTerm then .skip 
+      else .fire
+    | _ => fun day =>
+      if !day.univOpen then .skip 
+      else .fire  
   
--- def applyComponent (comp : CourseComponent) (days : List AcademicDay) : List AcademicDay :=
---   let courseName := none  -- we'll come back to this
---   let scheds := comp.sched
---   let desc := comp.description
---   let (_, days') := days.foldl (fun (acc : Nat × List AcademicDay) day =>
---     let (seq, processed) := acc
---     let fired := scheds.any (matchesSchedule · day)
---     if fired then
---       let seqOpt := if comp.needsSequence then some seq else none
---       let entry := scheds.findSome? (fun sd =>
---         if matchesSchedule sd day then some (makeEntry sd desc seqOpt courseName)
---         else none)
---       match entry with
---       | some e => (seq + 1, processed ++ [addEntry e day])
---       | none   => (seq, processed ++ [day])
---     else (seq, processed ++ [day])) (1, [])
---   days'
-
-
 def addCourseEntries (course : Course) (days : List AcademicDay) : List AcademicDay :=
-  course.components.foldl (fun days comp => applyComponent comp days) days
-   
-def courseCalendar (course : Course) (specs : List SemSpec) : Except String (List AcademicDay) := do
-  let semId := course.semester
-  let spec ← lookupSemester specs semId
-  let days ← semesterDates spec
-  return addCourseEntries course (applyExceptions spec.exceptions days)   
+  let exams := course.components.filter (fun c => match c with | .exam _ _ => true | _ => false)
+  let others := course.components.filter (fun c => match c with | .exam _ _ => false | _ => true)
+  let days := exams.foldl (fun days comp => applyComponent comp (some course.title) days) days
+  others.foldl (fun days comp => applyComponent comp (some course.title) days) days  
 
+structure CourseCalendar where
+  course : Course
+  days   : List AcademicDay   
+
+def courseCalendar (course : Course) (specs : List SemSpec) : Except String CourseCalendar := do
+  let semId := course.semester
+  let spec ← match specs.find? (fun s => s.semester == semId) with
+    | some s => .ok s
+    | none   => .error s!"No semester spec found for {repr semId}"
+  let days ← semesterDates spec
+  let days := addCourseEntries course (applyExceptions spec.exceptions days)
+  return { course, days }
+  
+  
 end Pipeline
 
