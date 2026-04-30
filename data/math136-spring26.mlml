@@ -7,11 +7,6 @@ Course {
   sections = ["01"]
   instructors = ["George McNinch"]
   teachingAssts = []
-  target = Target {
-    dir = "course-pages"
-    base = "Math136"
-    org = orgDirectory
-  }
   components = [
     lecture
     assignments

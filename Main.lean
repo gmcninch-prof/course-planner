@@ -25,13 +25,10 @@ def main (args : List String) : IO Unit :=
   | [courseFile, outputDir] => do
       let courseText ← IO.FS.readFile courseFile
       let specs ← loadSemesters semesterDir
-      IO.println s!"Loaded {specs.length} semester specs"
-      specs.forM (fun s => IO.println s!"  {repr s.semester}")
       
       match parseAndDecode courseText with
       | .error e => IO.println s!"Course parse error: {e}"
       | .ok course =>
-          IO.println s!"Looking for: {repr course.semester}"
           match courseCalendar course specs with
           | .error e => IO.println s!"Pipeline error: {e}"
           | .ok cc => do

@@ -1,0 +1,22 @@
+COURSE_FILE = math136-spring26.mlml
+OUTPUT_DIR = course-pages
+PLANNER = course-planner
+MD_FILES = $(OUTPUT_DIR)/calendar.md $(OUTPUT_DIR)/lectures.md $(OUTPUT_DIR)/assignments.md
+
+reports:
+	$(PLANNER) $(COURSE_FILE) $(OUTPUT_DIR)
+	for f in $(MD_FILES); do pandoc -f markdown -t gfm -o $$f $$f; done
+
+html:
+	for f in $(MD_FILES); do \
+		pandoc -f markdown -t html5 -o $${f%.md}.html $$f; \
+	done
+
+pdf:
+	for f in $(MD_FILES); do \
+		pandoc -f markdown -t pdf -o $${f%.md}.pdf $$f; \
+	done
+
+all: reports html pdf
+
+.PHONY: reports html pdf all

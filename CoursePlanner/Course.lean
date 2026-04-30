@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-30 Thu 10:45 EDT - george@valhalla>
+-- Time-stamp: <2026-04-30 Thu 10:46 EDT - george@valhalla>
 --
 
 --
@@ -135,28 +135,12 @@ def CourseComponent.description : CourseComponent → String
   | .single d _ _       => d
   | .meeting d _ _ _    => d
 
-structure TargetSpec where
-  dir  : String
-  base : String
-  org  : String
-  deriving Repr
-
-instance : Codec.Decode TargetSpec where
-  decode
-    | .Constructor "Target" fs => do
-        let dir  ← Codec.decodeField "dir" fs
-        let base ← Codec.decodeField "base" fs
-        let org  ← Codec.decodeField "org" fs
-        pure <| { dir, base, org }
-    | e => .error s!"Expected TargetSpec; got {repr e}"
-
 structure Course where
   semester      : Semester
   title         : String
   sections      : List String
   instructors   : List String
   teachingAssts : List String
-  target        : TargetSpec
   description   : String
   components    : List CourseComponent
   deriving Repr
@@ -169,7 +153,6 @@ instance : Codec.Decode Course where
         let sections      ← Codec.decodeField "sections" fs
         let instructors   ← Codec.decodeField "instructors" fs
         let teachingAssts ← Codec.decodeField "teachingAssts" fs
-        let target        ← Codec.decodeField "target" fs
         let description   ← Codec.decodeField "description" fs
         let components    ← Codec.decodeField "components" fs
         pure <| { semester
@@ -177,7 +160,6 @@ instance : Codec.Decode Course where
                 , sections
                 , instructors
                 , teachingAssts
-                , target
                 , description
                 , components
                 }
