@@ -32,7 +32,8 @@ Markdown reports written to `<output-dir>`:
 Org reports written to `<org-output-dir>`:
 - `<Course>--<AY>--<Term>.org` — emacs org-mode calendar info
 
-For more information, see the output data and specs in `Test`.
+For more information, see the `Makefile` `test` target, the specs in
+`Test` and the resulting output data (markdown and org) in `Test`.
 
 ## Per-course Makefile
 
