@@ -1,4 +1,4 @@
-# Math136 - Lectures - AY2025-2026--Spring
+# Math136 - Lectures - AY2025-2026–Spring
 
 | Date  | DOW | Desc       | Week | Details                                                                                                  |
 |-------|-----|------------|------|----------------------------------------------------------------------------------------------------------|
@@ -13,7 +13,7 @@
 | 02/04 | Wed | Lecture 6  | 4    | 10:30-11:45 JCC 140 - 11.3, 11.4: pathwise connectedness; connectedness                                  |
 | 02/09 | Mon | Lecture 7  | 5    | 10:30-11:45 JCC 140 - 14.1: First order approximation;                                                   |
 | 02/11 | Wed | Lecture 8  | 5    | 10:30-11:45 JCC 140 - 14.2: quadratics, Hessian and 2nd derivs                                           |
-| 02/16 | Mon | Tufts      | 6    | **No classes:** *Presidents' Day*                                                                        |
+| 02/16 | Mon | Tufts      | 6    | **No classes:** *Presidents’ Day*                                                                        |
 | 02/18 | Wed | Exam       | 6    | 10:30-11:45 JCC 140 - midterm 1                                                                          |
 | 02/18 | Wed | Tufts      | 6    | **Admin:** *Last day to drop without record*                                                             |
 | 02/19 | Mon | Lecture 10 | 6    | 10:30-11:45 JCC 140 - 14.3: Second order approximation                                                   |
@@ -33,17 +33,17 @@
 | 03/20 | Fri | Tufts      | 10   | **No classes:** *Spring Break*                                                                           |
 | 03/21 | Sat | Tufts      | 10   | **No classes:** *Spring Break*                                                                           |
 | 03/22 | Sun | Tufts      | 10   | **No classes:** *Spring Break*                                                                           |
-| 03/23 | Mon | Lecture 17 | 11   | 10:30-11:45 JCC 140 - 17.1: Dini's Theorem                                                               |
+| 03/23 | Mon | Lecture 17 | 11   | 10:30-11:45 JCC 140 - 17.1: Dini’s Theorem                                                               |
 | 03/25 | Wed | Lecture 18 | 11   | 10:30-11:45 JCC 140 - 17.2: The general implicit function theorem                                        |
 | 03/30 | Mon | Exam       | 12   | 10:30-11:45 JCC 140 - midterm 2                                                                          |
 | 04/01 | Wed | Lecture 20 | 12   | 10:30-11:45 JCC 140 - 17.3: Equations of surfaces and paths in space                                     |
 | 04/01 | Wed | Tufts      | 12   | **Admin:** *Last day to select Pass/Fail option*                                                         |
-| 04/01 | Wed | Tufts      | 12   | **Admin:** *Last day to withdraw with a 'W'*                                                             |
+| 04/01 | Wed | Tufts      | 12   | **Admin:** *Last day to withdraw with a ‘W’*                                                             |
 | 04/06 | Mon | Lecture 21 | 13   | 10:30-11:45 JCC 140 - 18.1: Integration of functions on generalized rectangles                           |
 | 04/08 | Wed | Lecture 22 | 13   | 10:30-11:45 JCC 140 - 18.2: Continuity and integrability                                                 |
 | 04/13 | Mon | Lecture 23 | 14   | 10:30-11:45 JCC 140 - 18.3: Integration on Jordan domains                                                |
 | 04/15 | Wed | Lecture 24 | 14   | 10:30-11:45 JCC 140 - 19.1: Iterated integrals                                                           |
-| 04/20 | Mon | Tufts      | 15   | **No classes:** *Patriots' Day*                                                                          |
+| 04/20 | Mon | Tufts      | 15   | **No classes:** *Patriots’ Day*                                                                          |
 | 04/22 | Wed | Lecture 25 | 15   | 10:30-11:45 JCC 140 - 19.2: Change of variables: statements and examples                                 |
 | 04/27 | Mon | Lecture 26 | 16   | 10:30-11:45 JCC 140 - 19.3: Change of variables: proofs                                                  |
 | 04/28 | Tue | Tufts      | 16   | **Admin:** *Reading Period*                                                                              |

@@ -8,9 +8,6 @@ open Course
 open Pipeline
 open Output
 
-def semesterDir := "/home/george/prof-univ/semester-specs"
-
-
 def loadSemesters (dir : String) : IO (List SemSpec) := do
   let entries ← System.FilePath.readDir dir
   let mlmlFiles := entries.toList.filter (fun e => e.fileName.endsWith ".mlml")
@@ -22,7 +19,7 @@ def loadSemesters (dir : String) : IO (List SemSpec) := do
   
 def main (args : List String) : IO Unit :=
   match args with
-  | [courseFile, outputDir] => do
+  | [courseFile, outputDir, orgDir, semesterDir] => do
       let courseText ← IO.FS.readFile courseFile
       let specs ← loadSemesters semesterDir
       
@@ -35,12 +32,12 @@ def main (args : List String) : IO Unit :=
               IO.FS.writeFile s!"{outputDir}/calendar.md" (fullCalendarReport cc)
               IO.FS.writeFile s!"{outputDir}/lectures.md" (lectureReport cc)
               IO.FS.writeFile s!"{outputDir}/assignments.md" (assignmentReport cc)
-              IO.println s!"Written reports for {cc.course.title}"
+              IO.println s!"Wrote reports for {cc.course.title} to {outputDir}"
               
-              let orgPath := s!"{OrgOutput.orgDir}/{OrgOutput.orgFileName cc}"
+              let orgPath := s!"{orgDir}/{OrgOutput.orgFileName cc}"
               IO.FS.writeFile orgPath (OrgOutput.courseCalendarToOrg cc)
-              IO.println s!"Written org file to {orgPath}"
+              IO.println s!"Wrote org file to {orgPath}"
               
-  | _ => IO.println "Usage: course-planner <course-file> <output-dir>"
+  | _ => IO.println "Usage: course-planner <course-file> <output-dir> <org-dir> <semesterDir>"
   
   

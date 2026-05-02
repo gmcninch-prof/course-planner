@@ -1,0 +1,335 @@
+* Math136
+:PROPERTIES:
+:CATEGORY: Math136
+:END:
+
+** Math136: Office Hours (JCC 587)
+   <2026-01-14 Wed 15:00-16:00>
+** Math136: 13.1: Limits; 13.2: partial derivatives
+   <2026-01-14 Wed 10:30-11:45>
+   JCC 140
+   Lecture 1
+   13.1: Limits; 13.2: partial derivatives
+** Math136: Office Hours (JCC 587)
+   <2026-01-15 Thu 15:00-16:00>
+** Math136: Assignment 1
+   <2026-01-16 Fri 11:59 PM>
+   partials
+
+
+** MLK Holiday
+   <2026-01-19 Mon>
+
+** Math136: Office Hours (JCC 587)
+   <2026-01-21 Mon 15:00-16:00>
+** Math136: 10.1: Measurement in R^n; 13.3: The Mean Value Theorem and directional derivatives
+   <2026-01-21 Mon 10:30-11:45>
+   JCC 140
+   Lecture 2
+   10.1: Measurement in R^n; 13.3: The Mean Value Theorem and directional derivatives
+** Tufts: Monday Schedule
+   <2026-01-21 Mon>
+** Admin: Last day to add a course
+   <2026-01-21 Mon>
+** Math136: Office Hours (JCC 587)
+   <2026-01-22 Thu 15:00-16:00>
+** Math136: Assignment 2
+   <2026-01-23 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: snow
+   <2026-01-26 Mon 10:30-11:45>
+   JCC 140
+   Lecture 3
+   snow
+
+** Math136: Office Hours (JCC 587)
+   <2026-01-28 Wed 15:00-16:00>
+** Math136: 10.2, 10.3, 11.1: convergence; open and closed sets in R^n; continuity
+   <2026-01-28 Wed 10:30-11:45>
+   JCC 140
+   Lecture 4
+   10.2, 10.3, 11.1: convergence; open and closed sets in R^n; continuity
+** Math136: Office Hours (JCC 587)
+   <2026-01-29 Thu 15:00-16:00>
+** Math136: Assignment 3
+   <2026-01-30 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: 11.2, 11.3: sequential compactness; pathwise connectedness
+   <2026-02-02 Mon 10:30-11:45>
+   JCC 140
+   Lecture 5
+   11.2, 11.3: sequential compactness; pathwise connectedness
+
+** Math136: Office Hours (JCC 587)
+   <2026-02-04 Wed 15:00-16:00>
+** Math136: 11.3, 11.4: pathwise connectedness; connectedness
+   <2026-02-04 Wed 10:30-11:45>
+   JCC 140
+   Lecture 6
+   11.3, 11.4: pathwise connectedness; connectedness
+** Math136: Office Hours (JCC 587)
+   <2026-02-05 Thu 15:00-16:00>
+** Math136: Assignment 4
+   <2026-02-06 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: 14.1: First order approximation; 
+   <2026-02-09 Mon 10:30-11:45>
+   JCC 140
+   Lecture 7
+   14.1: First order approximation; 
+
+** Math136: Office Hours (JCC 587)
+   <2026-02-11 Wed 15:00-16:00>
+** Math136: 14.2: quadratics, Hessian and 2nd derivs
+   <2026-02-11 Wed 10:30-11:45>
+   JCC 140
+   Lecture 8
+   14.2: quadratics, Hessian and 2nd derivs
+** Math136: Office Hours (JCC 587)
+   <2026-02-12 Thu 15:00-16:00>
+** Math136: Assignment 5
+   <2026-02-13 Fri 11:59 PM>
+   Weekly homework
+
+
+** Presidents' Day
+   <2026-02-16 Mon>
+
+** Math136: Office Hours (JCC 587)
+   <2026-02-18 Wed 15:00-16:00>
+** Math136: midterm 1
+   <2026-02-18 Wed 10:30-11:45>
+   JCC 140
+   Exam
+   midterm 1
+** Admin: Last day to drop without record
+   <2026-02-18 Wed>
+** Math136: Office Hours (JCC 587)
+   <2026-02-19 Mon 15:00-16:00>
+** Math136: 14.3: Second order approximation
+   <2026-02-19 Mon 10:30-11:45>
+   JCC 140
+   Lecture 10
+   14.3: Second order approximation
+** Tufts: Monday Schedule
+   <2026-02-19 Mon>
+** Math136: Assignment 6
+   <2026-02-20 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: 15.1: Linear maps and matrices
+   <2026-02-23 Mon 10:30-11:45>
+   JCC 140
+   Lecture 11
+   15.1: Linear maps and matrices
+
+** Math136: Office Hours (JCC 587)
+   <2026-02-25 Wed 15:00-16:00>
+** Math136: 15.2: derivative matrix, differential
+   <2026-02-25 Wed 10:30-11:45>
+   JCC 140
+   Lecture 12
+   15.2: derivative matrix, differential
+** Math136: Office Hours (JCC 587)
+   <2026-02-26 Thu 15:00-16:00>
+** Math136: Assignment 7
+   <2026-02-27 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: 15.3: The chain rule
+   <2026-03-02 Mon 10:30-11:45>
+   JCC 140
+   Lecture 13
+   15.3: The chain rule
+
+** Math136: Office Hours (JCC 587)
+   <2026-03-04 Wed 15:00-16:00>
+** Math136: 16.1: Functions of a single variable and maps in the plane
+   <2026-03-04 Wed 10:30-11:45>
+   JCC 140
+   Lecture 14
+   16.1: Functions of a single variable and maps in the plane
+** Math136: Office Hours (JCC 587)
+   <2026-03-05 Thu 15:00-16:00>
+** Math136: Assignment 8
+   <2026-03-06 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: 16.2: Stability of non-linear maps
+   <2026-03-09 Mon 10:30-11:45>
+   JCC 140
+   Lecture 15
+   16.2: Stability of non-linear maps
+
+** Math136: Office Hours (JCC 587)
+   <2026-03-11 Wed 15:00-16:00>
+** Math136: 16.3: Minimization principle and the general inverse function theorem
+   <2026-03-11 Wed 10:30-11:45>
+   JCC 140
+   Lecture 16
+   16.3: Minimization principle and the general inverse function theorem
+** Math136: Office Hours (JCC 587)
+   <2026-03-12 Thu 15:00-16:00>
+** Math136: Assignment 9
+   <2026-03-13 Fri 11:59 PM>
+   Weekly homework
+** Spring Break
+   <2026-03-14 Sat>
+** Spring Break
+   <2026-03-15 Sun>
+** Spring Break
+   <2026-03-16 Mon>
+** Spring Break
+   <2026-03-17 Tue>
+** Spring Break
+   <2026-03-18 Wed>
+** Spring Break
+   <2026-03-19 Thu>
+** Spring Break
+   <2026-03-20 Fri>
+** Spring Break
+   <2026-03-21 Sat>
+** Spring Break
+   <2026-03-22 Sun>
+** Math136: 17.1: Dini's Theorem
+   <2026-03-23 Mon 10:30-11:45>
+   JCC 140
+   Lecture 17
+   17.1: Dini's Theorem
+
+** Math136: Office Hours (JCC 587)
+   <2026-03-25 Wed 15:00-16:00>
+** Math136: 17.2: The general implicit function theorem
+   <2026-03-25 Wed 10:30-11:45>
+   JCC 140
+   Lecture 18
+   17.2: The general implicit function theorem
+** Math136: Office Hours (JCC 587)
+   <2026-03-26 Thu 15:00-16:00>
+** Math136: Assignment 10
+   <2026-03-27 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: midterm 2
+   <2026-03-30 Mon 10:30-11:45>
+   JCC 140
+   Exam
+   midterm 2
+
+** Math136: Office Hours (JCC 587)
+   <2026-04-01 Wed 15:00-16:00>
+** Math136: 17.3: Equations of surfaces and paths in space
+   <2026-04-01 Wed 10:30-11:45>
+   JCC 140
+   Lecture 20
+   17.3: Equations of surfaces and paths in space
+** Admin: Last day to select Pass/Fail option
+   <2026-04-01 Wed>
+** Admin: Last day to withdraw with a 'W'
+   <2026-04-01 Wed>
+** Math136: Office Hours (JCC 587)
+   <2026-04-02 Thu 15:00-16:00>
+** Math136: Assignment 11
+   <2026-04-03 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: 18.1: Integration of functions on generalized rectangles
+   <2026-04-06 Mon 10:30-11:45>
+   JCC 140
+   Lecture 21
+   18.1: Integration of functions on generalized rectangles
+
+** Math136: Office Hours (JCC 587)
+   <2026-04-08 Wed 15:00-16:00>
+** Math136: 18.2: Continuity and integrability
+   <2026-04-08 Wed 10:30-11:45>
+   JCC 140
+   Lecture 22
+   18.2: Continuity and integrability
+** Math136: Office Hours (JCC 587)
+   <2026-04-09 Thu 15:00-16:00>
+** Math136: Assignment 12
+   <2026-04-10 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: 18.3: Integration on Jordan domains
+   <2026-04-13 Mon 10:30-11:45>
+   JCC 140
+   Lecture 23
+   18.3: Integration on Jordan domains
+
+** Math136: Office Hours (JCC 587)
+   <2026-04-15 Wed 15:00-16:00>
+** Math136: 19.1: Iterated integrals
+   <2026-04-15 Wed 10:30-11:45>
+   JCC 140
+   Lecture 24
+   19.1: Iterated integrals
+** Math136: Office Hours (JCC 587)
+   <2026-04-16 Thu 15:00-16:00>
+** Math136: Assignment 13
+   <2026-04-17 Fri 11:59 PM>
+   Weekly homework
+
+
+** Patriots' Day
+   <2026-04-20 Mon>
+
+** Math136: Office Hours (JCC 587)
+   <2026-04-22 Wed 15:00-16:00>
+** Math136: 19.2: Change of variables: statements and examples
+   <2026-04-22 Wed 10:30-11:45>
+   JCC 140
+   Lecture 25
+   19.2: Change of variables: statements and examples
+** Math136: Office Hours (JCC 587)
+   <2026-04-23 Thu 15:00-16:00>
+** Math136: Assignment 14
+   <2026-04-24 Fri 11:59 PM>
+   Weekly homework
+
+
+** Math136: 19.3: Change of variables: proofs
+   <2026-04-27 Mon 10:30-11:45>
+   JCC 140
+   Lecture 26
+   19.3: Change of variables: proofs
+** Admin: Reading Period
+   <2026-04-28 Tue>
+** Admin: Reading Period
+   <2026-04-29 Wed>
+** Admin: Reading Period
+   <2026-04-30 Thu>
+** Math136: final exam
+   <2026-05-01 Fri 12:00-14:00>
+   JCC 140
+   Exam
+   final exam
+** Admin: Final Exam Period
+   <2026-05-01 Fri>
+** Admin: Final Exam Period
+   <2026-05-02 Sat>
+** Admin: Final Exam Period
+   <2026-05-03 Sun>
+** Admin: Final Exam Period
+   <2026-05-04 Mon>
+** Admin: Final Exam Period
+   <2026-05-05 Tue>
+** Admin: Final Exam Period
+   <2026-05-06 Wed>
+** Admin: Final Exam Period
+   <2026-05-07 Thu>
+** Admin: Final Exam Period
+   <2026-05-08 Fri>

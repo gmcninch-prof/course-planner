@@ -1,0 +1,175 @@
+
+
+Course {
+  semester = Semester { ay = 2025 term = Spring }
+  title = "Math136"
+  description = "Real Analysis II"
+  sections = ["01"]
+  instructors = ["George McNinch"]
+  teachingAssts = []
+  components = [
+    lecture
+    assignments
+    midterm1
+    midterm2
+    finalExam
+    officeHours1
+    officeHours2
+  ]
+}
+
+
+;; info
+
+
+let orgDirectory    = "Test"
+
+let lectureLocation = "JCC 140"
+let myOffice        = "JCC 587"
+
+let lectureStartTime = "10:30"
+let lectureStopTime  = "11:45"
+
+let midnight         = "11:59 PM"
+
+;; course components
+
+;;--------------------------------------------------------------------------------
+;; lecture
+
+
+let topics = [
+        "13.1: Limits; 13.2: partial derivatives"
+        "10.1: Measurement in R^n; 13.3: The Mean Value Theorem and directional derivatives"
+        "snow"
+        "10.2, 10.3, 11.1: convergence; open and closed sets in R^n; continuity"
+        "11.2, 11.3: sequential compactness; pathwise connectedness"
+        "11.3, 11.4: pathwise connectedness; connectedness"
+        "14.1: First order approximation; "
+        "14.2: quadratics, Hessian and 2nd derivs"
+        "midterm 1"
+        "14.3: Second order approximation"
+        "15.1: Linear maps and matrices"
+        "15.2: derivative matrix, differential"
+        "15.3: The chain rule"
+        "16.1: Functions of a single variable and maps in the plane"
+        "16.2: Stability of non-linear maps"
+        "16.3: Minimization principle and the general inverse function theorem"
+        "17.1: Dini's Theorem"
+        "17.2: The general implicit function theorem"
+        "midterm 2"
+        "17.3: Equations of surfaces and paths in space"
+        "18.1: Integration of functions on generalized rectangles"
+        "18.2: Continuity and integrability"
+        "18.3: Integration on Jordan domains"
+        "19.1: Iterated integrals"
+        "19.2: Change of variables: statements and examples"
+        "19.3: Change of variables: proofs"
+      ]
+
+
+let lecture = Lecture {
+  description = "course lecture"
+  sched = [
+    DowTufts {
+      dow = Mon
+      time = TimeRange {
+        start = lectureStartTime
+        stop = lectureStopTime
+      }
+      location = lectureLocation
+    }
+    DowTufts {
+      dow = Wed
+      time = TimeRange {
+        start = lectureStartTime
+        stop = lectureStopTime
+      }
+      location = lectureLocation
+    }
+  ]
+  topics = topics
+}
+
+
+;;--------------------------------------------------------------------------------
+;; assignments
+
+let assignments = Assignment {
+  description = "Weekly homework"
+  ;;  collectionMethod = "gradescope"
+  sched = [
+    DowDue {
+      dow = Fri
+      deadline = PointInTime { time = midnight }
+    }
+  ]
+  assignments = [ "partials" ]
+}
+
+;;--------------------------------------------------------------------------------
+;; midterm 1
+
+let midterm1 = Exam {
+  description = "midterm 1"
+  sched = [
+    Date {
+      date = "2026-02-18"
+      time = TimeRange {
+        start = lectureStartTime
+        stop = lectureStopTime
+      }
+      location = lectureLocation
+    }
+  ]
+}
+
+let midterm2 = Exam {
+  description = "midterm 2"
+  sched = [
+    Date {
+      date = "2026-03-30"
+      time = TimeRange {
+        start = lectureStartTime
+        stop = lectureStopTime
+      }
+      location = lectureLocation
+    }
+  ]
+}
+
+let finalExam = Exam {
+  description = "final exam"
+  sched = [
+    Date {
+      date = "2026-05-01"
+      time = TimeRange {
+        start = "12:00"
+        stop = "14:00"
+      }
+      location = lectureLocation
+    }
+  ]
+}
+
+let officeHours1 = Meeting {
+  description = "Office Hours"
+  dow = Thu
+  time = TimeRange {
+    start = "15:00"
+    stop = "16:00"
+  }
+  location = myOffice
+}
+
+let officeHours2 = Meeting {
+  description = "Office Hours"
+  dow = Wed
+  time = TimeRange {
+    start = "15:00"
+    stop = "16:00"
+  }
+  location = myOffice
+}
+
+

@@ -19,41 +19,51 @@ The pipeline:
 ## Usage
 
 ```bash
-course-planner <conf-file.mlml> <output-dir> 
+course-planner <conf-file.mlml> <output-dir> <org-output-dir> <semester-dir>
 ```
 
-Semester spec files are read from a fixed directory configured in `Main.lean`.
+Semester spec files are read from `<semester-dir>`
 
-Reports written to `<output-dir>`:
+Markdown reports written to `<output-dir>`:
 - `calendar.md` — full course calendar
 - `lectures.md` — lectures and exams only
 - `assignments.md` — assignment deadlines only
 
-Written to `~/org/`:
-- `<Course>--<AY>--<Term>.org` — org-mode calendar
+Org reports written to `<org-output-dir>`:
+- `<Course>--<AY>--<Term>.org` — emacs org-mode calendar info
+
+For more information, see the output data and specs in `Test`.
 
 ## Per-course Makefile
 
-Each course directory should have a `Makefile`:
+Each course directory should have a `Makefile`; for example:
 
 ```makefile
-COURSE_FILE = my-course.mlml
+COURSE_FILE = math136-spring26.mlml
 OUTPUT_DIR = course-pages
-PLANNER = course-planner
+PLANNER = course-planner                                # from ~/.local/bin/
+SEMESTER_DIR = /home/george/prof-univ/semester-specs
+ORG_DIR = /home/george/org
+
+reports:
+	$(PLANNER) $(COURSE_FILE) $(OUTPUT_DIR) $(ORG_DIR) $(SEMESTER_DIR)
+
+# clean up the markdown table output	
+	for f in $(MD_FILES); do pandoc -f markdown -t gfm -o $$f $$f; done
+
+html: reports
+	for f in $(MD_FILES); do \
+		pandoc -f markdown -t html5 -o $${f%.md}.html $$f; \
+	done
+
+pdf: reports
+	for f in $(MD_FILES); do \
+		pandoc -f markdown -t pdf -o $${f%.md}.pdf $$f; \
+	done
 
 all: reports html pdf
 
-reports:
-	$(PLANNER) $(COURSE_FILE) $(OUTPUT_DIR)
-	for f in $(OUTPUT_DIR)/*.md; do pandoc -f markdown -t gfm -o $$f $$f; done
-
-html:
-	for f in $(OUTPUT_DIR)/*.md; do pandoc -f markdown -t html5 --standalone -o $${f%.md}.html $$f; done
-
-pdf:
-	for f in $(OUTPUT_DIR)/*.md; do pandoc -f markdown -t pdf -o $${f%.md}.pdf $$f; done
-
-.PHONY: all reports html pdf
+.PHONY: reports html pdf all
 ```
 
 ## Dependencies

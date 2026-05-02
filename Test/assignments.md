@@ -1,4 +1,4 @@
-# Math136 - Assignments - AY2025-2026--Spring
+# Math136 - Assignments - AY2025-2026–Spring
 
 | Date  | DOW | Desc          | Week | Details                  |
 |-------|-----|---------------|------|--------------------------|
