@@ -1,4 +1,4 @@
-BINARY = course_planner
+BINARY = course-planner
 INSTALLED_NAME = course-planner
 
 BUILD_DIR = .lake/build/bin
@@ -19,8 +19,8 @@ install: build
 $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)
 
-reports: $(OUTPUT_DIR)
-	$(INSTALL_DIR)/$(BINARY) $(COURSE_FILE)
+# reports: $(OUTPUT_DIR)
+# 	$(INSTALL_DIR)/$(BINARY) $(COURSE_FILE) $(OUTPUT_DIR)
 
 clean:
 	lake clean

@@ -8,7 +8,7 @@ open Course
 open Pipeline
 open Output
 
-def semesterDir := "/home/george/prof-teach-assets/semester-specs"
+def semesterDir := "/home/george/prof-univ/semester-specs"
 
 
 def loadSemesters (dir : String) : IO (List SemSpec) := do
