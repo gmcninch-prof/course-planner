@@ -1,9 +1,5 @@
 --
--- Time-stamp: <2026-04-30 Thu 10:46 EDT - george@valhalla>
---
-
---
--- Time-stamp: <2026-04-24 Fri 15:40 EDT - george@sortilege>
+-- Time-stamp: <2026-05-03 Sun 13:36 EDT - george@valhalla>
 --
 
 import MLML.Codec
@@ -24,26 +20,26 @@ inductive ScheduleDetails where
 
 instance : Codec.Decode ScheduleDetails where
   decode
-    | .Constructor "DowTufts" fs => do
+    | .Record "DowTufts" fs => do
         let dow      ← Codec.decodeField "dow" fs
         let time     ← Codec.decodeField "time" fs
         let location ← Codec.decodeField "location" fs
         pure <| .dowTufts dow time location
-    | .Constructor "DowActual" fs => do
+    | .Record "DowActual" fs => do
         let dow      ← Codec.decodeField "dow" fs
         let time     ← Codec.decodeField "time" fs
         let location ← Codec.decodeField "location" fs
         pure <| .dowActual dow time location
-    | .Constructor "DowDue" fs => do
+    | .Record "DowDue" fs => do
         let dow      ← Codec.decodeField "dow" fs
         let deadline ← Codec.decodeField "deadline" fs
         pure <| .dowDue dow deadline
-    | .Constructor "Date" fs => do
+    | .Record "Date" fs => do
         let date     ← Codec.decodeField "date" fs
         let time     ← Codec.decodeField "time" fs
         let location ← Codec.decodeField "location" fs
         pure <| .date date time location
-    | .Constructor "DateDue" fs => do
+    | .Record "DateDue" fs => do
         let date     ← Codec.decodeField "date" fs
         let deadline ← Codec.decodeField "deadline" fs
         pure <| .dateDue date deadline
@@ -77,37 +73,37 @@ inductive CourseComponent where
 
 instance : Codec.Decode CourseComponent where
   decode
-    | .Constructor "Lecture" fs => do
+    | .Record "Lecture" fs => do
         let sched       ← Codec.decodeField "sched" fs
         let description ← Codec.decodeField "description" fs
         let topics      ← Codec.decodeField "topics" fs
         pure <| .lecture sched description topics
-    | .Constructor "Recitation" fs => do
+    | .Record "Recitation" fs => do
         let sched       ← Codec.decodeField "sched" fs
         let description ← Codec.decodeField "description" fs
         let instructor  ← Codec.decodeField "instructor" fs
         let topics      ← Codec.decodeField "topics" fs
         pure <| .recitation sched description instructor topics
-    | .Constructor "Assignment" fs => do
+    | .Record "Assignment" fs => do
         let sched       ← Codec.decodeField "sched" fs
         let description ← Codec.decodeField "description" fs
         let assignments ← Codec.decodeField "assignments" fs
         pure <| .assignment sched description assignments
-    | .Constructor "Exam" fs => do
+    | .Record "Exam" fs => do
         let sched       ← Codec.decodeField "sched" fs
         let description ← Codec.decodeField "description" fs
         pure <| .exam sched description
-    | .Constructor "Repeating" fs => do
+    | .Record "Repeating" fs => do
         let description   ← Codec.decodeField "description" fs
         let dow           ← Codec.decodeField "dow" fs
         let taskStaffList ← Codec.decodeField "taskStaffList" fs
         pure <| .repeating description dow taskStaffList
-    | .Constructor "Single" fs => do
+    | .Record "Single" fs => do
         let description ← Codec.decodeField "description" fs
         let deadline    ← Codec.decodeField "deadline" fs
         let taskStaff   ← Codec.decodeField "taskStaff" fs
         pure <| .single description deadline taskStaff
-    | .Constructor "Meeting" fs => do
+    | .Record "Meeting" fs => do
         let description ← Codec.decodeField "description" fs
         let time        ← Codec.decodeField "time" fs
         let location    ← Codec.decodeField "location" fs
@@ -147,7 +143,7 @@ structure Course where
 
 instance : Codec.Decode Course where
   decode
-    | .Constructor "Course" fs => do
+    | .Record "Course" fs => do
         let semester      ← Codec.decodeField "semester" fs
         let title         ← Codec.decodeField "title" fs
         let sections      ← Codec.decodeField "sections" fs

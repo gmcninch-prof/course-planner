@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-29 Wed 17:05 EDT - george@sortilege>
+-- Time-stamp: <2026-05-03 Sun 13:32 EDT - george@valhalla>
 --
 
 import Std.Time
@@ -28,13 +28,13 @@ def actualDow (d : PlainDate) : DOW :=
 
 instance : Codec.Decode DOW where
   decode
-    | .Constructor "Mon" [] => .ok .monday
-    | .Constructor "Tue" [] => .ok .tuesday
-    | .Constructor "Wed" [] => .ok .wednesday
-    | .Constructor "Thu" [] => .ok .thursday
-    | .Constructor "Fri" [] => .ok .friday
-    | .Constructor "Sat" [] => .ok .saturday
-    | .Constructor "Sun" [] => .ok .sunday
+    | .Record "Mon" [] => .ok .monday
+    | .Record "Tue" [] => .ok .tuesday
+    | .Record "Wed" [] => .ok .wednesday
+    | .Record "Thu" [] => .ok .thursday
+    | .Record "Fri" [] => .ok .friday
+    | .Record "Sat" [] => .ok .saturday
+    | .Record "Sun" [] => .ok .sunday
     | e => .error s!"Expected DOW; got {repr e}"
 
 /-- Phase of the academic semester -/
@@ -49,8 +49,8 @@ inductive Term where
 
 instance : Codec.Decode Term where
   decode
-    | .Constructor "Fall" []  => .ok .fall
-    | .Constructor "Spring" [] => .ok .spring
+    | .Record "Fall" []  => .ok .fall
+    | .Record "Spring" [] => .ok .spring
     | e            => .error s!"Expected Term; got {repr e}"
 
 
@@ -63,7 +63,7 @@ structure DateRange where
 
 instance : Codec.Decode DateRange where
   decode
-    | .Constructor "Range" fs => do
+    | .Record "Range" fs => do
         let start ← Codec.decodeField "start" fs
         let stop  ← Codec.decodeField "stop" fs
         pure { start, stop }
@@ -77,7 +77,7 @@ structure Semester where
 
 instance : Codec.Decode Semester where
   decode
-    | .Constructor "Semester" fs => do
+    | .Record "Semester" fs => do
         let term ← Codec.decodeField "term" fs
         let ay   ← Codec.decodeField "ay" fs
         pure { term, ay }
@@ -100,12 +100,12 @@ inductive EventTime where
 open Codec in
 instance : Codec.Decode EventTime where
   decode
-    | .Constructor "AllDay" [] => .ok .allDay
-    | .Constructor "TimeRange" fields => do
+    | .Record "AllDay" [] => .ok .allDay
+    | .Record "TimeRange" fields => do
         let start ← decodeField "start" fields
         let stop  ← decodeField "stop" fields
         return .timeRange start stop
-    | .Constructor "PointInTime" fields => do
+    | .Record "PointInTime" fields => do
         let time ← decodeField "time" fields
         return .pointInTime time
     | e => .error s!"Expected EventTime; got {repr e}"

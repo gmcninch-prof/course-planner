@@ -8,7 +8,7 @@ mutual
     | StrLit : String -> Expression
     | NatLit : Nat -> Expression
     | Id : String -> Expression
-    | Constructor : String -> List Field → Expression
+    | Record : String -> List Field → Expression
   deriving Repr
 
 end
@@ -19,7 +19,7 @@ mutual
     | .Field _ expr => expr.size + 1
   def Expression.size : Expression → Nat
     | .EList xs => xs.foldl (fun acc x => acc + x.size) 0 + 1
-    | .Constructor _ fields => fields.foldl (fun acc f => acc + f.size) 0 + 1
+    | .Record _ fields => fields.foldl (fun acc f => acc + f.size) 0 + 1
     | _ => 1
 end
 
@@ -62,6 +62,6 @@ theorem Expression.size_lt_list (a : Expression) (xs : List Expression) (h : a �
         omega        
 
 theorem Expression.size_lt_constructor (a : Field) (id : String) (lst : List Field) (h : a ∈ lst) :
-    a.size < (Expression.Constructor id lst).size := by sorry
+    a.size < (Expression.Record id lst).size := by sorry
 
 

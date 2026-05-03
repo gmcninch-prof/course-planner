@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-29 Wed 16:58 EDT - george@sortilege>
+-- Time-stamp: <2026-05-03 Sun 13:32 EDT - george@valhalla>
 --
 
 import MLML.Codec
@@ -34,20 +34,20 @@ inductive Exception where
 
 instance : Codec.Decode Exception where
   decode
-    | .Constructor "Holiday" fs => do
+    | .Record "Holiday" fs => do
         let descr ← Codec.decodeField "descr" fs
         let date  ← Codec.decodeField "date" fs
         pure <| .holiday descr date
-    | .Constructor "Admin" fs => do
+    | .Record "Admin" fs => do
         let descr     ← Codec.decodeField "descr" fs
         let date      ← Codec.decodeField "date" fs
         pure <| .admin descr date
-    | .Constructor "AltDow" fs => do
+    | .Record "AltDow" fs => do
         let descr ← Codec.decodeField "descr" fs
         let date  ← Codec.decodeField "date" fs
         let dow   ← Codec.decodeField "dow" fs
         pure <| .altDow descr date dow
-    | .Constructor "NoClass" fs => do
+    | .Record "NoClass" fs => do
         let descr ← Codec.decodeField "descr" fs
         let date  ← Codec.decodeField "date" fs
         pure <| .noClass descr date
@@ -64,7 +64,7 @@ structure SemSpec where
 
 instance : Codec.Decode SemSpec where
   decode
-    | .Constructor "Semester" fs => do
+    | .Record "Semester" fs => do
         let semester      ← Codec.decodeField "semester" fs
         let semDates      ← Codec.decodeField "semesterDates" fs
         let finalsDates   ← Codec.decodeField "finalsDates" fs
