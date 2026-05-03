@@ -7,7 +7,7 @@ INSTALL_DIR = $(HOME)/.local/bin
 OUTPUT_DIR = output
 
 TEST_DATA         = Test/math136-spring26.mlml
-TEST_OUTPUT       = Test/
+TEST_OUTPUT       = Test
 TEST_SEMESTER_DIR = Test/semester-specs
 TEST_MD_FILES     = $(wildcard $(TEST_OUTPUT)*.md)
 TEST_ORG_OUTPUT   = $(TEST_OUTPUT)
@@ -44,14 +44,14 @@ update:
 
 test:
 	lake exe course_planner $(TEST_DATA) $(TEST_OUTPUT) $(TEST_ORG_OUTPUT) $(TEST_SEMESTER_DIR) 
-	for f in $(TEST_OUTPUT)*.md; do pandoc -f markdown -t gfm -o $$f $$f; done
+	for f in $(TEST_OUTPUT)/*.md; do pandoc -f markdown -t gfm -o $$f $$f; done
 
 test-html: test
-	for f in $(TEST_OUTPUT)*.md; do \
+	for f in $(TEST_OUTPUT)/*.md; do \
 	    pandoc -f markdown -t html5 -o $${f%.md}.html $$f; \
 	done
 
 test-pdf: test
-	for f in $(TEST_OUTPUT)*.md; do \
-	    pandoc -f markdown -t pdf -o $${f%.md}.html $$f; \
+	for f in $(TEST_OUTPUT)/*.md; do \
+	    pandoc -f markdown -t pdf -o $${f%.md}.pdf $$f; \
 	done
