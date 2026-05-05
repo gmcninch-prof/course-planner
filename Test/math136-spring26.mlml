@@ -1,20 +1,20 @@
 
 
 Course {
-  semester = Semester { ay = 2025 term = Spring }
+  semester = Semester { ay = 2025 term = Spring } ;; Spring 2026
   title = "Math136"
   description = "Real Analysis II"
   sections = ["01"]
   instructors = ["George McNinch"]
   teachingAssts = []
+
   components = [
     lecture
     assignments
     midterm1
     midterm2
     finalExam
-    officeHours1
-    officeHours2
+    officeHours
   ]
 }
 
@@ -22,7 +22,7 @@ Course {
 ;; info
 
 
-let orgDirectory    = "Test"
+let orgDirectory    = "/home/george/org"
 
 let lectureLocation = "JCC 140"
 let myOffice        = "JCC 587"
@@ -68,7 +68,8 @@ let topics = [
       ]
 
 
-let lecture = Lecture {
+let lecture = Appointment {
+  kind = Lecture
   description = "course lecture"
   sched = [
     DowTufts {
@@ -152,24 +153,32 @@ let finalExam = Exam {
   ]
 }
 
-let officeHours1 = Meeting {
+let officeHours = Appointment {
+  kind = OfficeHour
   description = "Office Hours"
-  dow = Thu
-  time = TimeRange {
-    start = "15:00"
-    stop = "16:00"
-  }
-  location = myOffice
-}
 
-let officeHours2 = Meeting {
-  description = "Office Hours"
-  dow = Wed
-  time = TimeRange {
-    start = "15:00"
-    stop = "16:00"
-  }
-  location = myOffice
+  sched = [
+
+  DowTufts {
+    dow = Thu
+    location = myOffice    
+    time = TimeRange {
+      start = "15:00"
+      stop = "16:00"
+      }
+    }
+
+  DowTufts {
+    dow = Wed
+    time = TimeRange {
+      start = "15:00"
+      stop = "16:00"
+      }
+    location = myOffice      
+    }
+
+  ]
+
 }
 
 
