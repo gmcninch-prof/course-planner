@@ -32,16 +32,16 @@ def entryToOrg (courseName : String) (day : AcademicDay) (entry : CalEntry) : St
       let seqStr := match seq with | some n => s!"\n   {eventType} {n}" | none => s!"\n   {eventType}"
       let ts := formatOrgTimestamp day.date day.tuftsDow time
       s!"** {courseName}: {desc}\n   {ts}\n   {loc}{seqStr}\n   {desc}"
-  | .deadline time _ desc _ seq _ =>
+  | .deadline time desc _ seq _ =>
       let seqStr := match seq with | some n => s!"Assignment {n}" | none => "Assignment"
       let ts := formatOrgTimestamp day.date day.tuftsDow time
       s!"** {courseName}: {seqStr}\n   {ts}\n   {desc}"
   | .noClass desc =>
       let ts := formatOrgTimestamp day.date day.tuftsDow .allDay
       s!"** {desc}\n   {ts}"
-  | .admin adminType desc =>
+  | .admin desc =>
       let ts := formatOrgTimestamp day.date day.tuftsDow .allDay
-      s!"** {adminType}: {desc}\n   {ts}"
+      s!"** Univ: {desc}\n   {ts}"
   | .meeting desc time loc _ =>
       let ts := formatOrgTimestamp day.date day.tuftsDow time
       s!"** {courseName}: {desc} ({loc})\n   {ts}"

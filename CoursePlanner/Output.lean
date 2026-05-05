@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-30 Thu 09:48 EDT - george@valhalla>
+-- Time-stamp: <2026-05-05 Tue 12:40 EDT - george@sortilege>
 --
 
 import CoursePlanner.Calendar
@@ -38,21 +38,21 @@ def formatEventTime : EventTime → String
 
 def entryLabel : CalEntry → String
   | .event _ _ eventType _ _ (some n) _ => s!"{eventType} {n}"
-  | .event _ _ eventType _ _ none _     => eventType
-  | .deadline _ _ _ _ (some n) _        => s!"Assignment {n}"
-  | .deadline _ _ _ _ none _            => "Assignment"
-  | .noClass _                           => "Tufts"
-  | .admin _ _                           => "Tufts"
-  | .meeting _ _ _ _                     => "Meeting"
-  | .task _ _ _                          => "Task"
+  | .event _ _ eventType _ _ none _     => toString eventType
+  | .deadline _ _ _ (some n) _          => s!"Assignment {n}"
+  | .deadline _ _ _ none _              => "Assignment"
+  | .noClass _                          => "Univ"
+  | .admin _                            => "Univ"
+  | .meeting _ _ _ _                    => "Meeting"
+  | .task _ _ _                         => "Task"
 
 def entryDetails : CalEntry → String
-  | .event time loc _ desc _ _ _      => s!"{formatEventTime time} {loc} - {desc}"
-  | .deadline time _ desc _ _ _       => s!"{formatEventTime time} {desc}"
-  | .noClass desc                      => s!"**No classes:** *{desc}*"
-  | .admin adminType desc              => s!"**{adminType}:** *{desc}*"
-  | .meeting desc time loc _           => s!"{formatEventTime time} {loc} - {desc}"
-  | .task desc staff _                 => s!"{desc} ({staff})"
+  | .event time loc _ desc _ _ _        => s!"{formatEventTime time} {loc} - {desc}"
+  | .deadline time desc _ _ _           => s!"{formatEventTime time} {desc}"
+  | .noClass desc                       => s!"**No classes:** *{desc}*"
+  | .admin desc                         => s!"*{desc}*"
+  | .meeting desc time loc _            => s!"{formatEventTime time} {loc} - {desc}"
+  | .task desc staff _                  => s!"{desc} ({staff})"
 
 -- Row construction
 
@@ -87,15 +87,15 @@ def calendarTable (filter : CalEntry → Bool) (cc : Pipeline.CourseCalendar) : 
 def allEntries : CalEntry → Bool := fun _ => true
 
 def lectureEntries : CalEntry → Bool
-  | .event _ _ "Lecture" _ _ _ _ => true
-  | .event _ _ "Exam" _ _ _ _    => true
+  | .event _ _ .Lecture _ _ _ _   => true
+  | .event _ _ .Exam _ _ _ _      => true
   | .noClass _                    => true
-  | .admin _ _                    => true
+  | .admin _                      => false
   | _                             => false
 
 def assignmentEntries : CalEntry → Bool
-  | .deadline _ _ _ _ _ _ => true
-  | _                      => false
+  | .deadline _ _ _ _ _ => true
+  | _                   => false
 
 def fullCalendarReport (cc : Pipeline.CourseCalendar) : String :=
   let title := s!"# {cc.course.title} - {cc.course.description} - {repr cc.course.semester}\n\n"

@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-05-03 Sun 13:32 EDT - george@valhalla>
+-- Time-stamp: <2026-05-05 Tue 12:30 EDT - george@sortilege>
 --
 
 import Std.Time
@@ -110,24 +110,38 @@ instance : Codec.Decode EventTime where
         return .pointInTime time
     | e => .error s!"Expected EventTime; got {repr e}"
 
+inductive EventType where
+  | Lecture
+  | Recitation
+  | Exam
+  | OfficeHour
+  | GradMeeting
+  deriving Repr, BEq
+  
+instance : ToString EventType where
+  toString
+    | .Lecture     => "Lecture"
+    | .Recitation  => "Recitation"
+    | .OfficeHour => "Office Hours"
+    | .GradMeeting => "Grad Meeting"
+    | .Exam        => "Exam"  
+
 /-- A calendar entry attached to an academic day -/
 inductive CalEntry where
   | event    (time : EventTime)
              (loc : String)
-             (eventType : String)
+             (eventType : EventType)
              (description : String)
              (details : List String)
              (sequence : Option Nat)
              (courseName : Option String)
   | deadline (time : EventTime)
-             (dlType : String)
              (description : String)
              (details : List String)
              (sequence : Option Nat)
              (courseName : Option String)
   | noClass  (description : String)
-  | admin    (origin : String)
-             (description : String)
+  | admin    (description : String)
   | meeting  (description : String)
              (time : EventTime)
              (location : String)

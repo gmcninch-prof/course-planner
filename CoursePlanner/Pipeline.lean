@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-04-30 Thu 09:34 EDT - george@valhalla>
+-- Time-stamp: <2026-05-05 Tue 12:28 EDT - george@sortilege>
 --
 
 import Std.Time
@@ -70,11 +70,11 @@ def applyException (exc : Semester.Exception) (day : AcademicDay) : AcademicDay 
       else day
   | .admin descr date =>
       if matchDate date day then
-        addEntry (.admin "Admin" descr) day
+        addEntry (.admin descr) day
       else day
   | .altDow descr date dow =>
       if matchDate date day then
-        { addEntry (.admin "Tufts" descr) day with tuftsDow := dow }
+        { addEntry (.admin descr) day with tuftsDow := dow }
       else day
 
 def applyExceptions (exceptions : List Semester.Exception) (days : List AcademicDay) : List AcademicDay :=
@@ -116,13 +116,12 @@ def makeEntry (comp : CourseComponent)
               (seq : Option Nat)
               (courseName : Option String) : CalEntry :=
   match comp with
-  | .lecture _ _ _       => .event (sdTime sd) (sdLoc sd) "Lecture" desc [] seq courseName
-  | .recitation _ _ _ _  => .event (sdTime sd) (sdLoc sd) "Recitation" desc [] seq courseName
-  | .assignment _ _ _    => .deadline (sdTime sd) "" desc [] seq courseName
-  | .exam _ _            => .event (sdTime sd) (sdLoc sd) "Exam" desc [] seq courseName
-  | .repeating d _ _     => .task d "" courseName
-  | .single d _ _        => .deadline (sdTime sd) "" d [] seq courseName
-  | .meeting d time loc _ => .meeting d time loc courseName
+  | .appointment _ _ _ .Lecture        => .event (sdTime sd) (sdLoc sd) .Lecture desc [] seq courseName
+  | .appointment _ _ _ .OfficeHours    => .event (sdTime sd) (sdLoc sd) .OfficeHour desc [] seq courseName  
+  | .appointment _ _ _ .GradMeeting    => .event (sdTime sd) (sdLoc sd) .GradMeeting desc [] seq courseName  
+  | .appointment _ _ _ (.Recitation _) => .event (sdTime sd) (sdLoc sd) .Recitation desc [] seq courseName  
+  | .assignment _ _ _                  => .deadline (sdTime sd) desc [] seq courseName
+  | .exam _ _                          => .event (sdTime sd) (sdLoc sd) .Exam desc [] seq courseName
   
   
 inductive ComponentAction where
@@ -156,12 +155,12 @@ def applyComponent (comp : CourseComponent) (courseName : Option String) (days :
   days'
 where
   action : CourseComponent → AcademicDay → ComponentAction
-    | .lecture _ _ _ => fun day =>
-      let hasExam := day.entries.any (fun e => match e with | .event _ _ "Exam" _ _ _ _ => true | _ => false)
+    | .appointment _ _ _ _ => fun day =>
+      let hasExam := day.entries.any (fun e => match e with | .event _ _ .Exam _ _ _ _ => true | _ => false)
       if !day.univOpen || day.status != .inTerm then .skip
       else if hasExam then .suppress
       else .fire
-    | .assignment _ _ _ | .meeting _ _ _ _ => fun day =>
+    | .assignment _ _ _  => fun day =>
       if !day.univOpen || day.status != .inTerm then .skip 
       else .fire
     | _ => fun day =>
@@ -186,7 +185,7 @@ def courseCalendar (course : Course) (specs : List SemSpec) : Except String Cour
   let days ← semesterDates spec
   let days := addCourseEntries course (applyExceptions spec.exceptions days)
   return { course, days }
-  
+    
   
 end Pipeline
 
