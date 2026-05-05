@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-05-05 Tue 12:40 EDT - george@sortilege>
+-- Time-stamp: <2026-05-05 Tue 12:44 EDT - george@sortilege>
 --
 
 import CoursePlanner.Calendar
@@ -93,21 +93,31 @@ def lectureEntries : CalEntry → Bool
   | .admin _                      => false
   | _                             => false
 
+def gradEntries : CalEntry → Bool
+  | .event _ _ .GradMeeting _ _ _ _      => true
+  | .event _ _ .Exam _ _ _ _      => true  
+  | .noClass _                    => true
+  | _                             => false
+
 def assignmentEntries : CalEntry → Bool
   | .deadline _ _ _ _ _ => true
   | _                   => false
 
-def fullCalendarReport (cc : Pipeline.CourseCalendar) : String :=
-  let title := s!"# {cc.course.title} - {cc.course.description} - {repr cc.course.semester}\n\n"
-  title ++ renderMarkdown (calendarTable allEntries cc)
+-- def fullCalendarReport (cc : Pipeline.CourseCalendar) : String :=
+--   let title := s!"# {cc.course.title} - {cc.course.description} - {repr cc.course.semester}\n\n"
+--   title ++ renderMarkdown (calendarTable allEntries cc)
 
-def lectureReport (cc : Pipeline.CourseCalendar) : String :=
-  let title := s!"# {cc.course.title} - Lectures - {repr cc.course.semester}\n\n"
-  title ++ renderMarkdown (calendarTable lectureEntries cc)
+-- def lectureReport (cc : Pipeline.CourseCalendar) : String :=
+--   let title := s!"# {cc.course.title} - Lectures - {repr cc.course.semester}\n\n"
+--   title ++ renderMarkdown (calendarTable lectureEntries cc)
 
-def assignmentReport (cc : Pipeline.CourseCalendar) : String :=
+-- def assignmentReport (cc : Pipeline.CourseCalendar) : String :=
+--   let title := s!"# {cc.course.title} - Assignments - {repr cc.course.semester}\n\n"
+--   title ++ renderMarkdown (calendarTable assignmentEntries cc)
+
+def report (cc : Pipeline.CourseCalendar) (filter : CalEntry -> Bool) : String :=
   let title := s!"# {cc.course.title} - Assignments - {repr cc.course.semester}\n\n"
-  title ++ renderMarkdown (calendarTable assignmentEntries cc)
+  title ++ renderMarkdown (calendarTable filter cc)
 
 end Output
 

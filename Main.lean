@@ -36,9 +36,10 @@ def run (courseFile outputDir orgDir semesterDir : String)
             if reports.contains name || reports.contains "all" then
               IO.FS.writeFile path content
               IO.println s!"Wrote {path}"
-          writeIf "calendar"    (fullCalendarReport cc) s!"{outputDir}/calendar.md"
-          writeIf "lectures"    (lectureReport cc)      s!"{outputDir}/lectures.md"
-          writeIf "assignments" (assignmentReport cc)   s!"{outputDir}/assignments.md"
+          writeIf "grad"        (report cc gradEntries)         s!"{outputDir}/grad.md"
+          writeIf "calendar"    (report cc allEntries)          s!"{outputDir}/calendar.md"
+          writeIf "lectures"    (report cc lectureEntries)      s!"{outputDir}/lectures.md"
+          writeIf "assignments" (report cc assignmentEntries)   s!"{outputDir}/assignments.md"
           let orgPath := s!"{orgDir}/{OrgOutput.orgFileName cc}"
           writeIf "org"         (OrgOutput.courseCalendarToOrg cc) orgPath
 
