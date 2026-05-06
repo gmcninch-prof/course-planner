@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-05-05 Tue 12:44 EDT - george@sortilege>
+-- Time-stamp: <2026-05-05 Tue 22:07 EDT - george@valhalla>
 --
 
 import CoursePlanner.Calendar
@@ -49,7 +49,7 @@ def entryLabel : CalEntry → String
 def entryDetails : CalEntry → String
   | .event time loc _ desc _ _ _        => s!"{formatEventTime time} {loc} - {desc}"
   | .deadline time desc _ _ _           => s!"{formatEventTime time} {desc}"
-  | .noClass desc                       => s!"**No classes:** *{desc}*"
+  | .noClass desc                       => s!"**No classes** *{desc}*"
   | .admin desc                         => s!"*{desc}*"
   | .meeting desc time loc _            => s!"{formatEventTime time} {loc} - {desc}"
   | .task desc staff _                  => s!"{desc} ({staff})"
@@ -115,8 +115,8 @@ def assignmentEntries : CalEntry → Bool
 --   let title := s!"# {cc.course.title} - Assignments - {repr cc.course.semester}\n\n"
 --   title ++ renderMarkdown (calendarTable assignmentEntries cc)
 
-def report (cc : Pipeline.CourseCalendar) (filter : CalEntry -> Bool) : String :=
-  let title := s!"# {cc.course.title} - Assignments - {repr cc.course.semester}\n\n"
+def report (cc : Pipeline.CourseCalendar) (title: String) (filter : CalEntry -> Bool) : String :=
+  let title := s!"# {cc.course.title} - {title} - {repr cc.course.semester}\n\n"
   title ++ renderMarkdown (calendarTable filter cc)
 
 end Output

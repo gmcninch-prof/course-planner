@@ -1,5 +1,5 @@
 --
--- Time-stamp: <2026-05-05 Tue 11:31 EDT - george@sortilege>
+-- Time-stamp: <2026-05-05 Tue 17:26 EDT - george@valhalla>
 --
 
 import MLML.Codec
@@ -124,11 +124,11 @@ instance : Codec.Decode Course where
     | .Record "Course" fs => do
         let semester      ← Codec.decodeField "semester" fs
         let title         ← Codec.decodeField "title" fs
-        let sections      ← Codec.decodeField "sections" fs
+        let sections      ← Codec.decodeFieldList "sections" fs
         let instructors   ← Codec.decodeField "instructors" fs
-        let teachingAssts ← Codec.decodeField "teachingAssts" fs
+        let teachingAssts ← Codec.decodeFieldList "teachingAssts" fs
         let description   ← Codec.decodeField "description" fs
-        let components    ← Codec.decodeField "components" fs
+        let components    ← Codec.decodeFieldList "components" fs
         pure <| { semester
                 , title
                 , sections

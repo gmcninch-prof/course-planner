@@ -6,7 +6,7 @@
 | 01/14 | Wed | Lecture 1     | 1    | 10:30-11:45 JCC 140 - 13.1: Limits; 13.2: partial derivatives                                            |
 | 01/15 | Thu | Office Hours  | 1    | 15:00-16:00 JCC 587 - Office Hours                                                                       |
 | 01/16 | Fri | Assignment 1  | 1    | 11:59 PM partials                                                                                        |
-| 01/19 | Mon | Univ          | 2    | **No classes:** *MLK Holiday*                                                                            |
+| 01/19 | Mon | Univ          | 2    | **No classes** *MLK Holiday*                                                                             |
 | 01/21 | Mon | Lecture 2     | 2    | 10:30-11:45 JCC 140 - 10.1: Measurement in R^n; 13.3: The Mean Value Theorem and directional derivatives |
 | 01/21 | Mon | Univ          | 2    | *Monday Schedule*                                                                                        |
 | 01/21 | Mon | Univ          | 2    | *Last day to add a course*                                                                               |
@@ -27,7 +27,7 @@
 | 02/11 | Wed | Lecture 8     | 5    | 10:30-11:45 JCC 140 - 14.2: quadratics, Hessian and 2nd derivs                                           |
 | 02/12 | Thu | Office Hours  | 5    | 15:00-16:00 JCC 587 - Office Hours                                                                       |
 | 02/13 | Fri | Assignment 5  | 5    | 11:59 PM Weekly homework                                                                                 |
-| 02/16 | Mon | Univ          | 6    | **No classes:** *Presidents’ Day*                                                                        |
+| 02/16 | Mon | Univ          | 6    | **No classes** *Presidents’ Day*                                                                         |
 | 02/18 | Wed | Exam          | 6    | 10:30-11:45 JCC 140 - midterm 1                                                                          |
 | 02/18 | Wed | Univ          | 6    | *Last day to drop without record*                                                                        |
 | 02/19 | Mon | Lecture 10    | 6    | 10:30-11:45 JCC 140 - 14.3: Second order approximation                                                   |
@@ -48,15 +48,15 @@
 | 03/11 | Wed | Lecture 16    | 9    | 10:30-11:45 JCC 140 - 16.3: Minimization principle and the general inverse function theorem              |
 | 03/12 | Thu | Office Hours  | 9    | 15:00-16:00 JCC 587 - Office Hours                                                                       |
 | 03/13 | Fri | Assignment 9  | 9    | 11:59 PM Weekly homework                                                                                 |
-| 03/14 | Sat | Univ          | 9    | **No classes:** *Spring Break*                                                                           |
-| 03/15 | Sun | Univ          | 9    | **No classes:** *Spring Break*                                                                           |
-| 03/16 | Mon | Univ          | 10   | **No classes:** *Spring Break*                                                                           |
-| 03/17 | Tue | Univ          | 10   | **No classes:** *Spring Break*                                                                           |
-| 03/18 | Wed | Univ          | 10   | **No classes:** *Spring Break*                                                                           |
-| 03/19 | Thu | Univ          | 10   | **No classes:** *Spring Break*                                                                           |
-| 03/20 | Fri | Univ          | 10   | **No classes:** *Spring Break*                                                                           |
-| 03/21 | Sat | Univ          | 10   | **No classes:** *Spring Break*                                                                           |
-| 03/22 | Sun | Univ          | 10   | **No classes:** *Spring Break*                                                                           |
+| 03/14 | Sat | Univ          | 9    | **No classes** *Spring Break*                                                                            |
+| 03/15 | Sun | Univ          | 9    | **No classes** *Spring Break*                                                                            |
+| 03/16 | Mon | Univ          | 10   | **No classes** *Spring Break*                                                                            |
+| 03/17 | Tue | Univ          | 10   | **No classes** *Spring Break*                                                                            |
+| 03/18 | Wed | Univ          | 10   | **No classes** *Spring Break*                                                                            |
+| 03/19 | Thu | Univ          | 10   | **No classes** *Spring Break*                                                                            |
+| 03/20 | Fri | Univ          | 10   | **No classes** *Spring Break*                                                                            |
+| 03/21 | Sat | Univ          | 10   | **No classes** *Spring Break*                                                                            |
+| 03/22 | Sun | Univ          | 10   | **No classes** *Spring Break*                                                                            |
 | 03/23 | Mon | Lecture 17    | 11   | 10:30-11:45 JCC 140 - 17.1: Dini’s Theorem                                                               |
 | 03/25 | Wed | Office Hours  | 11   | 15:00-16:00 JCC 587 - Office Hours                                                                       |
 | 03/25 | Wed | Lecture 18    | 11   | 10:30-11:45 JCC 140 - 17.2: The general implicit function theorem                                        |
@@ -79,7 +79,7 @@
 | 04/15 | Wed | Lecture 24    | 14   | 10:30-11:45 JCC 140 - 19.1: Iterated integrals                                                           |
 | 04/16 | Thu | Office Hours  | 14   | 15:00-16:00 JCC 587 - Office Hours                                                                       |
 | 04/17 | Fri | Assignment 13 | 14   | 11:59 PM Weekly homework                                                                                 |
-| 04/20 | Mon | Univ          | 15   | **No classes:** *Patriots’ Day*                                                                          |
+| 04/20 | Mon | Univ          | 15   | **No classes** *Patriots’ Day*                                                                           |
 | 04/22 | Wed | Office Hours  | 15   | 15:00-16:00 JCC 587 - Office Hours                                                                       |
 | 04/22 | Wed | Lecture 25    | 15   | 10:30-11:45 JCC 140 - 19.2: Change of variables: statements and examples                                 |
 | 04/23 | Thu | Office Hours  | 15   | 15:00-16:00 JCC 587 - Office Hours                                                                       |
