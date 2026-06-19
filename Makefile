@@ -6,9 +6,9 @@ INSTALL_DIR = $(HOME)/.local/bin
 
 OUTPUT_DIR = output
 
-TEST_DATA         = Test/math136-spring26.mlml
-TEST_OUTPUT       = Test
-TEST_SEMESTER_DIR = Test/semester-specs
+TEST_DATA         = examples/math136-spring26.mlml
+TEST_OUTPUT       = examples
+TEST_SEMESTER_DIR = examples/semester-specs
 TEST_MD_FILES     = $(wildcard $(TEST_OUTPUT)*.md)
 TEST_ORG_OUTPUT   = $(TEST_OUTPUT)
 

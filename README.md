@@ -33,16 +33,22 @@ Org reports written to `<org-output-dir>`:
 - `<Course>--<AY>--<Term>.org` — emacs org-mode calendar info
 
 For more information, see the `Makefile` `test` target, the specs in
-`Test` and the resulting output data (markdown and org) in `Test`.
+`examples/` and the resulting output data (markdown and org) in `examples/`.
 
 ## Per-course Makefile
 
-Each course directory should have a `Makefile`; for example:
+Each course directory should have a `Makefile`. A ready-to-copy template is
+provided at [`course-makefile.sample`](./course-makefile.sample) in this repo.
+Copy it to your course directory, rename it `Makefile`, and adjust the
+variables at the top to match your setup.
+
+The sample looks like this:
 
 ```makefile
 COURSE_FILE = math136-spring26.mlml
 OUTPUT_DIR = course-pages
 PLANNER = course-planner                                # from ~/.local/bin/
+MD_FILES = $(OUTPUT_DIR)/calendar.md $(OUTPUT_DIR)/lectures.md $(OUTPUT_DIR)/assignments.md
 SEMESTER_DIR = /home/george/prof-univ/semester-specs
 ORG_DIR = /home/george/org
 
