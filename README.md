@@ -37,41 +37,37 @@ For more information, see the `Makefile` `test` target, the specs in
 
 ## Per-course Makefile
 
-Each course directory should have a `Makefile`. A ready-to-copy template is
-provided at [`course-makefile.sample`](./course-makefile.sample) in this repo.
-Copy it to your course directory, rename it `Makefile`, and adjust the
-variables at the top to match your setup.
+Each course/seminar/advisee directory should have a thin `Makefile` that sets
+a few variables and includes the shared recipes in
+[`course.mk`](./course.mk). A ready-to-copy template is provided at
+[`course-makefile.sample`](./course-makefile.sample) in this repo. Copy it to
+your directory, rename it `Makefile`, and adjust the variables at the top to
+match your setup.
 
 The sample looks like this:
 
 ```makefile
-COURSE_FILE = math136-spring26.mlml
-OUTPUT_DIR = course-pages
-PLANNER = course-planner                                # from ~/.local/bin/
-MD_FILES = $(OUTPUT_DIR)/calendar.md $(OUTPUT_DIR)/lectures.md $(OUTPUT_DIR)/assignments.md
-SEMESTER_DIR = /home/george/prof-univ/semester-specs
-ORG_DIR = /home/george/org
+COURSE_FILE  = math136-spring26.mlml
+OUTPUT_DIR   = course-pages
+MD_FILES     = $(OUTPUT_DIR)/calendar.md $(OUTPUT_DIR)/lectures.md $(OUTPUT_DIR)/assignments.md
+REPORT_TYPES = calendar,lectures,assignments,org
 
-reports:
-	$(PLANNER) $(COURSE_FILE) $(OUTPUT_DIR) $(ORG_DIR) $(SEMESTER_DIR)
+# SEMESTER_DIR and ORG_DIR default to $(HOME)/prof-univ/semester-specs and
+# $(HOME)/org respectively (see course.mk); override here if needed.
 
-# clean up the markdown table output	
-	for f in $(MD_FILES); do pandoc -f markdown -t gfm -o $$f $$f; done
-
-html: reports
-	for f in $(MD_FILES); do \
-		pandoc -f markdown -t html5 -o $${f%.md}.html $$f; \
-	done
-
-pdf: reports
-	for f in $(MD_FILES); do \
-		pandoc -f markdown -t pdf -o $${f%.md}.pdf $$f; \
-	done
-
-all: reports html pdf
-
-.PHONY: reports html pdf all
+include $(HOME)/.local/bin/course.mk
 ```
+
+`REPORT_TYPES` is the comma-separated list passed as the tool's final
+argument (see `Main.lean`); it should match whatever `MD_FILES` names plus
+`org` if you want the org-mode calendar written. `course.mk` provides the
+`reports`, `html`, `pdf`, and `all` targets, along with the `pandoc`
+post-processing steps — a per-directory Makefile shouldn't need to redefine
+any of that.
+
+`make install` copies `course.mk` to `$(HOME)/.local/bin` alongside the
+`course-planner` binary, so per-directory Makefiles include the installed
+copy rather than reaching into this source checkout.
 
 ## Dependencies
 

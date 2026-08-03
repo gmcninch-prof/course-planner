@@ -22,6 +22,7 @@ build:
 
 install: build
 	cp $(BUILD_DIR)/$(LAKE_BINARY) $(INSTALL_DIR)/$(INSTALLED_NAME)
+	cp course.mk $(INSTALL_DIR)/course.mk
 
 $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)

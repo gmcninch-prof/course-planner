@@ -1,26 +1,9 @@
-COURSE_FILE = math136-spring26.mlml
-OUTPUT_DIR = course-pages
-PLANNER = course-planner                                # from ~/.local/bin/
-MD_FILES = $(OUTPUT_DIR)/calendar.md $(OUTPUT_DIR)/lectures.md $(OUTPUT_DIR)/assignments.md
-SEMESTER_DIR = /home/george/prof-univ/semester-specs
-ORG_DIR = /home/george/org
+COURSE_FILE  = math136-spring26.mlml
+OUTPUT_DIR   = course-pages
+MD_FILES     = $(OUTPUT_DIR)/calendar.md $(OUTPUT_DIR)/lectures.md $(OUTPUT_DIR)/assignments.md
+REPORT_TYPES = calendar,lectures,assignments,org
 
-reports:
-	$(PLANNER) $(COURSE_FILE) $(OUTPUT_DIR) $(ORG_DIR) $(SEMESTER_DIR)
+# SEMESTER_DIR and ORG_DIR default to $(HOME)/prof-univ/semester-specs and
+# $(HOME)/org respectively (see course.mk); override here if needed.
 
-# clean up the markdown table output	
-	for f in $(MD_FILES); do pandoc -f markdown -t gfm -o $$f $$f; done
-
-html: reports
-	for f in $(MD_FILES); do \
-		pandoc -f markdown -t html5 -o $${f%.md}.html $$f; \
-	done
-
-pdf: reports
-	for f in $(MD_FILES); do \
-		pandoc -f markdown -t pdf -o $${f%.md}.pdf $$f; \
-	done
-
-all: reports html pdf
-
-.PHONY: reports html pdf all
+include $(HOME)/.local/bin/course.mk
