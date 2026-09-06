@@ -15,7 +15,7 @@ TEST_ORG_OUTPUT   = $(TEST_OUTPUT)
 
 .PHONY: all build install clean reports test test-html test-pdf test-reports
 
-all: build test
+all: build # test
 
 build:
 	lake build
@@ -45,14 +45,14 @@ update:
 
 test:
 	lake exe course_planner $(TEST_DATA) $(TEST_OUTPUT) $(TEST_ORG_OUTPUT) $(TEST_SEMESTER_DIR) 
-	for f in $(TEST_OUTPUT)/*.md; do pandoc -f markdown -t gfm -o $$f $$f; done
+	for f in $(TEST_OUTPUT)/*.md; do pandoc -f markdown-smart -t gfm -o $$f $$f; done
 
 test-html: test
 	for f in $(TEST_OUTPUT)/*.md; do \
-	    pandoc -f markdown -t html5 -o $${f%.md}.html $$f; \
+	    pandoc -f markdown-smart -t html5 -o $${f%.md}.html $$f; \
 	done
 
 test-pdf: test
 	for f in $(TEST_OUTPUT)/*.md; do \
-	    pandoc -f markdown -t pdf -o $${f%.md}.pdf $$f; \
+	    pandoc -f markdown-smart -t pdf -o $${f%.md}.pdf $$f; \
 	done

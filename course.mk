@@ -26,16 +26,16 @@ $(OUTPUT_DIR):
 
 reports: $(OUTPUT_DIR)
 	$(PLANNER) $(COURSE_FILE) $(OUTPUT_DIR) $(ORG_DIR) $(SEMESTER_DIR) "$(REPORT_TYPES)"
-	for f in $(MD_FILES); do pandoc -f markdown -t gfm -o $$f $$f; done
+	for f in $(MD_FILES); do pandoc -f markdown-smart -t gfm -o $$f $$f; done
 
 html: reports
 	for f in $(MD_FILES); do \
-		pandoc -f markdown -t html5 -o $${f%.md}.html $$f; \
+		pandoc -f markdown-smart -t html5 -o $${f%.md}.html $$f; \
 	done
 
 pdf: reports
 	for f in $(MD_FILES); do \
-		pandoc -f markdown -t pdf -o $${f%.md}.pdf $$f; \
+		pandoc -f markdown-smart -t pdf -o $${f%.md}.pdf $$f; \
 	done
 
 all: reports html pdf
