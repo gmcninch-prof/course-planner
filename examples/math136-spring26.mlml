@@ -9,6 +9,7 @@ Course {
   teachingAssts = []
   components = [
     lecture
+    recitation
     assignments
     midterm1
     midterm2
@@ -68,8 +69,9 @@ let topics = [
       ]
 
 
-let lecture = Lecture {
+let lecture = Appointment {
   description = "course lecture"
+  kind = Lecture {}
   sched = [
     DowTufts {
       dow = Mon
@@ -91,6 +93,30 @@ let lecture = Lecture {
   topics = topics
 }
 
+
+;;--------------------------------------------------------------------------------
+;; recitation -- meets every other Friday
+
+let recitationLocation = "JCC 141"
+
+let recitation = Appointment {
+  description = "recitation"
+  kind = Recitation { Instructor = "TBD" }
+  sched = [
+    EveryOtherWeek {
+      anchor = "2026-01-23"
+      inner = DowTufts {
+        dow = Fri
+        time = TimeRange {
+          start = "13:30"
+          stop = "14:20"
+        }
+        location = recitationLocation
+      }
+    }
+  ]
+  topics = []
+}
 
 ;;--------------------------------------------------------------------------------
 ;; assignments
@@ -152,24 +178,36 @@ let finalExam = Exam {
   ]
 }
 
-let officeHours1 = Meeting {
+let officeHours1 = Appointment {
   description = "Office Hours"
-  dow = Thu
-  time = TimeRange {
-    start = "15:00"
-    stop = "16:00"
-  }
-  location = myOffice
+  kind = OfficeHour {}
+  sched = [
+    DowTufts {
+      dow = Thu
+      time = TimeRange {
+        start = "15:00"
+        stop = "16:00"
+      }
+      location = myOffice
+    }
+  ]
+  topics = []
 }
 
-let officeHours2 = Meeting {
+let officeHours2 = Appointment {
   description = "Office Hours"
-  dow = Wed
-  time = TimeRange {
-    start = "15:00"
-    stop = "16:00"
-  }
-  location = myOffice
+  kind = OfficeHour {}
+  sched = [
+    DowTufts {
+      dow = Wed
+      time = TimeRange {
+        start = "15:00"
+        stop = "16:00"
+      }
+      location = myOffice
+    }
+  ]
+  topics = []
 }
 
 

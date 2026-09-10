@@ -80,6 +80,21 @@ def applyException (exc : Semester.Exception) (day : AcademicDay) : AcademicDay 
 def applyExceptions (exceptions : List Semester.Exception) (days : List AcademicDay) : List AcademicDay :=
   exceptions.foldl (fun days exc => days.map (applyException exc)) days
 
+/-- Does `day` fall in a week of the same parity as the week containing `anchor`?
+    (`day`s before `anchor` never match -- `weekSince` clamps negative offsets to 0.) -/
+def matchesWeekParity (anchor : String) (day : AcademicDay) : Bool :=
+  match PlainDate.parse anchor with
+  | .ok anchorDate =>
+      let diff : Day.Offset := day.date.toDaysSinceUNIXEpoch - anchorDate.toDaysSinceUNIXEpoch
+      diff.val >= 0 && (weekSince anchorDate day.date - 1) % 2 == 0
+  | .error _       => false
+
+def matchesDowPattern (dp : DowPattern) (day : AcademicDay) : Bool :=
+  match dp with
+  | .tufts dow _ _  => day.tuftsDow == dow
+  | .actual dow _ _ => actualDow day.date == dow
+  | .due dow _      => day.tuftsDow == dow
+
 def matchesSchedule (sd : ScheduleDetails) (day : AcademicDay) : Bool :=
   match sd with
   | .dowTufts dow _ _  => day.tuftsDow == dow
@@ -93,7 +108,19 @@ def matchesSchedule (sd : ScheduleDetails) (day : AcademicDay) : Bool :=
       match PlainDate.parse d with
       | .ok date => day.date == date
       | .error _ => false
+  | .everyOtherWeek anchor inner =>
+      matchesWeekParity anchor day && matchesDowPattern inner day
 
+
+def dowPatternTime : DowPattern → EventTime
+  | .tufts _ time _  => time
+  | .actual _ time _ => time
+  | .due _ deadline  => deadline
+
+def dowPatternLoc : DowPattern → String
+  | .tufts _ _ loc  => loc
+  | .actual _ _ loc => loc
+  | .due _ _        => ""
 
 def sdTime : ScheduleDetails → EventTime
   | .dowTufts _ time _  => time
@@ -101,6 +128,7 @@ def sdTime : ScheduleDetails → EventTime
   | .dowDue _ deadline  => deadline
   | .date _ time _      => time
   | .dateDue _ deadline => deadline
+  | .everyOtherWeek _ inner => dowPatternTime inner
 
 def sdLoc : ScheduleDetails → String
   | .dowTufts _ _ loc  => loc
@@ -108,6 +136,7 @@ def sdLoc : ScheduleDetails → String
   | .dowDue _ _        => ""
   | .date _ _ loc      => loc
   | .dateDue _ _       => ""
+  | .everyOtherWeek _ inner => dowPatternLoc inner
 
 
 def makeEntry (comp : CourseComponent)

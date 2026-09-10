@@ -2,12 +2,47 @@
 -- Time-stamp: <2026-05-05 Tue 17:26 EDT - george@valhalla>
 --
 
+import Std.Time
 import MLML.Codec
 import CoursePlanner.Calendar
 
 open Calendar
+open Std.Time
 
 namespace Course
+
+/-- The subset of `ScheduleDetails` patterns that recur every week (as opposed
+    to `date`/`dateDue`, which each pick out a single specific day) -- and so
+    are the only patterns it makes sense to thin to every-other-week via
+    `ScheduleDetails.everyOtherWeek`. -/
+inductive DowPattern where
+  | tufts  (dow : DOW) (time : EventTime) (location : String)
+  | actual (dow : DOW) (time : EventTime) (location : String)
+  | due    (dow : DOW) (deadline : EventTime)
+  deriving Repr
+
+def DowPattern.dow : DowPattern → DOW
+  | .tufts dow _ _  => dow
+  | .actual dow _ _ => dow
+  | .due dow _      => dow
+
+instance : Codec.Decode DowPattern where
+  decode
+    | .Record "DowTufts" fs => do
+        let dow      ← Codec.decodeField "dow" fs
+        let time     ← Codec.decodeField "time" fs
+        let location ← Codec.decodeField "location" fs
+        pure <| .tufts dow time location
+    | .Record "DowActual" fs => do
+        let dow      ← Codec.decodeField "dow" fs
+        let time     ← Codec.decodeField "time" fs
+        let location ← Codec.decodeField "location" fs
+        pure <| .actual dow time location
+    | .Record "DowDue" fs => do
+        let dow      ← Codec.decodeField "dow" fs
+        let deadline ← Codec.decodeField "deadline" fs
+        pure <| .due dow deadline
+    | e => .error s!"Expected DowPattern; got {repr e}"
 
 /-- Schedule pattern for a course component -/
 inductive ScheduleDetails where
@@ -16,6 +51,10 @@ inductive ScheduleDetails where
   | dowDue    (dow : DOW) (deadline : EventTime)
   | date      (date : String) (time : EventTime) (location : String)
   | dateDue   (date : String) (deadline : EventTime)
+  /-- `inner` fires only in weeks with the same parity as the week containing
+      `anchor` (the "YYYY-MM-DD" date of the first actual occurrence; it must
+      fall on `inner`'s weekday, checked at decode time) -/
+  | everyOtherWeek (anchor : String) (inner : DowPattern)
   deriving Repr
 
 instance : Codec.Decode ScheduleDetails where
@@ -43,6 +82,16 @@ instance : Codec.Decode ScheduleDetails where
         let date     ← Codec.decodeField "date" fs
         let deadline ← Codec.decodeField "deadline" fs
         pure <| .dateDue date deadline
+    | .Record "EveryOtherWeek" fs => do
+        let anchor ← Codec.decodeField "anchor" fs
+        let inner  ← Codec.decodeField "inner" fs
+        match PlainDate.parse anchor with
+        | .error e => .error s!"everyOtherWeek: couldn't parse anchor date {anchor}: {e}"
+        | .ok anchorDate =>
+            if actualDow anchorDate != inner.dow then
+              .error s!"everyOtherWeek: anchor {anchor} falls on {reprStr (actualDow anchorDate)}, but inner matches {reprStr inner.dow}"
+            else
+              pure <| .everyOtherWeek anchor inner
     | e => .error s!"Expected ScheduleDetails; got {repr e}"
 
 inductive AppointmentType where
