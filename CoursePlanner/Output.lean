@@ -44,7 +44,7 @@ def entryLabel : CalEntry → String
   | .noClass _                          => "Univ"
   | .admin _                            => "Univ"
   | .meeting _ _ _ _                    => "Meeting"
-  | .task _ _ _                         => "Task"
+  | .task _ _                           => "Task"
 
 def entryDetails : CalEntry → String
   | .event time loc _ desc _ _ _        => s!"{formatEventTime time} {loc} - {desc}"
@@ -52,7 +52,7 @@ def entryDetails : CalEntry → String
   | .noClass desc                       => s!"**No classes** *{desc}*"
   | .admin desc                         => s!"*{desc}*"
   | .meeting desc time loc _            => s!"{formatEventTime time} {loc} - {desc}"
-  | .task desc staff _                  => s!"{desc} ({staff})"
+  | .task desc _                        => desc
 
 -- Row construction
 

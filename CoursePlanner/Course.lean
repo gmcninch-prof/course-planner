@@ -124,6 +124,12 @@ inductive CourseComponent where
                 (assignments : List String)
   | exam        (sched       : List ScheduleDetails)
                 (description : String)
+  /-- A recurring low-key activity that doesn't book its own room/time slot
+      and doesn't suppress same-day lecture/appointment entries (unlike
+      `exam`) -- e.g. a TA meeting, an exam-writing session, or a review
+      activity folded into part of an existing lecture. -/
+  | task        (sched       : List ScheduleDetails)
+                (description : String)
   deriving Repr
 
 
@@ -144,19 +150,25 @@ instance : Codec.Decode CourseComponent where
         let sched       ← Codec.decodeField "sched" fs
         let description ← Codec.decodeField "description" fs
         pure <| .exam sched description
-    | e => .error s!"Expected CourseComponent; got {repr e}" 
+    | .Record "Task" fs => do
+        let sched       ← Codec.decodeField "sched" fs
+        let description ← Codec.decodeField "description" fs
+        pure <| .task sched description
+    | e => .error s!"Expected CourseComponent; got {repr e}"
 
 /-- Extract the schedule from a CourseComponent, if it has one -/
 def CourseComponent.sched : CourseComponent → List ScheduleDetails
   | .appointment sched _ _ _ => sched
   | .assignment sched _ _    => sched
   | .exam sched _            => sched
+  | .task sched _            => sched
 
 /-- Extract the description from a CourseComponent -/
 def CourseComponent.description : CourseComponent → String
   | .appointment _ d _ _ => d
   | .assignment _ d _    => d
   | .exam _ d            => d
+  | .task _ d            => d
 
 structure Course where
   semester      : Semester

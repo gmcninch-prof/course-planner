@@ -39,9 +39,9 @@ def entryToOrg (courseName : String) (day : AcademicDay) (entry : CalEntry) : Op
   | .meeting desc time loc _ =>
       let ts := formatOrgTimestamp day.date day.tuftsDow time
       s!"** {courseName}: {desc} ({loc})\n   {ts}"
-  | .task desc staff _ =>
+  | .task desc _ =>
       let ts := formatOrgTimestamp day.date day.tuftsDow .allDay
-      s!"** {courseName}: {desc}\n   {ts}\n   {staff}"
+      s!"** {courseName}: {desc}\n   {ts}"
   | .noClass _ => none
   | .admin _ => none
       

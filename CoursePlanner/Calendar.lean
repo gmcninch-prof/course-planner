@@ -147,7 +147,6 @@ inductive CalEntry where
              (location : String)
              (courseName : Option String)
   | task     (taskDescription : String)
-             (taskStaff : String)
              (courseName : Option String)
   deriving Repr
 

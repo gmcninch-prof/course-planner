@@ -151,6 +151,7 @@ def makeEntry (comp : CourseComponent)
   | .appointment _ _ _ (.Recitation _) => .event (sdTime sd) (sdLoc sd) .Recitation desc [] seq courseName  
   | .assignment _ _ _                  => .deadline (sdTime sd) desc [] seq courseName
   | .exam _ _                          => .event (sdTime sd) (sdLoc sd) .Exam desc [] seq courseName
+  | .task _ _                          => .task desc courseName
   
   
 inductive ComponentAction where
