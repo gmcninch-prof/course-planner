@@ -48,7 +48,9 @@ instance : Codec.Decode DowPattern where
 inductive ScheduleDetails where
   | dowTufts  (dow : DOW) (time : EventTime) (location : String)
   | dowActual (dow : DOW) (time : EventTime) (location : String)
-  | dowDue    (dow : DOW) (deadline : EventTime)
+  /-- `firstDue`, if given, is the "YYYY-MM-DD" date of the first collection --
+      no entry fires before it (it must fall on `dow`, checked at decode time). -/
+  | dowDue    (dow : DOW) (deadline : EventTime) (firstDue : Option String)
   | date      (date : String) (time : EventTime) (location : String)
   | dateDue   (date : String) (deadline : EventTime)
   /-- `inner` fires only in weeks with the same parity as the week containing
@@ -72,7 +74,17 @@ instance : Codec.Decode ScheduleDetails where
     | .Record "DowDue" fs => do
         let dow      ← Codec.decodeField "dow" fs
         let deadline ← Codec.decodeField "deadline" fs
-        pure <| .dowDue dow deadline
+        let firstDue ← Codec.decodeFieldOpt "firstDue" fs
+        match firstDue with
+        | none => pure <| .dowDue dow deadline none
+        | some fd =>
+            match PlainDate.parse fd with
+            | .error e => .error s!"DowDue: couldn't parse firstDue date {fd}: {e}"
+            | .ok fdDate =>
+                if actualDow fdDate != dow then
+                  .error s!"DowDue: firstDue {fd} falls on {reprStr (actualDow fdDate)}, but dow is {reprStr dow}"
+                else
+                  pure <| .dowDue dow deadline (some fd)
     | .Record "Date" fs => do
         let date     ← Codec.decodeField "date" fs
         let time     ← Codec.decodeField "time" fs

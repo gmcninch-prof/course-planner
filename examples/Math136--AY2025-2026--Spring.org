@@ -18,9 +18,6 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 1
-   <2026-01-16 Fri 23:59>
-   partials
 ** Math136: 10.1: Measurement in R^n; 13.3: The Mean Value Theorem and directional derivatives
    <2026-01-21 Mon 10:30-11:45>
    JCC 140
@@ -31,9 +28,9 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 2
+** Math136: Assignment 1
    <2026-01-23 Fri 23:59>
-   Weekly homework
+   partials
 ** Math136: recitation
    <2026-01-23 Fri 13:30-14:20>
    JCC 141
@@ -59,7 +56,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 3
+** Math136: Assignment 2
    <2026-01-30 Fri 23:59>
    Weekly homework
 ** Math136: 11.2, 11.3: sequential compactness; pathwise connectedness
@@ -82,7 +79,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 4
+** Math136: Assignment 3
    <2026-02-06 Fri 23:59>
    Weekly homework
 ** Math136: recitation
@@ -110,7 +107,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 5
+** Math136: Assignment 4
    <2026-02-13 Fri 23:59>
    Weekly homework
 ** Math136: midterm 1
@@ -123,7 +120,7 @@
    JCC 140
    Lecture 10
    14.3: Second order approximation
-** Math136: Assignment 6
+** Math136: Assignment 5
    <2026-02-20 Fri 23:59>
    Weekly homework
 ** Math136: recitation
@@ -151,7 +148,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 7
+** Math136: Assignment 6
    <2026-02-27 Fri 23:59>
    Weekly homework
 ** Math136: 15.3: The chain rule
@@ -174,7 +171,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 8
+** Math136: Assignment 7
    <2026-03-06 Fri 23:59>
    Weekly homework
 ** Math136: recitation
@@ -202,7 +199,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 9
+** Math136: Assignment 8
    <2026-03-13 Fri 23:59>
    Weekly homework
 ** Math136: 17.1: Dini's Theorem
@@ -225,7 +222,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 10
+** Math136: Assignment 9
    <2026-03-27 Fri 23:59>
    Weekly homework
 ** Math136: midterm 2
@@ -248,7 +245,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 11
+** Math136: Assignment 10
    <2026-04-03 Fri 23:59>
    Weekly homework
 ** Math136: recitation
@@ -276,7 +273,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 12
+** Math136: Assignment 11
    <2026-04-10 Fri 23:59>
    Weekly homework
 ** Math136: 18.3: Integration on Jordan domains
@@ -299,7 +296,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 13
+** Math136: Assignment 12
    <2026-04-17 Fri 23:59>
    Weekly homework
 ** Math136: recitation
@@ -322,7 +319,7 @@
    JCC 587
    Office Hours
    Office Hours
-** Math136: Assignment 14
+** Math136: Assignment 13
    <2026-04-24 Fri 23:59>
    Weekly homework
 ** Math136: 19.3: Change of variables: proofs

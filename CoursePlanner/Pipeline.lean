@@ -95,11 +95,22 @@ def matchesDowPattern (dp : DowPattern) (day : AcademicDay) : Bool :=
   | .actual dow _ _ => actualDow day.date == dow
   | .due dow _      => day.tuftsDow == dow
 
+/-- Does `day` fall on or after `firstDue`? (`none` always matches.) -/
+def matchesFirstDue (firstDue : Option String) (day : AcademicDay) : Bool :=
+  match firstDue with
+  | none   => true
+  | some d =>
+      match PlainDate.parse d with
+      | .ok firstDueDate =>
+          let diff : Day.Offset := day.date.toDaysSinceUNIXEpoch - firstDueDate.toDaysSinceUNIXEpoch
+          diff.val >= 0
+      | .error _ => false
+
 def matchesSchedule (sd : ScheduleDetails) (day : AcademicDay) : Bool :=
   match sd with
   | .dowTufts dow _ _  => day.tuftsDow == dow
   | .dowActual dow _ _ => actualDow day.date == dow
-  | .dowDue dow _      => day.tuftsDow == dow
+  | .dowDue dow _ firstDue => day.tuftsDow == dow && matchesFirstDue firstDue day
   | .date d _ _        =>
       match PlainDate.parse d with
       | .ok date => day.date == date
@@ -125,7 +136,7 @@ def dowPatternLoc : DowPattern → String
 def sdTime : ScheduleDetails → EventTime
   | .dowTufts _ time _  => time
   | .dowActual _ time _ => time
-  | .dowDue _ deadline  => deadline
+  | .dowDue _ deadline _ => deadline
   | .date _ time _      => time
   | .dateDue _ deadline => deadline
   | .everyOtherWeek _ inner => dowPatternTime inner
@@ -133,7 +144,7 @@ def sdTime : ScheduleDetails → EventTime
 def sdLoc : ScheduleDetails → String
   | .dowTufts _ _ loc  => loc
   | .dowActual _ _ loc => loc
-  | .dowDue _ _        => ""
+  | .dowDue _ _ _      => ""
   | .date _ _ loc      => loc
   | .dateDue _ _       => ""
   | .everyOtherWeek _ inner => dowPatternLoc inner
