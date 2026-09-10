@@ -13,7 +13,7 @@ TEST_MD_FILES     = $(wildcard $(TEST_OUTPUT)*.md)
 TEST_ORG_OUTPUT   = $(TEST_OUTPUT)
 
 
-.PHONY: all build install clean reports test test-html test-pdf test-reports
+.PHONY: all build install clean reports check-examples test test-html test-pdf test-reports
 
 all: build # test
 
@@ -43,8 +43,14 @@ update:
 #--------------------------------------------------------------------------------
 # testing...
 
-test:
-	lake exe course_planner $(TEST_DATA) $(TEST_OUTPUT) $(TEST_ORG_OUTPUT) $(TEST_SEMESTER_DIR) 
+# parses the example course spec and runs it through the pipeline --
+# catches drift between examples/*.mlml and the current decoders/schema
+# (course_planner now exits non-zero on a Course/Pipeline error, so this
+# fails loudly rather than silently printing and continuing)
+check-examples:
+	lake exe course_planner $(TEST_DATA) $(TEST_OUTPUT) $(TEST_ORG_OUTPUT) $(TEST_SEMESTER_DIR)
+
+test: check-examples
 	for f in $(TEST_OUTPUT)/*.md; do pandoc -f markdown-smart -t gfm -o $$f $$f; done
 
 test-html: test

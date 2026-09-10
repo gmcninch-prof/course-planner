@@ -22,15 +22,19 @@ def loadSemesters (dir : String) : IO (List SemSpec) := do
   return results.flatten
 
 
-def run (courseFile outputDir orgDir semesterDir : String) 
-        (reports : List String) : IO Unit := do
+def run (courseFile outputDir orgDir semesterDir : String)
+        (reports : List String) : IO UInt32 := do
   let courseText ← IO.FS.readFile courseFile
   let specs ← loadSemesters semesterDir
   match parseAndDecode courseText with
-  | .error e => IO.println s!"Course parse error: {e}"
+  | .error e =>
+      IO.eprintln s!"Course parse error: {e}"
+      pure 1
   | .ok course =>
       match courseCalendar course specs with
-      | .error e => IO.println s!"Pipeline error: {e}"
+      | .error e =>
+          IO.eprintln s!"Pipeline error: {e}"
+          pure 1
       | .ok cc => do
           let writeIf (name : String) (content : String) (path : String) : IO Unit := do
             if reports.contains name || reports.contains "all" then
@@ -42,12 +46,15 @@ def run (courseFile outputDir orgDir semesterDir : String)
           writeIf "assignments" (report cc "Assignments" assignmentEntries) s!"{outputDir}/assignments.md"
           let orgPath := s!"{orgDir}/{OrgOutput.orgFileName cc}"
           writeIf "org"         (OrgOutput.courseCalendarToOrg cc) orgPath
+          pure 0
 
-def main (args : List String) : IO Unit :=
+def main (args : List String) : IO UInt32 :=
   match args with
   | [courseFile, outputDir, orgDir, semesterDir] =>
       run courseFile outputDir orgDir semesterDir ["all"]
   | [courseFile, outputDir, orgDir, semesterDir, reports] =>
       run courseFile outputDir orgDir semesterDir (reports.splitOn ",")
-  | _ => IO.println "Usage: course-planner <course-file> <output-dir> <org-dir> <semesterDir> [reports]"
+  | _ => do
+      IO.eprintln "Usage: course-planner <course-file> <output-dir> <org-dir> <semesterDir> [reports]"
+      pure 1
 

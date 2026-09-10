@@ -19,7 +19,7 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 1
-   <2026-01-16 Fri 11:59 PM>
+   <2026-01-16 Fri 23:59>
    partials
 ** Math136: 10.1: Measurement in R^n; 13.3: The Mean Value Theorem and directional derivatives
    <2026-01-21 Mon 10:30-11:45>
@@ -32,8 +32,13 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 2
-   <2026-01-23 Fri 11:59 PM>
+   <2026-01-23 Fri 23:59>
    Weekly homework
+** Math136: recitation
+   <2026-01-23 Fri 13:30-14:20>
+   JCC 141
+   Recitation 1
+   recitation
 ** Math136: snow
    <2026-01-26 Mon 10:30-11:45>
    JCC 140
@@ -55,7 +60,7 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 3
-   <2026-01-30 Fri 11:59 PM>
+   <2026-01-30 Fri 23:59>
    Weekly homework
 ** Math136: 11.2, 11.3: sequential compactness; pathwise connectedness
    <2026-02-02 Mon 10:30-11:45>
@@ -78,8 +83,13 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 4
-   <2026-02-06 Fri 11:59 PM>
+   <2026-02-06 Fri 23:59>
    Weekly homework
+** Math136: recitation
+   <2026-02-06 Fri 13:30-14:20>
+   JCC 141
+   Recitation 2
+   recitation
 ** Math136: 14.1: First order approximation; 
    <2026-02-09 Mon 10:30-11:45>
    JCC 140
@@ -101,7 +111,7 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 5
-   <2026-02-13 Fri 11:59 PM>
+   <2026-02-13 Fri 23:59>
    Weekly homework
 ** Math136: midterm 1
    <2026-02-18 Wed 10:30-11:45>
@@ -114,8 +124,13 @@
    Lecture 10
    14.3: Second order approximation
 ** Math136: Assignment 6
-   <2026-02-20 Fri 11:59 PM>
+   <2026-02-20 Fri 23:59>
    Weekly homework
+** Math136: recitation
+   <2026-02-20 Fri 13:30-14:20>
+   JCC 141
+   Recitation 4
+   recitation
 ** Math136: 15.1: Linear maps and matrices
    <2026-02-23 Mon 10:30-11:45>
    JCC 140
@@ -137,7 +152,7 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 7
-   <2026-02-27 Fri 11:59 PM>
+   <2026-02-27 Fri 23:59>
    Weekly homework
 ** Math136: 15.3: The chain rule
    <2026-03-02 Mon 10:30-11:45>
@@ -160,8 +175,13 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 8
-   <2026-03-06 Fri 11:59 PM>
+   <2026-03-06 Fri 23:59>
    Weekly homework
+** Math136: recitation
+   <2026-03-06 Fri 13:30-14:20>
+   JCC 141
+   Recitation 5
+   recitation
 ** Math136: 16.2: Stability of non-linear maps
    <2026-03-09 Mon 10:30-11:45>
    JCC 140
@@ -183,7 +203,7 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 9
-   <2026-03-13 Fri 11:59 PM>
+   <2026-03-13 Fri 23:59>
    Weekly homework
 ** Math136: 17.1: Dini's Theorem
    <2026-03-23 Mon 10:30-11:45>
@@ -206,7 +226,7 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 10
-   <2026-03-27 Fri 11:59 PM>
+   <2026-03-27 Fri 23:59>
    Weekly homework
 ** Math136: midterm 2
    <2026-03-30 Mon 10:30-11:45>
@@ -229,8 +249,13 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 11
-   <2026-04-03 Fri 11:59 PM>
+   <2026-04-03 Fri 23:59>
    Weekly homework
+** Math136: recitation
+   <2026-04-03 Fri 13:30-14:20>
+   JCC 141
+   Recitation 7
+   recitation
 ** Math136: 18.1: Integration of functions on generalized rectangles
    <2026-04-06 Mon 10:30-11:45>
    JCC 140
@@ -252,7 +277,7 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 12
-   <2026-04-10 Fri 11:59 PM>
+   <2026-04-10 Fri 23:59>
    Weekly homework
 ** Math136: 18.3: Integration on Jordan domains
    <2026-04-13 Mon 10:30-11:45>
@@ -275,8 +300,13 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 13
-   <2026-04-17 Fri 11:59 PM>
+   <2026-04-17 Fri 23:59>
    Weekly homework
+** Math136: recitation
+   <2026-04-17 Fri 13:30-14:20>
+   JCC 141
+   Recitation 8
+   recitation
 ** Math136: Office Hours
    <2026-04-22 Wed 15:00-16:00>
    JCC 587
@@ -293,7 +323,7 @@
    Office Hours
    Office Hours
 ** Math136: Assignment 14
-   <2026-04-24 Fri 11:59 PM>
+   <2026-04-24 Fri 23:59>
    Weekly homework
 ** Math136: 19.3: Change of variables: proofs
    <2026-04-27 Mon 10:30-11:45>
